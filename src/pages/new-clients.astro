@@ -1,0 +1,342 @@
+---
+import Base from '../layouts/Base.astro';
+import Schedule from '../components/Schedule.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { monthlyPlans } from '../data/pricing';
+
+const title = 'New Clients – Ironhand Boxing';
+const description =
+  'New to boxing? Here is exactly what your first class at Ironhand Boxing in Staten Island looks like, what to bring, and how to get started.';
+
+const steps = [
+  {
+    n: '01',
+    title: 'Reach out',
+    body: 'Send us a message with your experience level and what you are training for. We will tell you which class to come to first — that answer is different for a total beginner than it is for someone with a few fights.',
+  },
+  {
+    n: '02',
+    title: 'Show up early',
+    body: 'Get there ten minutes before the class starts. A coach will walk you around the gym, get you wrapped, and put gloves on you. You do not need to buy anything for the first session.',
+  },
+  {
+    n: '03',
+    title: 'Train',
+    body: 'Warm-up, then fundamentals — stance, guard, the jab. You will get one-on-one time on the mitts with a coach, work the bag, and finish with conditioning. Roughly an hour.',
+  },
+  {
+    n: '04',
+    title: 'Pick your plan',
+    body: 'Once you know it fits, we will put you on the membership that matches how often you can realistically train. Month to month, no long contracts.',
+  },
+];
+
+const bring = [
+  'Athletic clothes you can move in',
+  'Sneakers with decent support',
+  'Water — more than you think',
+  'A towel',
+  'Hand wraps if you own them (we have you covered if not)',
+];
+---
+
+<Base title={title} description={description}>
+  <section class="section nc-hero gridlines">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>New Clients</p>
+      <h1 class="display steel nc-hero__h1" data-reveal data-reveal-index="1">
+        Never boxed?<br />Perfect.
+      </h1>
+      <p class="lede nc-hero__lede" data-reveal data-reveal-index="2">
+        Most of our members had never thrown a punch before they walked in. Here
+        is exactly what happens on day one, so nothing about it is a surprise.
+      </p>
+      <div class="nc-hero__actions" data-reveal data-reveal-index="3">
+        <a class="btn btn--lg" href="/contact-us/">Book your first class</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section nc-steps">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">How It Works</p>
+        <h2 class="h2 steel">Four steps in.</h2>
+      </div>
+
+      <ol class="nc-steps__list">
+        {
+          steps.map((s, i) => (
+            <li class="nc-step" data-reveal data-reveal-index={i}>
+              <span class="nc-step__n">{s.n}</span>
+              <div>
+                <h3 class="h3 nc-step__ttl">{s.title}</h3>
+                <p class="nc-step__body">{s.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section nc-bring">
+    <div class="wrap nc-bring__grid">
+      <div data-reveal>
+        <p class="eyebrow">Day One</p>
+        <h2 class="h2 steel">What to bring.</h2>
+        <ul class="nc-bring__list">
+          {bring.map((b) => <li>{b}</li>)}
+        </ul>
+        <p class="nc-bring__note">
+          Do not buy gloves before your first class. Come train, then let a coach
+          tell you what is actually worth spending money on.
+        </p>
+      </div>
+
+      <div class="nc-bring__media" data-reveal data-reveal-index="1">
+        <img
+          src="/example.png"
+          alt="Hand wraps and gloves at Ironhand Boxing"
+          width="900"
+          height="900"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <Schedule />
+
+  <section class="section nc-plans">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Memberships</p>
+        <h2 class="h2 steel">Month to month.</h2>
+        <p class="lede">
+          Pick based on how often you can genuinely get in. You can move up a
+          tier any time — most people do.
+        </p>
+      </div>
+
+      <div class="nc-plans__grid">
+        {
+          monthlyPlans.map((p, i) => (
+            <div class="nc-plan" data-reveal data-reveal-index={i}>
+              <span class="nc-plan__name">{p.name}</span>
+              <span class="nc-plan__price">${p.price}</span>
+              <span class="nc-plan__unit">{p.unit}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="nc-plans__more">
+        Personal sessions, virtual training and the Fighters Program are listed
+        in full on the <a href="/#pricing">pricing section</a>.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Day one is on the calendar."
+    body="Message us with your experience level and we will tell you exactly which class to walk into first."
+    cta="Book your first class"
+  />
+</Base>
+
+<style>
+  .nc-hero {
+    position: relative;
+    z-index: 2;
+    background: var(--ink-900);
+    padding-block: clamp(4rem, 9vw, 7rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .nc-hero__h1 {
+    font-size: clamp(2.75rem, 8vw, 6.5rem);
+    letter-spacing: -0.03em;
+    margin-block: 1.25rem;
+  }
+
+  .nc-hero__lede {
+    max-width: 56ch;
+  }
+
+  .nc-hero__actions {
+    margin-top: 2rem;
+  }
+
+  .nc-steps,
+  .nc-plans {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .nc-steps__list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border-block: 1px solid var(--line);
+  }
+
+  .nc-step {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: flex-start;
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+    background: var(--ink-900);
+    transition: background 0.4s var(--ease-out);
+  }
+
+  .nc-step:hover {
+    background: var(--ink-800);
+  }
+
+  .nc-step__n {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--chrome-3);
+    flex-shrink: 0;
+    min-width: 2.5ch;
+  }
+
+  .nc-step__ttl {
+    font-size: 1.375rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .nc-step__body {
+    max-width: 62ch;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--chrome-3);
+  }
+
+  .nc-bring {
+    background: linear-gradient(180deg, var(--ink-900), var(--ink-800));
+    position: relative;
+    z-index: 2;
+  }
+
+  .nc-bring__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .nc-bring__list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .nc-bring__list li {
+    position: relative;
+    padding-left: 1.85rem;
+    color: var(--chrome-2);
+  }
+
+  .nc-bring__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--grad-ember);
+  }
+
+  .nc-bring__note {
+    margin-top: 1.75rem;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--ember);
+    background: rgba(230, 58, 31, 0.06);
+    border-radius: 0 10px 10px 0;
+    font-size: var(--fs-sm);
+    color: var(--chrome-2);
+  }
+
+  .nc-bring__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .nc-bring__media img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  .nc-plans__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .nc-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.5rem;
+    background: var(--ink-800);
+    transition: background 0.4s var(--ease-out);
+  }
+
+  .nc-plan:hover {
+    background: var(--ink-700);
+  }
+
+  .nc-plan__name {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  .nc-plan__price {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--chrome);
+  }
+
+  .nc-plan__unit {
+    font-size: 0.75rem;
+    color: var(--chrome-3);
+  }
+
+  .nc-plans__more {
+    margin-top: 1.5rem;
+    font-size: var(--fs-sm);
+    color: var(--chrome-3);
+  }
+
+  .nc-plans__more a {
+    color: var(--ember-2);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (min-width: 900px) {
+    .nc-bring__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+</style>

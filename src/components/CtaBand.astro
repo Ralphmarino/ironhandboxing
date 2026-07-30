@@ -1,0 +1,78 @@
+---
+import Logo from './Logo.astro';
+
+interface Props {
+  title?: string;
+  body?: string;
+  cta?: string;
+  href?: string;
+}
+
+const {
+  title = 'Your first class is the hard one.',
+  body = 'After that it is just showing up. Tell us what you are after and we will put you in the right class — beginner, competitor, or somewhere in between.',
+  cta = 'Get started',
+  href = '/contact-us/',
+} = Astro.props;
+---
+
+<section class="cta">
+  <div class="cta__mark" aria-hidden="true">
+    <Logo size={620} />
+  </div>
+
+  <div class="wrap cta__inner" data-reveal>
+    <h2 class="h2 cta__ttl">{title}</h2>
+    <p class="lede cta__body">{body}</p>
+    <a class="btn btn--lg" href={href}>{cta}</a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(4.5rem, 10vw, 8rem);
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 100%, rgba(230, 58, 31, 0.16), transparent 70%),
+      var(--ink-800);
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Oversized ghosted badge behind the copy — the logo as texture. */
+  .cta__mark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    color: #fff;
+    opacity: 0.028;
+    pointer-events: none;
+    animation: turn 90s linear infinite;
+  }
+
+  @keyframes turn {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .cta__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.35rem;
+  }
+
+  .cta__ttl {
+    max-width: 18ch;
+  }
+
+  .cta__body {
+    max-width: 54ch;
+    text-align: center;
+  }
+</style>

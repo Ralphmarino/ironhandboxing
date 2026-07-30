@@ -1,0 +1,329 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const title = 'Contact Us – Ironhand Boxing';
+const description =
+  'Get in touch with Ironhand Boxing in Staten Island. Ask about classes, pricing, kids programs or the Fighters Program — we will get you into the right class.';
+
+const mapQuery = encodeURIComponent(
+  `${site.address.street}, ${site.address.locality}, ${site.address.region} ${site.address.postalCode}`,
+);
+
+const interests = [
+  'Group classes',
+  'Personal sessions with Coach Ian',
+  'Kids & Teens class',
+  'Fighters Program',
+  'Family package',
+  'Something else',
+];
+---
+
+<Base title={title} description={description}>
+  <section class="section contact gridlines">
+    <div class="wrap contact__inner">
+      <div class="contact__copy">
+        <p class="eyebrow" data-reveal>Contact Us</p>
+        <h1 class="h1 steel" data-reveal data-reveal-index="1">
+          Let’s get you<br />in the gym.
+        </h1>
+        <p class="lede" data-reveal data-reveal-index="2">
+          Tell us a little about what you are looking for and we will point you
+          at the right class. No experience needed — most of our members walked
+          in the exact same way.
+        </p>
+
+        <ul class="contact__meta" data-reveal data-reveal-index="3">
+          <li>
+            <span class="contact__lbl">Address</span>
+            <a href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`} rel="noopener" target="_blank">
+              {site.address.street}<br />
+              {site.address.locality}, {site.address.region} {site.address.postalCode}
+            </a>
+          </li>
+          {
+            site.phone && (
+              <li>
+                <span class="contact__lbl">Phone</span>
+                <a href={`tel:${site.phone.replace(/[^0-9+]/g, '')}`}>{site.phone}</a>
+              </li>
+            )
+          }
+          <li>
+            <span class="contact__lbl">Email</span>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </li>
+          <li>
+            <span class="contact__lbl">Instagram</span>
+            <a href={site.social.instagram} rel="noopener" target="_blank">
+              {site.social.instagramHandle}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact__formwrap card" data-reveal data-reveal-index="2">
+        {/*
+          Netlify Forms. Submissions are picked up from the static HTML at deploy
+          time — `name`, `data-netlify` and the hidden `form-name` input are all
+          required for that detection to work. `bot-field` is the honeypot: real
+          users never see it, bots fill it in and get silently dropped.
+        */}
+        <form
+          name="contact"
+          method="POST"
+          action="/thank-you/"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          class="form"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+
+          <p class="form__hp">
+            <label>
+              Don’t fill this out if you’re human: <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="name">Name <span aria-hidden="true">*</span></label>
+              <input id="name" name="name" type="text" required autocomplete="name" />
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" required autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="interest">I’m interested in</label>
+            <select id="interest" name="interest">
+              {interests.map((i) => <option value={i}>{i}</option>)}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Message <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="5" required
+              placeholder="Tell us your experience level and what you’re training for."></textarea>
+          </div>
+
+          <button class="btn btn--lg form__submit" type="submit">Send message</button>
+
+          <p class="form__fine">
+            We reply to everything. If you don’t hear back within a day, message
+            us on Instagram.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="mapsec">
+    <iframe
+      class="mapsec__frame"
+      title="Map showing Ironhand Boxing at 1230 Castleton Avenue, Staten Island"
+      src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen></iframe>
+  </section>
+</Base>
+
+<script is:inline>
+  // Deep links like /contact-us/?interest=fighters (used by the Fighters
+  // Program CTA) land with the right option already chosen.
+  (() => {
+    const map = {
+      fighters: 'Fighters Program',
+      kids: 'Kids & Teens class',
+      personal: 'Personal sessions with Coach Ian',
+      family: 'Family package',
+    };
+    const key = new URLSearchParams(location.search).get('interest');
+    const select = document.getElementById('interest');
+    if (!key || !select || !map[key]) return;
+    select.value = map[key];
+  })();
+</script>
+
+<style>
+  .contact {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact__inner {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .contact__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.35rem;
+  }
+
+  .contact__meta {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 1.35rem;
+    width: 100%;
+  }
+
+  .contact__meta li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .contact__lbl {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+  }
+
+  .contact__meta a {
+    color: var(--chrome);
+    line-height: 1.55;
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .contact__meta a:hover {
+    color: var(--ember-2);
+  }
+
+  .contact__formwrap {
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+
+  /* ---- Form ---- */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .form__hp {
+    position: absolute;
+    left: -9999px;
+    visibility: hidden;
+  }
+
+  .form__row {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--chrome-2);
+  }
+
+  .field label span {
+    color: var(--ember-2);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--ink-900);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    color: var(--chrome);
+    font-size: 0.9375rem;
+    transition:
+      border-color 0.3s var(--ease-out),
+      background 0.3s var(--ease-out);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--chrome-3);
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--ember);
+    background: var(--ink-800);
+  }
+
+  /* Native select arrow is invisible on a dark field in Safari — draw our own */
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8b0ba' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .form__submit {
+    align-self: flex-start;
+    margin-top: 0.35rem;
+  }
+
+  .form__fine {
+    font-size: 0.75rem;
+    color: var(--chrome-3);
+    line-height: 1.6;
+  }
+
+  /* ---- Map ---- */
+  .mapsec {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line);
+    line-height: 0;
+  }
+
+  .mapsec__frame {
+    width: 100%;
+    height: clamp(300px, 45vh, 460px);
+    border: 0;
+    /* Recolour the light Google tile set to match the dark shell */
+    filter: grayscale(1) invert(0.92) contrast(0.85);
+  }
+
+  @media (min-width: 880px) {
+    .contact__inner {
+      grid-template-columns: 1fr 1.05fr;
+    }
+
+    .form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

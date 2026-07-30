@@ -1,0 +1,325 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { site } from '../../data/site';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+// Two more posts to read, newest first, excluding this one.
+const more = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  image: new URL(post.data.image, Astro.site).href,
+  datePublished: post.data.pubDate.toISOString(),
+  ...(post.data.updatedDate ? { dateModified: post.data.updatedDate.toISOString() } : {}),
+  author: { '@type': 'Person', name: post.data.author },
+  publisher: {
+    '@type': 'Organization',
+    name: site.legalName,
+    url: site.url,
+  },
+  mainEntityOfPage: new URL(`/blog/${post.id}/`, Astro.site).href,
+};
+---
+
+<Base title={`${post.data.title} – Ironhand Boxing`} description={post.data.description} image={post.data.image}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+
+  <article class="art">
+    <header class="art__head gridlines">
+      <div class="wrap art__headinner">
+        <a class="art__back" href="/blog/">← All posts</a>
+
+        <p class="art__meta" data-reveal>
+          {post.data.tags[0] && <span class="art__tag">{post.data.tags[0]}</span>}
+          <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+          <span>·</span>
+          <span>{post.data.author}</span>
+        </p>
+
+        <h1 class="h1 steel art__ttl" data-reveal data-reveal-index="1">{post.data.title}</h1>
+        <p class="lede art__desc" data-reveal data-reveal-index="2">{post.data.description}</p>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <figure class="art__hero" data-reveal>
+        <img
+          src={post.data.image}
+          alt={post.data.imageAlt}
+          width="1400"
+          height="800"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {
+        post.data.tags.length > 0 && (
+          <ul class="art__tags">
+            {post.data.tags.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    {
+      more.length > 0 && (
+        <section class="section art__more">
+          <div class="wrap">
+            <h2 class="h3 art__morettl">Keep reading</h2>
+            <div class="art__moregrid">
+              {more.map((p, i) => (
+                <a class="card art__morecard" href={`/blog/${p.id}/`} data-reveal data-reveal-index={i}>
+                  <p class="art__moremeta">{fmt(p.data.pubDate)}</p>
+                  <h3 class="h3 art__morename">{p.data.title}</h3>
+                  <p class="art__moredesc">{p.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+  </article>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .art {
+    position: relative;
+    z-index: 2;
+    background: var(--ink-900);
+  }
+
+  .art__head {
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 4vw, 3rem);
+    position: relative;
+  }
+
+  .art__headinner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+    max-width: 72ch;
+  }
+
+  .art__back {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .art__back:hover {
+    color: var(--ember-2);
+  }
+
+  .art__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  .art__tag {
+    padding: 0.22rem 0.6rem;
+    border-radius: 100px;
+    background: rgba(230, 58, 31, 0.16);
+    color: var(--ember-2);
+  }
+
+  .art__ttl {
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    letter-spacing: -0.02em;
+  }
+
+  .art__desc {
+    max-width: 58ch;
+  }
+
+  .art__hero {
+    margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--ink-700);
+  }
+
+  .art__hero img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  /* ---- Prose ---- */
+  .prose {
+    max-width: 68ch;
+    margin-inline: auto;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--chrome-2);
+  }
+
+  .prose :global(h2) {
+    font-size: clamp(1.5rem, 3vw, 2.125rem);
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(h3) {
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.35rem;
+  }
+
+  .prose :global(strong) {
+    color: var(--chrome);
+    font-weight: 600;
+  }
+
+  .prose :global(a) {
+    color: var(--ember-2);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: 1.35rem;
+    padding-left: 1.35rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--ember);
+  }
+
+  .prose :global(blockquote) {
+    margin: 2rem 0;
+    padding: 1.1rem 1.5rem;
+    border-left: 2px solid var(--ember);
+    background: rgba(230, 58, 31, 0.06);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.9375rem;
+    color: var(--chrome-2);
+  }
+
+  .prose :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(hr) {
+    margin: 2.5rem 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose :global(img) {
+    border-radius: var(--radius);
+    margin-block: 2rem;
+  }
+
+  /* ---- Tags ---- */
+  .art__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    max-width: 68ch;
+    margin: 2.5rem auto 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .art__tags li {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  /* ---- More ---- */
+  .art__more {
+    padding-bottom: 0;
+  }
+
+  .art__morettl {
+    margin-bottom: 1.5rem;
+  }
+
+  .art__moregrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .art__morecard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .art__moremeta {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  .art__morename {
+    font-size: 1.25rem;
+  }
+
+  .art__moredesc {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--chrome-3);
+  }
+</style>

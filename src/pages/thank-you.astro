@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Message sent – Ironhand Boxing"
+  description="Thanks for reaching out to Ironhand Boxing."
+  noindex
+>
+  <section class="ty">
+    <div class="wrap ty__inner">
+      <div class="ty__badge">
+        <Logo size={130} />
+      </div>
+
+      <p class="eyebrow">Message received</p>
+      <h1 class="h1 steel">That’s round one.</h1>
+      <p class="lede ty__body">
+        Thanks for reaching out — we read every message and we will get back to
+        you shortly. In the meantime, take a look at the schedule so you know
+        which class you are walking into.
+      </p>
+
+      <div class="ty__actions">
+        <a class="btn" href="/#schedule">See the schedule</a>
+        <a class="btn btn--ghost" href={site.social.instagram} rel="noopener" target="_blank">
+          Follow {site.social.instagramHandle}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ty {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    min-height: 78svh;
+    padding-block: clamp(4rem, 10vw, 7rem);
+    background:
+      radial-gradient(ellipse 60% 60% at 50% 0%, rgba(230, 58, 31, 0.14), transparent 70%),
+      var(--ink-900);
+    text-align: center;
+  }
+
+  .ty__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .ty__badge {
+    color: var(--chrome);
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 14px 40px rgba(230, 58, 31, 0.3));
+    animation: pop 0.7s var(--ease-punch) both;
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.82;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  .ty__body {
+    max-width: 52ch;
+    text-align: center;
+  }
+
+  .ty__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+</style>

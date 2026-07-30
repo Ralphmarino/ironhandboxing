@@ -1,0 +1,108 @@
+---
+const offers = [
+  {
+    n: '01',
+    title: 'Group Classes',
+    body: 'The core of the gym. Technique, one-on-one mitt work with a coach, bag work and conditioning — every session, seven days a week. Beginners and experienced boxers train on the same floor at their own level.',
+    tag: 'All levels',
+  },
+  {
+    n: '02',
+    title: 'Personal Sessions',
+    body: 'One-on-one hours with Coach Ian, set aside Wednesdays and Thursdays. This is where technique gets fixed properly — and where members chasing a specific goal make the fastest progress.',
+    tag: '$115 / hour',
+  },
+  {
+    n: '03',
+    title: 'Kids & Teens',
+    body: 'Fridays at 5pm. Coordination, discipline and confidence first; boxing second. Parents keep telling us the same thing — their kid comes home wanting to show them what they learned.',
+    tag: 'Fridays 5PM',
+  },
+  {
+    n: '04',
+    title: 'Fighters Program',
+    body: 'The competition track. Monday, Tuesday and Wednesday at 7pm for registered amateurs actively campaigning. Rounds, ring work and corner-ready preparation.',
+    tag: 'Book required',
+  },
+];
+---
+
+<section class="section offer" id="offer">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">What We Offer</p>
+      <h2 class="h2 steel">Four ways in.</h2>
+      <p class="lede">
+        Whether you have never thrown a punch or you are three fights into an
+        amateur career, there is a lane here — and a coach in it with you.
+      </p>
+    </div>
+
+    <div class="offer__grid">
+      {
+        offers.map((o, i) => (
+          <article class="card offer__card" data-reveal data-reveal-index={i}>
+            <p class="offer__n">{o.n}</p>
+            <h3 class="h3 offer__ttl">{o.title}</h3>
+            <p class="offer__body">{o.body}</p>
+            <span class="offer__tag">{o.tag}</span>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .offer {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .offer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .offer__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .offer__n {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    color: var(--ember-2);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--line);
+    width: 100%;
+  }
+
+  .offer__ttl {
+    font-size: 1.5rem;
+  }
+
+  .offer__body {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--chrome-3);
+  }
+
+  .offer__tag {
+    margin-top: auto;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-2);
+  }
+</style>

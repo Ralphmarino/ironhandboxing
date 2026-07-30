@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Ticker from '../components/Ticker.astro';
+import Stats from '../components/Stats.astro';
+import Offer from '../components/Offer.astro';
+import Schedule from '../components/Schedule.astro';
+import Pricing from '../components/Pricing.astro';
+import Coaches from '../components/Coaches.astro';
+import Testimonials from '../components/Testimonials.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { seo } from '../data/site';
+---
+
+<Base title={seo.home.title} description={seo.home.description} isHome>
+  <Hero />
+  <Ticker />
+  <Stats />
+  <Offer />
+  <Schedule />
+  <Pricing />
+  <Coaches />
+  <Testimonials />
+  <InstagramFeed />
+  <CtaBand />
+</Base>

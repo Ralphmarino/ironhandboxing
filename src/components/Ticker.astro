@@ -1,0 +1,64 @@
+---
+interface Props {
+  items?: string[];
+  duration?: string;
+}
+
+const {
+  items = [
+    'Proper Technique',
+    '1-on-1 Mitt Work',
+    'Bag Work',
+    'Conditioning',
+    'All Levels Welcome',
+    'Kids & Teens',
+    'Amateur Fighters',
+    'Staten Island',
+  ],
+  duration = '38s',
+} = Astro.props;
+---
+
+<div class="ticker">
+  <div class="marquee" style={`--marquee-dur:${duration}`}>
+    <div class="marquee__track">
+      {
+        items.map((item) => (
+          <span class="ticker__item">
+            {item}
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2 14.6 9.4 22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor" />
+            </svg>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .ticker {
+    position: relative;
+    z-index: 2;
+    border-block: 1px solid var(--line);
+    background: var(--ink-800);
+    padding-block: 1.1rem;
+  }
+
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--chrome-2);
+    white-space: nowrap;
+  }
+
+  .ticker__item svg {
+    color: var(--ember);
+    flex-shrink: 0;
+  }
+</style>

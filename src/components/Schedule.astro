@@ -1,0 +1,177 @@
+---
+import { schedule, dayOrder, personalSessionNote } from '../data/schedule';
+
+// Bucket by day so each weekday renders as one column that can hold both the
+// open class and the 7pm Fighters slot.
+const byDay = dayOrder.map((short) => ({
+  short,
+  full: schedule.find((s) => s.short === short)!.day,
+  slots: schedule.filter((s) => s.short === short),
+}));
+---
+
+<section class="section sched gridlines" id="schedule">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Weekly Schedule</p>
+      <h2 class="h2 steel">Seven days.<br />No wasted rounds.</h2>
+      <p class="lede">
+        Every class covers proper boxing technique, one-on-one mitt work, bag
+        work and conditioning. Show up to one a week or all of them.
+      </p>
+    </div>
+
+    <div class="sched__grid">
+      {
+        byDay.map((day, i) => (
+          <div class="sched__day" data-reveal data-reveal-index={i}>
+            <p class="sched__dayname">
+              <span class="sched__abbr">{day.short}</span>
+              <span class="sched__full">{day.full}</span>
+            </p>
+
+            <div class="sched__slots">
+              {day.slots.map((slot) => (
+                <div class={`slot slot--${slot.track}`}>
+                  <p class="slot__time">{slot.time}</p>
+                  <p class="slot__label">{slot.label}</p>
+                  {slot.note && <p class="slot__note">{slot.note}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="sched__foot" data-reveal>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 12V7M12 12l3.5 2"></path>
+      </svg>
+      {personalSessionNote}
+    </p>
+  </div>
+</section>
+
+<style>
+  .sched {
+    background: var(--ink-900);
+    z-index: 2;
+  }
+
+  .sched__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .sched__day {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.1rem;
+    background: linear-gradient(180deg, var(--ink-700), var(--ink-800));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition:
+      border-color 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out);
+  }
+
+  .sched__day:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-3px);
+  }
+
+  .sched__dayname {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .sched__abbr {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    color: var(--chrome);
+  }
+
+  .sched__full {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  .sched__slots {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .slot {
+    padding: 0.7rem 0.8rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 2px solid var(--chrome-3);
+  }
+
+  /* Colour-coded tracks: youth in gold, fighters in ember, open class neutral */
+  .slot--fighters {
+    border-left-color: var(--ember);
+    background: linear-gradient(
+      90deg,
+      rgba(230, 58, 31, 0.14),
+      rgba(230, 58, 31, 0.02)
+    );
+  }
+
+  .slot--youth {
+    border-left-color: var(--gold);
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.12), transparent);
+  }
+
+  .slot__time {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    color: var(--chrome);
+    line-height: 1.1;
+  }
+
+  .slot__label {
+    font-size: 0.75rem;
+    color: var(--chrome-2);
+    margin-top: 0.15rem;
+  }
+
+  .slot--fighters .slot__label {
+    color: var(--ember-2);
+  }
+
+  .slot__note {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+    margin-top: 0.3rem;
+  }
+
+  .sched__foot {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.75rem;
+    font-size: var(--fs-sm);
+    color: var(--chrome-3);
+  }
+
+  .sched__foot svg {
+    color: var(--ember-2);
+    flex-shrink: 0;
+  }
+</style>

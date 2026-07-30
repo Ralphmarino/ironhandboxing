@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Set true only on the homepage — it renders the full LocalBusiness schema. */
+  isHome?: boolean;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  isHome = false,
+  image = '/example.png',
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsActivityLocation',
+  '@id': `${site.url}/#gym`,
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  description,
+  image: ogImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  ...(site.phone ? { telephone: site.phone } : {}),
+  sameAs: [site.social.instagram],
+  founder: { '@type': 'Person', name: 'Ian Sampaga' },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: site.reviews.rating,
+    reviewCount: site.reviews.count,
+    bestRating: 5,
+  },
+  openingHoursSpecification: [
+    { days: ['Monday', 'Tuesday'], opens: '18:00', closes: '20:00' },
+    { days: ['Wednesday'], opens: '16:00', closes: '20:00' },
+    { days: ['Thursday'], opens: '11:00', closes: '12:00' },
+    { days: ['Friday'], opens: '17:00', closes: '19:00' },
+    { days: ['Saturday'], opens: '12:00', closes: '13:00' },
+    { days: ['Sunday'], opens: '18:00', closes: '19:00' },
+  ].map((s) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: s.days,
+    opens: s.opens,
+    closes: s.closes,
+  })),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#08090b" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    {isHome && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    {/* Pages inject their own structured data (FAQPage, BlogPosting) here. */}
+    <slot name="head" />
+
+    <!-- Set synchronously so reveal styles only apply when JS can undo them.
+         Without this, a JS failure would leave the page permanently blank. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="grain" aria-hidden="true"></div>
+
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import '../scripts/motion.ts';
+    </script>
+  </body>
+</html>

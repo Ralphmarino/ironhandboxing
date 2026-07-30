@@ -1,0 +1,194 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+
+const cols = [
+  {
+    title: 'Train',
+    links: [
+      { href: '/new-clients/', label: 'New Clients' },
+      { href: '/#schedule', label: 'Class Schedule' },
+      { href: '/#pricing', label: 'Pricing' },
+      { href: '/#fighters', label: 'Fighters Program' },
+      { href: '/#coaches', label: 'Our Coaches' },
+    ],
+  },
+  {
+    title: 'Gym',
+    links: [
+      { href: '/about-us/', label: 'About Us' },
+      { href: '/gallery/', label: 'Gallery' },
+      { href: '/blog/', label: 'Blog' },
+      { href: '/frequently-asked-questions/', label: 'FAQ' },
+      { href: '/contact-us/', label: 'Contact Us' },
+    ],
+  },
+];
+
+const mapQuery = encodeURIComponent(
+  `${site.address.street}, ${site.address.locality}, ${site.address.region} ${site.address.postalCode}`,
+);
+---
+
+<footer class="ftr gridlines">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <Logo size={92} />
+        <p class="ftr__tag">
+          Staten Island’s home for real boxing. Founded by Ian Sampaga to serve,
+          influence and inspire our community through world-class training.
+        </p>
+        <a class="ftr__ig" href={site.social.instagram} rel="noopener" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"></circle>
+          </svg>
+          {site.social.instagramHandle}
+        </a>
+      </div>
+
+      {
+        cols.map((col) => (
+          <nav class="ftr__col" aria-label={col.title}>
+            <h2 class="ftr__ttl">{col.title}</h2>
+            {col.links.map((l) => (
+              <a href={l.href}>{l.label}</a>
+            ))}
+          </nav>
+        ))
+      }
+
+      <div class="ftr__col">
+        <h2 class="ftr__ttl">Visit</h2>
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
+          rel="noopener"
+          target="_blank"
+        >
+          {site.address.street}<br />
+          {site.address.locality}, {site.address.region} {site.address.postalCode}
+        </a>
+        {site.phone && <a href={`tel:${site.phone.replace(/[^0-9+]/g, '')}`}>{site.phone}</a>}
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+
+    <div class="ftr__bottom">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <p class="ftr__built">Built in Staten Island. Trained the hard way.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    position: relative;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+    padding-block: clamp(3.5rem, 7vw, 6rem) 2rem;
+    z-index: 2;
+  }
+
+  .ftr__top {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+
+  .ftr__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+    max-width: 34ch;
+  }
+
+  .ftr__tag {
+    font-size: var(--fs-sm);
+    color: var(--chrome-3);
+    line-height: 1.7;
+  }
+
+  .ftr__ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    color: var(--chrome-2);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .ftr__ig:hover {
+    color: var(--ember-2);
+  }
+
+  .ftr__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+
+  .ftr__ttl {
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+    margin-bottom: 0.35rem;
+  }
+
+  .ftr__col a {
+    font-size: var(--fs-sm);
+    color: var(--chrome-2);
+    line-height: 1.6;
+    transition:
+      color 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out);
+  }
+
+  .ftr__col a:hover {
+    color: var(--chrome);
+    transform: translateX(3px);
+  }
+
+  .ftr__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+  }
+
+  .ftr__built {
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 700px) {
+    .ftr__top {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .ftr__top {
+      grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    }
+  }
+</style>

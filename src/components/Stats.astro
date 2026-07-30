@@ -1,0 +1,92 @@
+---
+const stats = [
+  { value: 5.0, decimals: 1, suffix: '', label: 'Google rating', sub: 'Across 66+ reviews' },
+  { value: 66, decimals: 0, suffix: '+', label: 'Five-star reviews', sub: 'And still climbing' },
+  { value: 11, decimals: 0, suffix: '', label: 'Classes a week', sub: 'Seven days, all levels' },
+  { value: 5, decimals: 0, suffix: '', label: 'Coaches on the floor', sub: 'Nobody trains alone' },
+];
+---
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stats__grid">
+      {
+        stats.map((s, i) => (
+          <div class="stats__cell" data-reveal data-reveal-index={i}>
+            <p class="stats__num">
+              <span data-count={s.value} data-count-decimals={s.decimals}>
+                0
+              </span>
+              {s.suffix}
+            </p>
+            <p class="stats__label">{s.label}</p>
+            <p class="stats__sub">{s.sub}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--ink-900);
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .stats__cell {
+    background: var(--ink-800);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    text-align: center;
+    transition: background 0.4s var(--ease-out);
+  }
+
+  .stats__cell:hover {
+    background: var(--ink-700);
+  }
+
+  .stats__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1;
+    background: var(--grad-steel);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Lining figures so the count-up doesn't jitter mid-animation */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stats__label {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+  }
+
+  .stats__sub {
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+  }
+
+  @media (min-width: 860px) {
+    .stats__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

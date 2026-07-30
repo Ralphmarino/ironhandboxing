@@ -1,0 +1,305 @@
+---
+import Logo from './Logo.astro';
+import { site, seo } from '../data/site';
+---
+
+<section class="hero gridlines">
+  <!-- Ember bloom behind the badge -->
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="hero__inner wrap">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow" data-reveal data-reveal-index="0">
+        1230 Castleton Ave · Staten Island
+      </p>
+
+      <h1 class="display steel hero__h1" data-reveal data-reveal-index="1">
+        {seo.home.h1}
+      </h1>
+
+      <p class="lede hero__lede" data-reveal data-reveal-index="2">
+        Founded by Ian Sampaga to serve, influence and inspire our community
+        through world-class boxing training. Proper technique, one-on-one mitt
+        work, bag work and conditioning — every class, every level.
+      </p>
+
+      <div class="hero__actions" data-reveal data-reveal-index="3">
+        <a class="btn btn--lg" href="/contact-us/">Book your first class</a>
+        <a class="btn btn--ghost btn--lg" href="/#schedule">See the schedule</a>
+      </div>
+
+      <a
+        class="hero__rating"
+        href={site.reviews.url}
+        rel="noopener"
+        target="_blank"
+        data-reveal
+        data-reveal-index="4"
+      >
+        <span class="hero__stars" aria-hidden="true">★★★★★</span>
+        <span>
+          <strong>{site.reviews.rating.toFixed(1)}</strong>
+          from {site.reviews.count}+ Google reviews
+        </span>
+      </a>
+    </div>
+
+    <div class="hero__badge" aria-hidden="true">
+      <!-- Slow counter-rotating rings. Pure transform, so they cost nothing. -->
+      <svg class="hero__ring hero__ring--a" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="190" fill="none" stroke="url(#heroA)" stroke-width="1"
+          stroke-dasharray="2 14" stroke-linecap="round"></circle>
+        <defs>
+          <linearGradient id="heroA" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e63a1f"></stop>
+            <stop offset="100%" stop-color="#ff7a29" stop-opacity="0.15"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <svg class="hero__ring hero__ring--b" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="164" fill="none" stroke="rgba(255,255,255,.14)"
+          stroke-width="1" stroke-dasharray="40 22"></circle>
+      </svg>
+
+      <div class="hero__logo" data-drift="14">
+        <Logo size="100%" />
+      </div>
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#offer" aria-label="Scroll to content">
+    <span></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(640px, 92svh, 1000px);
+    padding-block: clamp(3rem, 8vw, 6rem) clamp(5rem, 10vw, 8rem);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: 42%;
+    right: 4%;
+    width: min(70vw, 780px);
+    aspect-ratio: 1;
+    translate: 0 -50%;
+    background: radial-gradient(
+      circle,
+      rgba(230, 58, 31, 0.22) 0%,
+      rgba(230, 58, 31, 0.07) 40%,
+      transparent 68%
+    );
+    filter: blur(20px);
+    pointer-events: none;
+    animation: breathe 9s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.75;
+      scale: 1;
+    }
+    50% {
+      opacity: 1;
+      scale: 1.08;
+    }
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    max-width: 40ch;
+  }
+
+  /* The copy column is capped at 40ch for the body text; the eyebrow is a
+     single unbreakable line, so let it run past that cap rather than wrap
+     the dash onto its own row. */
+  .hero__eyebrow {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  /* Step the tracking and size down on narrow phones so the address still
+     fits on one line rather than wrapping under the rule. */
+  @media (max-width: 460px) {
+    .hero__eyebrow {
+      font-size: 0.625rem;
+      letter-spacing: 0.16em;
+    }
+  }
+
+  .hero__h1 {
+    /* Fight-poster compression: tight leading, slight negative tracking */
+    letter-spacing: -0.03em;
+    line-height: 0.85;
+  }
+
+  .hero__lede {
+    max-width: 46ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.8125rem;
+    color: var(--chrome-2);
+    transition: border-color 0.35s var(--ease-out);
+  }
+
+  .hero__rating:hover {
+    border-color: var(--line-strong);
+  }
+
+  .hero__rating strong {
+    color: var(--chrome);
+  }
+
+  .hero__stars {
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    font-size: 0.875rem;
+  }
+
+  /* ---- Badge ---- */
+  .hero__badge {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(78vw, 460px);
+    aspect-ratio: 1;
+    justify-self: center;
+  }
+
+  .hero__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__ring--a {
+    animation: spin 46s linear infinite;
+  }
+
+  .hero__ring--b {
+    animation: spin 34s linear infinite reverse;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .hero__logo {
+    width: 74%;
+    color: var(--chrome);
+    filter: drop-shadow(0 18px 50px rgba(230, 58, 31, 0.28));
+    transition: transform 0.45s var(--ease-out);
+    animation: float 7s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -12px;
+    }
+  }
+
+  /* ---- Scroll cue ---- */
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.75rem;
+    translate: -50% 0;
+    width: 24px;
+    height: 40px;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    display: grid;
+    justify-items: center;
+    padding-top: 7px;
+  }
+
+  .hero__scroll span {
+    width: 3px;
+    height: 7px;
+    border-radius: 3px;
+    background: var(--ember-2);
+    animation: drop 1.9s var(--ease-out) infinite;
+  }
+
+  @keyframes drop {
+    0% {
+      translate: 0 0;
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    70% {
+      translate: 0 14px;
+      opacity: 0;
+    }
+    100% {
+      translate: 0 14px;
+      opacity: 0;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .hero__badge {
+      width: min(42vw, 520px);
+    }
+  }
+
+  @media (max-width: 899px) {
+    /* Badge above the copy on phones so the mark lands first */
+    .hero__badge {
+      order: -1;
+      width: min(62vw, 320px);
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+</style>

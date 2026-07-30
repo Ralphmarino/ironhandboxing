@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<Base
+  title="Page not found – Ironhand Boxing"
+  description="That page doesn’t exist. Head back to the gym."
+  noindex
+>
+  <section class="nf">
+    <div class="wrap nf__inner">
+      <div class="nf__badge">
+        <Logo size={120} />
+      </div>
+
+      <p class="eyebrow">Error 404</p>
+      <h1 class="display steel nf__ttl">Slipped it.</h1>
+      <p class="lede nf__body">
+        That page isn’t here. It happens — try one of these instead.
+      </p>
+
+      <div class="nf__actions">
+        <a class="btn" href="/">Back to the gym</a>
+        <a class="btn btn--ghost" href="/#schedule">See the schedule</a>
+        <a class="btn btn--ghost" href="/contact-us/">Contact us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    min-height: 80svh;
+    padding-block: clamp(4rem, 10vw, 7rem);
+    background:
+      radial-gradient(ellipse 60% 60% at 50% 0%, rgba(230, 58, 31, 0.14), transparent 70%),
+      var(--ink-900);
+    text-align: center;
+  }
+
+  .nf__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .nf__badge {
+    color: var(--chrome);
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 14px 40px rgba(230, 58, 31, 0.25));
+  }
+
+  .nf__ttl {
+    font-size: clamp(3rem, 12vw, 8rem);
+    letter-spacing: -0.03em;
+  }
+
+  .nf__body {
+    max-width: 42ch;
+    text-align: center;
+  }
+
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+</style>

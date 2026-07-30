@@ -1,0 +1,133 @@
+---
+import { site, IG_EMBED } from '../data/site';
+
+/**
+ * Instagram feed.
+ *
+ * Uses Behold.so — it holds the long-lived Instagram token and refreshes it,
+ * which is the part that breaks on every DIY integration. Drop the feed ID
+ * into `IG_EMBED.beholdFeedId` in src/data/site.ts and the live grid replaces
+ * the fallback automatically.
+ *
+ * Until then this renders a static grid so the section is never empty in
+ * production — the same reason the script is only emitted when an ID exists.
+ */
+const feedId = IG_EMBED.beholdFeedId;
+const fallbackTiles = Array.from({ length: 6 });
+---
+
+<section class="section ig">
+  <div class="wrap">
+    <div class="section-head ig__head" data-reveal>
+      <div>
+        <p class="eyebrow">Live From the Gym</p>
+        <h2 class="h2 steel">Inside Ironhand.</h2>
+      </div>
+      <a class="btn btn--ghost" href={site.social.instagram} rel="noopener" target="_blank">
+        Follow {site.social.instagramHandle}
+      </a>
+    </div>
+
+    {
+      feedId ? (
+        <div class="ig__embed" data-reveal>
+          <div data-behold-id={feedId} />
+        </div>
+      ) : (
+        <div class="ig__grid" data-reveal>
+          {fallbackTiles.map((_, i) => (
+            <a
+              class="ig__tile"
+              href={site.social.instagram}
+              rel="noopener"
+              target="_blank"
+              aria-label="View Ironhand Boxing on Instagram"
+            >
+              <img
+                src="/example.png"
+                alt=""
+                width="500"
+                height="500"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="ig__overlay" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+{feedId && <script is:inline async type="module" src="https://w.behold.so/widget.js" />}
+
+<style>
+  .ig {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .ig__head {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    max-width: none;
+  }
+
+  .ig__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .ig__tile {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--ink-700);
+  }
+
+  .ig__tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .ig__tile:hover img {
+    transform: scale(1.08);
+  }
+
+  .ig__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: rgba(8, 9, 11, 0.55);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+  }
+
+  .ig__tile:hover .ig__overlay {
+    opacity: 1;
+  }
+
+  /* Behold renders its own grid; this just bounds it to our container. */
+  .ig__embed {
+    --behold-row-gap: 0.5rem;
+    --behold-column-gap: 0.5rem;
+    --behold-border-radius: var(--radius);
+  }
+</style>

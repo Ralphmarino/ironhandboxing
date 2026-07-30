@@ -1,0 +1,245 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '/about-us/', label: 'About' },
+  { href: '/new-clients/', label: 'New Clients' },
+  { href: '/#schedule', label: 'Schedule' },
+  { href: '/#pricing', label: 'Pricing' },
+  { href: '/gallery/', label: 'Gallery' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/frequently-asked-questions/', label: 'FAQ' },
+];
+
+const path = Astro.url.pathname;
+---
+
+<header class="hdr" data-header>
+  <div class="hdr__inner wrap">
+    <a class="hdr__brand" href="/" aria-label="Ironhand Boxing — home">
+      <Logo size={46} />
+      <span class="hdr__word">
+        Ironhand
+        <small>Staten Island</small>
+      </span>
+    </a>
+
+    <nav class="hdr__nav" aria-label="Primary">
+      {
+        links.map((l) => (
+          <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a class="btn hdr__cta" href="/contact-us/">Start Training</a>
+
+    <button
+      class="hdr__burger"
+      data-menu-toggle
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="menu" id="mobile-menu" data-menu>
+    <nav aria-label="Mobile">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a class="btn menu__cta" href="/contact-us/">Start Training</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition:
+      background 0.4s var(--ease-out),
+      border-color 0.4s var(--ease-out),
+      backdrop-filter 0.4s var(--ease-out);
+    border-bottom: 1px solid transparent;
+  }
+
+  .hdr.is-stuck {
+    background: rgba(8, 9, 11, 0.72);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom-color: var(--line);
+  }
+
+  .hdr__inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 5rem;
+  }
+
+  .hdr__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-right: auto;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .hdr__brand:hover {
+    opacity: 0.8;
+  }
+
+  .hdr__word {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--chrome);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .hdr__word small {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.24em;
+    color: var(--chrome-3);
+  }
+
+  .hdr__nav {
+    display: none;
+    gap: 1.9rem;
+  }
+
+  .hdr__nav a {
+    position: relative;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--chrome-2);
+    padding-block: 0.35rem;
+    transition: color 0.3s var(--ease-out);
+  }
+
+  /* Underline grows from the left on hover — small, but it's the kind of
+     detail that separates "template" from "designed". */
+  .hdr__nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1.5px;
+    width: 100%;
+    background: var(--grad-ember);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .hdr__nav a:hover,
+  .hdr__nav a[aria-current='page'] {
+    color: var(--chrome);
+  }
+
+  .hdr__nav a:hover::after,
+  .hdr__nav a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .hdr__cta {
+    display: none;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.8125rem;
+  }
+
+  /* ---- Burger ---- */
+  .hdr__burger {
+    display: grid;
+    gap: 5px;
+    padding: 0.6rem;
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .hdr__burger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--chrome);
+    transition: transform 0.35s var(--ease-out), opacity 0.2s;
+  }
+
+  .hdr__burger[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hdr__burger[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+  .hdr__burger[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---- Mobile panel ---- */
+  .menu {
+    position: fixed;
+    inset: 5rem 0 0 0;
+    background: rgba(8, 9, 11, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: var(--gutter);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.35s var(--ease-out),
+      transform 0.35s var(--ease-out),
+      visibility 0.35s;
+  }
+
+  .menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu a {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    color: var(--chrome);
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .menu__cta {
+    margin-top: 1.5rem;
+    border-bottom: 0;
+    font-size: 1rem !important;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 1080px) {
+    .hdr__nav,
+    .hdr__cta {
+      display: flex;
+    }
+    .hdr__burger,
+    .menu {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,195 @@
+---
+import { coaches } from '../data/coaches';
+---
+
+<section class="section coaches" id="coaches">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">The Corner</p>
+      <h2 class="h2 steel">Coaches who<br />actually coach.</h2>
+      <p class="lede">
+        Ironhand is not a one-man gym anymore. Five coaches work the floor —
+        active competitors, certified cornermen, and fighters who came up
+        through this program themselves.
+      </p>
+    </div>
+
+    <div class="coaches__grid">
+      {
+        coaches.map((coach, i) => (
+          <article class="coach" data-reveal data-reveal-index={i}>
+            <div class="coach__media">
+              <img
+                src={coach.image}
+                alt={`${coach.name}, ${coach.role} at Ironhand Boxing`}
+                width="600"
+                height="750"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="coach__scrim" aria-hidden="true" />
+            </div>
+
+            <div class="coach__body">
+              <p class="coach__role">{coach.role}</p>
+              <h3 class="h3 coach__name">{coach.name}</h3>
+              <p class="coach__bio">{coach.bio}</p>
+
+              {coach.credentials && (
+                <ul class="coach__creds">
+                  {coach.credentials.map((c) => (
+                    <li>{c}</li>
+                  ))}
+                </ul>
+              )}
+
+              {coach.instagram && (
+                <a class="coach__ig" href={coach.instagram} rel="noopener" target="_blank">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                  </svg>
+                  {coach.handle}
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .coaches {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .coaches__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .coach {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, var(--ink-700), var(--ink-800));
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease-out),
+      border-color 0.5s var(--ease-out);
+  }
+
+  .coach:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-strong);
+  }
+
+  .coach__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink-600);
+  }
+
+  .coach__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Desaturated at rest, full colour on hover — keeps the grid cohesive
+       even when the source photos vary in lighting. */
+    filter: grayscale(1) contrast(1.08);
+    transition:
+      transform 0.8s var(--ease-out),
+      filter 0.6s var(--ease-out);
+  }
+
+  .coach:hover .coach__media img {
+    transform: scale(1.06);
+    filter: grayscale(0) contrast(1);
+  }
+
+  .coach__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, var(--ink-800) 100%);
+    pointer-events: none;
+  }
+
+  .coach__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    flex: 1;
+  }
+
+  .coach__role {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+  }
+
+  .coach__name {
+    font-size: 1.5rem;
+  }
+
+  .coach__bio {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--chrome-3);
+  }
+
+  .coach__creds {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .coach__creds li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--chrome-2);
+  }
+
+  .coach__creds li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .coach__ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--chrome-3);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .coach__ig:hover {
+    color: var(--ember-2);
+  }
+</style>
