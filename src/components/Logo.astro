@@ -1,206 +1,54 @@
 ---
 /**
- * Ironhand Boxing badge, rebuilt as vector.
+ * Ironhand Boxing badge.
  *
- * The badge architecture matches the original shirt print exactly: outer ring,
- * "IRONHAND" arced across the top, "BOXING STATEN ISLAND" arced across the
- * bottom, and the two dots at 9 and 3 o'clock. The centre gauntlet is a clean
- * geometric interpretation of the hand-drawn original so it stays legible from
- * favicon size up to a full-bleed hero.
+ * This renders the real logo artwork (`public/logo.png`) rather than a vector
+ * recreation. The source is white-on-transparent, which is exactly right on the
+ * dark shell — no recolouring needed.
  *
- * Arc direction note: the top path sweeps 9→12→3 (sweep-flag 1) and the bottom
- * path sweeps 9→6→3 (sweep-flag 0), which keeps both text runs upright and
- * reading left-to-right.
+ * The file is a 768px indexed PNG (~45KB). Indexed beats WebP by ~4x here:
+ * the artwork is high-contrast line work, which lossy codecs handle badly and
+ * a 16-colour palette handles almost perfectly. One file serves every size on
+ * the site, so it is fetched once and cached.
+ *
+ * Master source is kept at public/ironhand-boxing-logo-transparent.png.
+ * Regenerate the derived assets from it if the logo ever changes.
  */
 interface Props {
+  /** Number for px, or a CSS length such as "100%" to fill the parent. */
   size?: number | string;
-  /** `full` = ring + type + mark. `mark` = gauntlet only (favicons, small UI). */
-  variant?: 'full' | 'mark';
   class?: string;
-  /** Renders the ring/type in the ember gradient instead of solid white. */
-  accent?: boolean;
+  /** Above-the-fold instances should pass eager. */
+  loading?: 'eager' | 'lazy';
   title?: string;
 }
 
 const {
   size = 200,
-  variant = 'full',
   class: className = '',
-  accent = false,
+  loading = 'lazy',
   title = 'Ironhand Boxing — Staten Island',
 } = Astro.props;
 
-// Unique per-instance so multiple logos on one page don't collide on defs ids.
-const uid = 'ih' + Math.random().toString(36).slice(2, 9);
-const stroke = accent ? `url(#${uid}-grad)` : 'currentColor';
-// Colour used to punch grooves and chain holes back out of the mark. Tracks
-// the page background so the cut-outs read as negative space, not grey paint.
-const ink = 'var(--ink-900, #08090b)';
+const numeric = typeof size === 'number';
 ---
 
-<svg
+<img
   class={`ih-logo ${className}`}
-  width={size}
-  height={size}
-  viewBox="0 0 512 512"
-  role="img"
-  aria-label={title}
-  xmlns="http://www.w3.org/2000/svg"
->
-  <defs>
-    <linearGradient id={`${uid}-grad`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e63a1f"></stop>
-      <stop offset="100%" stop-color="#ff7a29"></stop>
-    </linearGradient>
-
-    <!-- Text baselines -->
-    <path id={`${uid}-top`} d="M 60 256 A 196 196 0 0 1 452 256" fill="none"></path>
-    <path id={`${uid}-bottom`} d="M 58 256 A 198 198 0 0 0 454 256" fill="none"></path>
-  </defs>
-
-  {
-    variant === 'full' && (
-      <g fill={stroke}>
-        {/* Outer ring */}
-        <circle
-          cx="256"
-          cy="256"
-          r="242"
-          fill="none"
-          stroke={stroke}
-          stroke-width="15"
-        />
-
-        {/* Arced wordmark */}
-        <text
-          class="ih-logo__type"
-          font-size="60"
-          letter-spacing="2"
-          text-anchor="middle"
-        >
-          <textPath href={`#${uid}-top`} startOffset="50%">
-            IRONHAND
-          </textPath>
-        </text>
-
-        {/* 20 characters on a 180° arc would run right into the dots, so the
-            lower wordmark is set a few points smaller to leave a gap at 9 and
-            3 o'clock. */}
-        <text
-          class="ih-logo__type"
-          font-size="42"
-          letter-spacing="1"
-          text-anchor="middle"
-        >
-          <textPath href={`#${uid}-bottom`} startOffset="50%">
-            BOXING STATEN ISLAND
-          </textPath>
-        </text>
-
-        {/* Dots on the horizontal midline, in the gap between the two arcs */}
-        <circle cx="51" cy="256" r="20" />
-        <circle cx="461" cy="256" r="20" />
-      </g>
-    )
-  }
-
-  {/* ---- Gauntlet mark ----
-       A clenched fist seen from the knuckles, chain wrapped across it.
-       Built back-to-front: hand mass, then the grooves and thumb cut into it,
-       then the chain laid over the top. The inner `translate(0 -81)` centres
-       the drawing (which spans y 168-506) on the 512 canvas. */}
-  <g
-    transform={variant === 'full' ? 'translate(256 256) scale(0.64) translate(-256 -256)' : ''}
-  >
-    <g fill={stroke} transform="translate(0 -78)">
-      {/* Fist as one silhouette: four shallow knuckle bumps across the top
-          edge, then down into a rounded heel. Keeping the bumps shallow
-          matters — deep scallops read as a frill rather than knuckles. */}
-      <path
-        d="M142 200
-           q28.5 -38 57 0
-           q28.5 -38 57 0
-           q28.5 -38 57 0
-           q28.5 -38 57 0
-           L370 330
-           q0 46 -46 46
-           H188
-           q-46 0 -46 -46
-           Z"
-      />
-
-      {/* Grooves between the knuckles, above the chain */}
-      <g stroke={ink} stroke-width="7" stroke-linecap="round">
-        <line x1="199" y1="196" x2="199" y2="224" />
-        <line x1="256" y1="196" x2="256" y2="224" />
-        <line x1="313" y1="196" x2="313" y2="224" />
-      </g>
-
-      {/* Thumb folded across the lower-left of the fingers. Deliberately not
-          full width — a bar spanning the whole fist reads as a slot. */}
-      <rect
-        x="152"
-        y="300"
-        width="120"
-        height="46"
-        rx="23"
-        fill={stroke}
-        stroke={ink}
-        stroke-width="6"
-      />
-
-      {/* Wrist wrap joined straight onto the fist, then a barely-tapered
-          forearm. A narrow forearm under a wide fist reads as a plant pot. */}
-      <rect x="178" y="376" width="156" height="34" rx="10" />
-      <path d="M186 410h140l-8 86H194z" />
-
-      {/* Chain across the knuckles. Each link is a filled ring with a punched
-          centre, so it reads correctly over the fist AND over open background
-          where it extends past it. */}
-      <g>
-        {[
-          { x: 142, v: true },
-          { x: 180, v: false },
-          { x: 218, v: true },
-          { x: 256, v: false },
-          { x: 294, v: true },
-          { x: 332, v: false },
-          { x: 370, v: true },
-        ].map((link) => (
-          <Fragment>
-            <ellipse
-              cx={link.x}
-              cy="250"
-              rx={link.v ? 14 : 22}
-              ry={link.v ? 22 : 14}
-              fill={stroke}
-              stroke={ink}
-              stroke-width="5"
-            />
-            <ellipse
-              cx={link.x}
-              cy="250"
-              rx={link.v ? 6 : 12}
-              ry={link.v ? 12 : 6}
-              fill={ink}
-            />
-          </Fragment>
-        ))}
-      </g>
-    </g>
-  </g>
-</svg>
+  src="/logo.png"
+  alt={title}
+  width={numeric ? size : 768}
+  height={numeric ? size : 768}
+  style={numeric ? undefined : `width:${size};height:auto`}
+  loading={loading}
+  decoding="async"
+/>
 
 <style>
   .ih-logo {
-    color: var(--chrome, #f2f5f8);
-    overflow: visible;
-  }
-
-  /* Anton is the display face everywhere else on the site; the badge type is
-     set in it too so the logo and headlines stay in the same voice. */
-  .ih-logo__type {
-    font-family: 'Anton', 'Arial Narrow', 'Haettenschweiler', sans-serif;
-    font-weight: 400;
+    /* The artwork is square after trimming, so this never distorts. */
+    object-fit: contain;
+    /* Stops the badge picking up the grayscale treatment used on photos. */
+    filter: none;
   }
 </style>

@@ -195,8 +195,14 @@ These are known gaps, not oversights:
 - **No-JS safety**: reveal-on-scroll styles are gated behind a `.js` class set
   synchronously in `<head>`, so a JS failure shows the full page rather than a
   blank one.
-- **The logo** in `src/components/Logo.astro` is a vector rebuild of the shirt
-  badge — the ring, arced type and dots match the original. The centre gauntlet
-  is a geometric interpretation; hand it the original vector or a high-res
-  source and it can be traced exactly. `public/favicon.svg` carries the same
-  geometry and should be kept in sync.
+- **The logo** is the real artwork, not a recreation. Master source is
+  `public/ironhand-boxing-logo-transparent.png` (white on transparent, which is
+  why it needs no recolouring on the dark shell). Derived assets: `logo.png`
+  (768px, 45KB indexed PNG — used at every on-page size), plus `favicon-32.png`,
+  `favicon-192.png` and `apple-touch-icon.png`, which sit on an opaque dark
+  plate because white artwork vanishes on a light browser tab. Regenerate all of
+  them from the master if the logo ever changes.
+
+  Indexed PNG is deliberate: this artwork is high-contrast line work, which
+  lossy codecs handle poorly. A 16-colour palette PNG is 45KB where lossless
+  WebP is 217KB.
