@@ -6,3 +6,9 @@ dist/
 .env.production
 .DS_Store
 npm-debug.log*
+
+# Camera originals. Drop full-size photos here and run `npm run photos` —
+# only the optimized output in public/photos/ gets committed, so oversized
+# files can never reach GitHub's 100MB limit.
+photos-original/
+

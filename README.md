@@ -60,10 +60,41 @@ draft: false      # true keeps it out of the build
 
 ### Photos
 
-Every image currently points at `/example.png`, a generated placeholder. Replace
-that file, or drop real photos in `public/` and update the `image` / `src`
-values. Keep the `alt` text descriptive — the gallery page earns local image
-search traffic.
+Every image currently points at `/example.png`, a generated placeholder.
+
+**Do not commit camera originals.** GitHub rejects any file over 100MB on push
+(and the github.com web uploader caps out at 25MB), and a full-size phone photo
+served to every mobile visitor would wreck the site's load time. Use the
+optimizer instead:
+
+```bash
+mkdir photos-original      # first time only
+# drop the full-size photos in there — HEIC, JPEG, PNG, whatever the phone made
+npm run photos
+```
+
+That resizes everything to 2000px wide, strips metadata, applies the EXIF
+rotation so nothing comes out sideways, and writes both a `.webp` and a `.jpg`
+into `public/photos/`. It prints ready-to-paste lines with the correct
+dimensions. `photos-original/` is gitignored, so the originals stay on your
+machine and can never reach GitHub.
+
+Then point the site at the output — `/photos/your-photo.jpg` — in
+`src/pages/gallery.astro`, `src/data/coaches.ts`, or a post's frontmatter.
+
+Keep the `alt` text descriptive; the gallery page earns local image search
+traffic.
+
+**If a commit with a big file already failed:** deleting the file from the
+folder is not enough, because git already recorded it. Back the commit out
+first:
+
+```bash
+git reset --soft HEAD~1    # undo the commit, keep your files
+git restore --staged .     # unstage everything
+```
+
+Then optimize and re-commit.
 
 ---
 

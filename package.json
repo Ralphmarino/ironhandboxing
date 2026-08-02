@@ -9,7 +9,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "photos": "node scripts/optimize-photos.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
