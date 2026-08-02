@@ -167,7 +167,14 @@ These are known gaps, not oversights:
 - [ ] **Phone number** — `site.phone` is empty, so the footer and contact page
       omit it. Fill it in and it appears everywhere, including the schema.
 - [ ] **Email** — `info@ironhandboxing.com` is assumed. Confirm it.
-- [ ] **Photos** — replace `/example.png` everywhere.
+- [ ] **Coach portraits** — only Ian's photo is set. Four good portraits sit in
+      `public/photos/` but I can't tell who is who, and a wrong face next to a
+      coach's name is worse than a placeholder. Say which is which and they go in.
+- [ ] **Seven photos still in Drive** — the Drive connector refuses files over
+      10MB, so `manny.png`, `ironhand-crew-tournament.png`,
+      `group-photo-ironhand-gym.png`, `kids-classes.png`, `IMG_8931.png`,
+      `IMG_8865.png` and a few others never came across. Re-save them as JPEG
+      (drops them under 10MB) or run them through `npm run photos` locally.
 - [ ] **Behold feed ID** for the Instagram section.
 - [ ] **Verify the H1** matches the live homepage exactly.
 

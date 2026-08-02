@@ -3,8 +3,8 @@ title: 'So You Want to Compete: Getting Your USA Boxing Book'
 description: 'How an Ironhand member goes from the group class to the Fighters Program — what the book is, how you get one, and what actually qualifies you to compete.'
 pubDate: 2025-05-21
 author: 'Ian Sampaga'
-image: '/example.png'
-imageAlt: 'An amateur boxer training in the ring at Ironhand Boxing'
+image: '/photos/amateur-bout-headgear.jpg'
+imageAlt: 'Two amateur boxers in headgear trading punches during a sanctioned bout'
 tags: ['Competing', 'Fighters Program']
 ---
 

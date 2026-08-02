@@ -3,8 +3,8 @@ title: 'Benefits of Boxing Training in Staten Island'
 description: 'What boxing actually does for your body, your head and your confidence — and why a real boxing gym beats a fitness class that borrows the gloves.'
 pubDate: 2024-06-18
 author: 'Ian Sampaga'
-image: '/example.png'
-imageAlt: 'A group boxing class training at Ironhand Boxing in Staten Island'
+image: '/photos/coach-mitt-work-youth.jpg'
+imageAlt: 'A coach holding mitts for a boxer during a class at Ironhand Boxing in Staten Island'
 tags: ['Training', 'Beginners']
 ---
 

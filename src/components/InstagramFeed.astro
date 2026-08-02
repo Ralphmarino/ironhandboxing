@@ -1,5 +1,6 @@
 ---
 import { site, IG_EMBED } from '../data/site';
+import { photos } from '../data/photos';
 
 /**
  * Instagram feed.
@@ -13,7 +14,17 @@ import { site, IG_EMBED } from '../data/site';
  * production — the same reason the script is only emitted when an ID exists.
  */
 const feedId = IG_EMBED.beholdFeedId;
-const fallbackTiles = Array.from({ length: 6 });
+
+// Fallback grid uses real gym photos rather than blanks, so the section still
+// looks intentional before the Behold feed ID is set.
+const fallbackTiles: { src: string; alt: string }[] = [
+  photos.fightersInRing,
+  photos.coachMittWork,
+  photos.gloveCloseup,
+  photos.memberTraining,
+  photos.youthMittWork,
+  photos.bagPortrait,
+];
 ---
 
 <section class="section ig">
@@ -35,7 +46,7 @@ const fallbackTiles = Array.from({ length: 6 });
         </div>
       ) : (
         <div class="ig__grid" data-reveal>
-          {fallbackTiles.map((_, i) => (
+          {fallbackTiles.map((tile) => (
             <a
               class="ig__tile"
               href={site.social.instagram}
@@ -44,8 +55,8 @@ const fallbackTiles = Array.from({ length: 6 });
               aria-label="View Ironhand Boxing on Instagram"
             >
               <img
-                src="/example.png"
-                alt=""
+                src={tile.src}
+                alt={tile.alt}
                 width="500"
                 height="500"
                 loading="lazy"

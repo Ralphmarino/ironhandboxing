@@ -8,24 +8,8 @@ const title = 'Boxing Gym Gallery - Pictures of Boxing Staten Island';
 const description =
   'Photos from inside Ironhand Boxing in Staten Island — group classes, mitt work, kids and teens, and our amateur fighters in the ring.';
 
-/**
- * Placeholder set. Swap `src` for the real photos and keep `alt` descriptive —
- * these images are a big part of how the gallery page ranks for local image
- * search. The `span` values drive the mosaic; vary them so the grid stays
- * irregular rather than a plain checkerboard.
- */
-const photos = [
-  { src: '/example.png', alt: 'Group boxing class in session at Ironhand Boxing', span: 'wide' },
-  { src: '/example.png', alt: 'One-on-one mitt work with a coach', span: 'tall' },
-  { src: '/example.png', alt: 'Heavy bag work during an evening class', span: '' },
-  { src: '/example.png', alt: 'Kids and teens boxing class on a Friday evening', span: '' },
-  { src: '/example.png', alt: 'Amateur fighter training in the ring', span: 'tall' },
-  { src: '/example.png', alt: 'Hand wraps and gloves ready before class', span: '' },
-  { src: '/example.png', alt: 'Coach Ian Sampaga instructing a member', span: 'wide' },
-  { src: '/example.png', alt: 'Conditioning circuit at the end of class', span: '' },
-  { src: '/example.png', alt: 'Members of the Ironhand Boxing community after training', span: '' },
-  { src: '/example.png', alt: 'The gym floor at 1230 Castleton Avenue', span: 'wide' },
-];
+// Real gym photos — see src/data/photos.ts for the catalogue and alt text.
+import { galleryPhotos } from '../data/photos';
 ---
 
 <Base title={title} description={description}>
@@ -46,7 +30,7 @@ const photos = [
     <div class="wrap">
       <div class="gal__grid">
         {
-          photos.map((p, i) => (
+          galleryPhotos.map((p, i) => (
             <figure
               class={`gal__item ${p.span ? `gal__item--${p.span}` : ''}`}
               data-reveal
@@ -55,8 +39,8 @@ const photos = [
               <img
                 src={p.src}
                 alt={p.alt}
-                width="900"
-                height="900"
+                width={p.width}
+                height={p.height}
                 loading={i < 3 ? 'eager' : 'lazy'}
                 decoding="async"
               />

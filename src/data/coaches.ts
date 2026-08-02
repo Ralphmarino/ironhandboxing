@@ -8,11 +8,19 @@ export type Coach = {
   credentials?: string[];
 };
 
+/**
+ * ⚠️ COACH PHOTOS: only Ian's is set, because his was the only photo in Drive
+ * that came named for a specific person. There are good portraits in
+ * /public/photos/ (fighter-portrait-red-singlet, boxer-heavy-bag-portrait,
+ * member-training-gloves, boxer-ring-portrait) but I can't tell who is who, and
+ * putting the wrong face next to a coach's name on a live site is worse than a
+ * placeholder. Tell me which photo belongs to which coach and I'll set them.
+ */
 export const coaches: Coach[] = [
   {
     name: 'Ian Sampaga',
     role: 'Founder & Head Coach',
-    image: '/example.png',
+    image: '/photos/coach-ian.jpg',
     bio: 'Ian founded Ironhand to serve, influence and inspire the Staten Island community through world-class boxing training. He built the gym around a simple idea: everyone gets the same attention, whether it is their first day or their tenth fight. His commitment to the sport is what put Ironhand on the map — and what keeps people coming back.',
   },
   {

@@ -3,8 +3,8 @@ title: 'What to Expect at Your First Boxing Class'
 description: 'A step-by-step walkthrough of your first hour at Ironhand Boxing — what to bring, what happens, and what nobody is going to ask you to do.'
 pubDate: 2024-09-10
 author: 'Ian Sampaga'
-image: '/example.png'
-imageAlt: 'Hand wraps and gloves laid out before a boxing class'
+image: '/photos/glove-work-closeup.jpg'
+imageAlt: 'Boxing gloves during pad work on the mats at Ironhand Boxing'
 tags: ['Beginners', 'Getting Started']
 ---
 
