@@ -21,13 +21,18 @@ export const site = {
     country: 'US',
   },
 
-  /** Update these two once confirmed against the live Contact page. */
-  phone: '',
-  email: 'info@ironhandboxing.com',
+  phone: '347-499-4133',
+  email: 'iansampaga1@gmail.com',
 
   social: {
-    instagram: 'https://www.instagram.com/_ironhandboxing1/',
+    instagram: 'https://www.instagram.com/_ironhandboxing1',
     instagramHandle: '@_ironhandboxing1',
+  },
+
+  /** Footer credit. */
+  builtBy: {
+    label: 'Site Built & Powered by Growth Local',
+    url: 'https://growthlocal.com',
   },
 
   /** Google Business Profile aggregate, as of the last review export. */
@@ -40,13 +45,28 @@ export const site = {
 
 export const seo = {
   home: {
-    // Preserved verbatim from the existing site.
-    title: 'Staten Island Boxing - Ironhand Boxing',
+    // Carried over verbatim from the live site — do not rewrite casually.
+    title: 'Staten Island Boxing - Ironhand Boxing Gym & Training',
     description:
-      'Ironhand Boxing on Staten Island is founded by Ian Sampaga to serve, influence & inspire you, our clients and members of our community through world-class boxing training.',
+      'Train like the pros with world-class boxing classes here. The #1 Staten Island Boxing lessons in NY brought to you by Ian Sampaga.',
     h1: 'Staten Island Boxing',
   },
 } as const;
+
+/** Scrolling announcement strip above the header on the homepage. */
+export const announcement =
+  "Welcome to Ironhand Boxing — Staten Island's Premier Boxing Training & Gym";
+
+/**
+ * Where contact form submissions are emailed.
+ *
+ * ⚠️ Netlify does NOT read this — form notification recipients can only be set
+ * in the Netlify dashboard (Forms → contact → Settings → Form notifications →
+ * Add notification → Email notification). This list exists so the intended
+ * recipients are recorded in the repo; add BOTH addresses there after the first
+ * deploy or submissions will sit in the dashboard unseen.
+ */
+export const formRecipients = ['iansampaga1@gmail.com', 'ralph@growthlocal.com'] as const;
 
 export const IG_EMBED = {
   /**

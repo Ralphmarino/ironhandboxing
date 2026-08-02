@@ -1,0 +1,56 @@
+---
+import { announcement } from '../data/site';
+
+/**
+ * Scrolling welcome strip that sits above the header on the homepage.
+ * Reuses the global .marquee machinery — motion.ts clones the track so the
+ * loop is seamless, and the clone is aria-hidden so screen readers hear the
+ * message once.
+ */
+---
+
+<div class="ann">
+  <div class="marquee" style="--marquee-dur:32s">
+    <div class="marquee__track">
+      <span class="ann__item">
+        {announcement}
+        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2 14.6 9.4 22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"></path>
+        </svg>
+      </span>
+      <span class="ann__item">
+        {announcement}
+        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2 14.6 9.4 22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z" fill="currentColor"></path>
+        </svg>
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ann {
+    position: relative;
+    z-index: 101;
+    background: var(--grad-ember);
+    padding-block: 0.5rem;
+    color: #fff;
+  }
+
+  .ann__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ann__item svg {
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+</style>

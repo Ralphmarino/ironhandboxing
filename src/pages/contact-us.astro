@@ -10,13 +10,23 @@ const mapQuery = encodeURIComponent(
   `${site.address.street}, ${site.address.locality}, ${site.address.region} ${site.address.postalCode}`,
 );
 
-const interests = [
-  'Group classes',
-  'Personal sessions with Coach Ian',
-  'Kids & Teens class',
-  'Fighters Program',
-  'Family package',
-  'Something else',
+// Field options mirror the live WordPress form exactly, so nothing Ian is used
+// to seeing in submissions changes.
+const inquiryTypes = [
+  'Membership Inquiry',
+  'Class Schedule',
+  'Personal Training Inquiry',
+  'General Question',
+];
+
+const contactMethods = ['Call', 'Text', 'Email'];
+
+const referralSources = [
+  'Friend or Family Referral',
+  'Social Media',
+  'Search Engine (Google, Bing...)',
+  'Local Advertisement',
+  'Other',
 ];
 ---
 
@@ -29,9 +39,8 @@ const interests = [
           Let’s get you<br />in the gym.
         </h1>
         <p class="lede" data-reveal data-reveal-index="2">
-          Tell us a little about what you are looking for and we will point you
-          at the right class. No experience needed — most of our members walked
-          in the exact same way.
+          Whatever your query, we’re here to help. Fill out the form below and a
+          member of our team will get back to you shortly.
         </p>
 
         <ul class="contact__meta" data-reveal data-reveal-index="3">
@@ -86,41 +95,92 @@ const interests = [
             </label>
           </p>
 
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">
+              Name <span aria-hidden="true">*</span>
+            </legend>
+            <div class="form__row">
+              <div class="field">
+                <label for="first-name">First</label>
+                <input
+                  id="first-name"
+                  name="first name"
+                  type="text"
+                  required
+                  autocomplete="given-name"
+                />
+              </div>
+              <div class="field">
+                <label for="last-name">Last</label>
+                <input
+                  id="last-name"
+                  name="last name"
+                  type="text"
+                  required
+                  autocomplete="family-name"
+                />
+              </div>
+            </div>
+          </fieldset>
+
           <div class="form__row">
             <div class="field">
-              <label for="name">Name <span aria-hidden="true">*</span></label>
-              <input id="name" name="name" type="text" required autocomplete="name" />
+              <label for="phone">Phone #</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
             </div>
 
             <div class="field">
-              <label for="phone">Phone</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+              <label for="email">Email <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
             </div>
           </div>
 
           <div class="field">
-            <label for="email">Email <span aria-hidden="true">*</span></label>
-            <input id="email" name="email" type="email" required autocomplete="email" />
-          </div>
-
-          <div class="field">
-            <label for="interest">I’m interested in</label>
-            <select id="interest" name="interest">
-              {interests.map((i) => <option value={i}>{i}</option>)}
+            <label for="inquiry">Type of Inquiry</label>
+            <select id="inquiry" name="type of inquiry">
+              <option value="">Select Here</option>
+              {inquiryTypes.map((i) => <option value={i}>{i}</option>)}
             </select>
           </div>
 
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">Preferred Contact Method</legend>
+            <div class="radios">
+              {
+                contactMethods.map((m) => (
+                  <label class="radio">
+                    <input type="radio" name="preferred contact method" value={m} />
+                    <span>{m}</span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
           <div class="field">
-            <label for="message">Message <span aria-hidden="true">*</span></label>
-            <textarea id="message" name="message" rows="5" required
+            <label for="message">Message / Question <span aria-hidden="true">*</span></label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
               placeholder="Tell us your experience level and what you’re training for."></textarea>
           </div>
 
-          <button class="btn btn--lg form__submit" type="submit">Send message</button>
+          <div class="field">
+            <label for="referral">How Did You Hear About Us?</label>
+            <select id="referral" name="how did you hear about us">
+              <option value="">Select Here</option>
+              {referralSources.map((r) => <option value={r}>{r}</option>)}
+            </select>
+          </div>
+
+          <button class="btn btn--lg form__submit" type="submit">Submit</button>
 
           <p class="form__fine">
-            We reply to everything. If you don’t hear back within a day, message
-            us on Instagram.
+            We reply to everything. If you don’t hear back within a day, call
+            {' '}<a href={`tel:${site.phone.replace(/[^0-9+]/g, '')}`}>{site.phone}</a> or
+            message us on Instagram.
           </p>
         </form>
       </div>
@@ -143,13 +203,15 @@ const interests = [
   // Program CTA) land with the right option already chosen.
   (() => {
     const map = {
-      fighters: 'Fighters Program',
-      kids: 'Kids & Teens class',
-      personal: 'Personal sessions with Coach Ian',
-      family: 'Family package',
+      fighters: 'Membership Inquiry',
+      membership: 'Membership Inquiry',
+      kids: 'Membership Inquiry',
+      family: 'Membership Inquiry',
+      personal: 'Personal Training Inquiry',
+      schedule: 'Class Schedule',
     };
     const key = new URLSearchParams(location.search).get('interest');
-    const select = document.getElementById('interest');
+    const select = document.getElementById('inquiry');
     if (!key || !select || !map[key]) return;
     select.value = map[key];
   })();
@@ -290,9 +352,85 @@ const interests = [
     padding-right: 2.5rem;
   }
 
+  /* ---- Grouped fields ---- */
+  .fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .fieldset__legend {
+    padding: 0;
+    margin-bottom: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--chrome-2);
+  }
+
+  .fieldset__legend span {
+    color: var(--ember-2);
+  }
+
+  .radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Radios are styled as selectable chips — easier to hit on a phone than a
+     native radio, and it keeps the form visually consistent with the site. */
+  .radio {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .radio input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .radio span {
+    display: inline-block;
+    padding: 0.6rem 1.3rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    color: var(--chrome-2);
+    transition:
+      background 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out);
+  }
+
+  .radio:hover span {
+    border-color: var(--ember-2);
+    color: var(--chrome);
+  }
+
+  .radio input:checked + span {
+    background: var(--grad-ember);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* Keyboard focus has to stay visible even though the input is hidden */
+  .radio input:focus-visible + span {
+    outline: 2px solid var(--ember-2);
+    outline-offset: 3px;
+  }
+
   .form__submit {
     align-self: flex-start;
     margin-top: 0.35rem;
+  }
+
+  .form__fine a {
+    color: var(--ember-2);
   }
 
   .form__fine {

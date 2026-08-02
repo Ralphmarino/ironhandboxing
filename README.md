@@ -38,7 +38,8 @@ Almost everything is data, not markup. These are the files to touch:
 | Google reviews shown on the homepage | `src/data/testimonials.ts` |
 | FAQ questions and answers | `src/data/faqs.ts` |
 | Blog posts | `src/content/blog/*.md` |
-| Gallery photos | `src/pages/gallery.astro` → `photos` |
+| Photos, alt text, gallery order | `src/data/photos.ts` |
+| Scrolling top bar text | `src/data/site.ts` → `announcement` |
 
 ### Adding a blog post
 
@@ -60,7 +61,10 @@ draft: false      # true keeps it out of the build
 
 ### Photos
 
-Every image currently points at `/example.png`, a generated placeholder.
+Real gym photos live in `public/photos/` and are catalogued in
+`src/data/photos.ts` — that file holds the src, alt text and true dimensions,
+and every page imports from it. To swap a photo, replace the file and update
+its entry there; nothing else needs touching.
 
 **Do not commit camera originals.** GitHub rejects any file over 100MB on push
 (and the github.com web uploader caps out at 25MB), and a full-size phone photo
@@ -105,9 +109,28 @@ Netlify Forms, no third-party service and no server. The form lives in
 time via `name="contact"`, `data-netlify="true"` and the hidden `form-name`
 input. `bot-field` is a honeypot.
 
-**One-time setup after the first deploy:** in Netlify go to
-*Forms → contact → Settings → Form notifications* and add an email notification
-so submissions land in an inbox instead of only the dashboard.
+Fields mirror the live WordPress form exactly (First/Last name, Phone, Email,
+Type of Inquiry, Preferred Contact Method, Message, How Did You Hear About Us),
+so submissions look the same as what Ian is used to reading.
+
+### ⚠️ REQUIRED after the first deploy — nobody gets emailed until you do this
+
+Netlify form recipients **cannot be set from code**. There is no `netlify.toml`
+key for it and nothing in this repo can configure it. You have to add them in
+the dashboard once:
+
+> Netlify → your site → **Forms** → `contact` → **Settings & usage** →
+> **Form notifications** → **Add notification** → **Email notification** →
+> enter the address → Save. Repeat for the second address.
+
+Add **both**:
+
+- `iansampaga1@gmail.com`
+- `ralph@growthlocal.com`
+
+Until that is done, submissions are captured but sit in the Netlify dashboard
+unseen. The intended recipients are recorded in `formRecipients` in
+`src/data/site.ts` purely so the repo documents them — Netlify does not read it.
 
 Submissions redirect to `/thank-you/`.
 
@@ -158,15 +181,18 @@ that deliberately:
 
 These are known gaps, not oversights:
 
-- [ ] **FAQ answers** in `src/data/faqs.ts` were written fresh — the live
-      WordPress copy could not be fetched during the build. Swap in the real
-      answers. Keep the "Is boxing hard?" question wording; it ranks #1.
+- [x] ~~FAQ answers~~ — the six live questions are now carried over verbatim,
+      plus 18 added for local search and AI-answer coverage. Note the live FAQ
+      quoted stale pricing ($120 tier, "Coach Ian & Gary"); those answers were
+      reconciled to the current rates in `src/data/pricing.ts`.
 - [ ] **Blog posts** — `boxing-training-staten-island-benefits.md` reuses the
       real published slug but new body copy. Paste the original post in and
       delete the migration note at the top.
-- [ ] **Phone number** — `site.phone` is empty, so the footer and contact page
-      omit it. Fill it in and it appears everywhere, including the schema.
-- [ ] **Email** — `info@ironhandboxing.com` is assumed. Confirm it.
+- [x] ~~Phone number~~ — 347-499-4133, live everywhere including the schema.
+- [x] ~~Email~~ — iansampaga1@gmail.com.
+- [ ] **Netlify form notifications** — see the Contact form section above. This
+      is the one step that cannot be done from code, and without it nobody is
+      emailed when a lead comes in.
 - [ ] **Coach portraits** — only Ian's photo is set. Four good portraits sit in
       `public/photos/` but I can't tell who is who, and a wrong face next to a
       coach's name is worse than a placeholder. Say which is which and they go in.

@@ -79,7 +79,9 @@ const mapQuery = encodeURIComponent(
 
     <div class="ftr__bottom">
       <p>© {year} {site.legalName}. All rights reserved.</p>
-      <p class="ftr__built">Built in Staten Island. Trained the hard way.</p>
+      <p class="ftr__built">
+        <a href={site.builtBy.url} rel="noopener" target="_blank">{site.builtBy.label}</a>
+      </p>
     </div>
   </div>
 </footer>
@@ -178,6 +180,14 @@ const mapQuery = encodeURIComponent(
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-size: 0.6875rem;
+  }
+
+  .ftr__built a {
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .ftr__built a:hover {
+    color: var(--ember-2);
   }
 
   @media (min-width: 700px) {
