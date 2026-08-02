@@ -1,0 +1,351 @@
+---
+import { photos } from '../data/photos';
+import { site } from '../data/site';
+
+/**
+ * "The Cosign" — Joey Diaz resharing Ironhand's post to his Instagram story.
+ *
+ * ⚠️ CLAIMS: kept deliberately to what the screenshot actually proves — that
+ * Joey Diaz (@madflavors_world, verified) put Ironhand's post on his story.
+ * There is no invented quote and no claim of sponsorship or endorsement.
+ *
+ * The group photo has a "Philly Fight Night III" poster on the wall behind it,
+ * so it was probably not taken at Castleton Ave — the caption describes who is
+ * in the frame rather than claiming a visit to the gym. If it WAS shot at
+ * Ironhand, say so and the caption can be strengthened.
+ */
+
+const names = [
+  { name: 'Joey Diaz', note: 'Comedian · @madflavors_world' },
+  { name: 'Frankie Edgar', note: 'UFC Hall of Famer' },
+];
+---
+
+<section class="cosign" data-cosign>
+  <div class="cosign__spot" aria-hidden="true"></div>
+
+  <div class="wrap cosign__inner">
+    <div class="cosign__copy" data-reveal>
+      <p class="eyebrow">The Cosign</p>
+      <h2 class="h2 steel">Word<br />travels.</h2>
+      <p class="lede">
+        Joey Diaz put Ironhand on his Instagram story — a straight reshare of
+        the gym’s own post, out to his whole following. No agency, no campaign.
+        Somebody just did the work and people noticed.
+      </p>
+
+      <ul class="cosign__names">
+        {
+          names.map((n) => (
+            <li class="cosign__name">
+              <span class="cosign__dot" aria-hidden="true" />
+              <span>
+                <strong>{n.name}</strong>
+                <small>{n.note}</small>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a class="btn btn--ghost" href={site.social.instagram} rel="noopener" target="_blank">
+        See it on Instagram
+      </a>
+    </div>
+
+    <div class="cosign__media" data-reveal data-reveal-index="1">
+      {/* Group shot, tucked behind the phone at an angle */}
+      <figure class="cosign__card">
+        <img
+          src={photos.guests.src}
+          alt={photos.guests.alt}
+          width={photos.guests.width}
+          height={photos.guests.height}
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      {/* The story itself, in a phone shell */}
+      <div class="phone" data-phone>
+        <div class="phone__glare" aria-hidden="true"></div>
+        <div class="phone__screen">
+          {/* Story progress bar — the small detail that sells the illusion */}
+          <span class="phone__progress" aria-hidden="true"><i></i></span>
+          <img
+            src={photos.featured.src}
+            alt={photos.featured.alt}
+            width={photos.featured.width}
+            height={photos.featured.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-cosign]');
+  const phone = section?.querySelector<HTMLElement>('[data-phone]');
+
+  if (section && phone) {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (fine.matches && !reduced.matches) {
+      let raf = 0;
+
+      section.addEventListener(
+        'pointermove',
+        (e) => {
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            const r = section.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+
+            // Tilt toward the cursor, capped so it never looks broken
+            phone.style.transform =
+              `rotateY(${(x * 16).toFixed(2)}deg) rotateX(${(-y * 12).toFixed(2)}deg)`;
+
+            // Spotlight tracks the pointer across the band
+            section.style.setProperty('--spot-x', `${((e.clientX - r.left) / r.width) * 100}%`);
+            section.style.setProperty('--spot-y', `${((e.clientY - r.top) / r.height) * 100}%`);
+
+            raf = 0;
+          });
+        },
+        { passive: true },
+      );
+
+      section.addEventListener('pointerleave', () => {
+        phone.style.transform = '';
+        section.style.removeProperty('--spot-x');
+        section.style.removeProperty('--spot-y');
+      });
+    }
+  }
+</script>
+
+<style>
+  .cosign {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(4.5rem, 10vw, 9rem);
+    background: var(--ink-900);
+    overflow: hidden;
+  }
+
+  /* Ember spotlight, parked centre-right until the pointer moves it */
+  .cosign__spot {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle 42rem at var(--spot-x, 72%) var(--spot-y, 45%),
+      rgba(230, 58, 31, 0.2),
+      rgba(230, 58, 31, 0.05) 38%,
+      transparent 68%
+    );
+    transition: background 0.35s var(--ease-out);
+  }
+
+  .cosign__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .cosign__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.35rem;
+  }
+
+  .cosign__names {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .cosign__name {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .cosign__dot {
+    width: 8px;
+    height: 8px;
+    /* Nudged onto the name's baseline rather than centred across both lines */
+    margin-top: 0.45rem;
+    border-radius: 50%;
+    background: var(--grad-ember);
+    flex-shrink: 0;
+  }
+
+  .cosign__name strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--chrome);
+  }
+
+  .cosign__name small {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  /* ---- Media ---- */
+  .cosign__media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    width: 100%;
+    perspective: 1200px;
+  }
+
+  .cosign__card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(58vw, 260px);
+    margin: 0;
+    /* Offset far enough left that a real slice of the photo clears the phone
+       instead of hiding behind it. */
+    translate: -108% -56%;
+    rotate: -7deg;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .cosign__card img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.6s var(--ease-out);
+  }
+
+  .cosign__media:hover .cosign__card img {
+    filter: grayscale(0) contrast(1);
+  }
+
+  /* ---- Phone ---- */
+  .phone {
+    position: relative;
+    width: min(62vw, 290px);
+    padding: 10px;
+    border-radius: 42px;
+    background: linear-gradient(160deg, #2c323a, #101317 55%, #23282f);
+    box-shadow:
+      0 40px 80px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(255, 255, 255, 0.07) inset;
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease-out);
+    will-change: transform;
+  }
+
+  .phone__screen {
+    position: relative;
+    border-radius: 33px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 640 / 1153;
+  }
+
+  .phone__screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Instagram-style story timer ticking across the top */
+  .phone__progress {
+    position: absolute;
+    top: 9px;
+    left: 12px;
+    right: 12px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .phone__progress i {
+    display: block;
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    transform-origin: left;
+    animation: story 6s linear infinite;
+  }
+
+  @keyframes story {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Screen glare, sits above the shell so the tilt reads as glass */
+  .phone__glare {
+    position: absolute;
+    inset: 0;
+    border-radius: 42px;
+    pointer-events: none;
+    background: linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      transparent 32%,
+      transparent 70%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+    z-index: 3;
+  }
+
+  @media (min-width: 900px) {
+    .cosign__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Stacked on phones: card sits below-left rather than overlapping badly */
+  @media (max-width: 899px) {
+    .cosign__media {
+      padding-left: 22%;
+      margin-top: 1rem;
+    }
+
+    .cosign__card {
+      width: min(46vw, 190px);
+      translate: -88% -30%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone__progress i {
+      animation: none;
+      transform: scaleX(1);
+    }
+  }
+</style>

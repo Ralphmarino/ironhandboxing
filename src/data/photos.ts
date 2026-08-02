@@ -128,13 +128,13 @@ export const photos = {
   },
   guests: {
     src: '/photos/joey-diaz-frankie-edgar-manny.jpg',
-    alt: 'Guests visiting the Ironhand Boxing gym in Staten Island',
+    alt: 'Ironhand fighters with comedian Joey Diaz and UFC Hall of Famer Frankie Edgar',
     width: 1440,
     height: 1914,
   },
   featured: {
     src: '/photos/as-featured-on-joey-diaz-instagram.jpg',
-    alt: 'Ironhand Boxing featured on Instagram',
+    alt: 'Joey Diaz sharing Ironhand Boxing’s post to his Instagram story',
     width: 640,
     height: 1153,
   },
