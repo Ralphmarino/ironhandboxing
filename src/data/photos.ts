@@ -203,6 +203,28 @@ export const photos = {
     width: 1020,
     height: 1020,
   },
+  /* ---- Uploaded directly (too large for the Drive connector) ---- */
+  teamPhoto: {
+    src: '/photos/group-photo-ironhand-gym.jpg',
+    alt: 'The Ironhand Boxing community, adults and kids together on the gym floor in Staten Island',
+    width: 2000,
+    height: 1500,
+    span: 'wide',
+  },
+  kidsStance: {
+    src: '/photos/kids-classes.jpg',
+    alt: 'Three young Ironhand members holding their boxing stance during the Kids & Teens class',
+    width: 2000,
+    height: 2667,
+    span: 'tall',
+  },
+  personalSession: {
+    src: '/photos/personal-sessions.jpg',
+    alt: 'A one-on-one personal session on the mitts at Ironhand Boxing',
+    width: 768,
+    height: 960,
+  },
+
   betweenRounds: {
     src: '/photos/boxer-between-rounds.jpg',
     alt: 'An Ironhand boxer catching their breath during training',
@@ -217,8 +239,10 @@ export const photos = {
  * all the kids' shots together.
  */
 export const galleryPhotos: Photo[] = [
-  photos.gymFloor,
+  photos.teamPhoto,
   photos.fighterPortrait,
+  photos.kidsStance,
+  photos.gymFloor,
   photos.coachMittWork,
   photos.fightersInRing,
   photos.heavyBags,
