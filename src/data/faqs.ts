@@ -93,9 +93,9 @@ export const faqs: Faq[] = [
   {
     group: 'Visiting',
     q: 'What are your class times?',
-    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Thursday at 11:00 AM, Friday at 6:00 PM, and Saturday at 12:00 PM. Kids & Teens run Wednesday at 4:00 PM and Friday at 5:00 PM. Women’s Boxing is Saturday at 11:00 AM. The Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM. We also run a group run on Thursdays at 8:00 PM, which meets at Clove Lake Park rather than the gym.',
+    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Thursday at 11:00 AM, Friday at 6:00 PM, and Saturday at 12:00 PM. Kids & Teens run Wednesday at 4:00 PM and Friday at 5:00 PM. Women’s Boxing is Saturday at 11:00 AM. The Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM. We also run a group run on Thursdays at 8:00 PM, which meets at Clove Lakes Park rather than the gym.',
     qEs: '¿Cuáles son los horarios de las clases?',
-    aEs: 'Las clases grupales corren los siete días de la semana: domingo, lunes y martes a las 6:00 PM, jueves a las 11:00 AM, viernes a las 6:00 PM y sábado a las 12:00 PM. Niños y Adolescentes es miércoles a las 4:00 PM y viernes a las 5:00 PM. Boxeo para Mujeres es sábado a las 11:00 AM. El Programa de Competidores corre lunes, martes, miércoles y viernes a las 7:00 PM. También tenemos una carrera grupal los jueves a las 8:00 PM, que se reúne en Clove Lake Park y no en el gimnasio.',
+    aEs: 'Las clases grupales corren los siete días de la semana: domingo, lunes y martes a las 6:00 PM, jueves a las 11:00 AM, viernes a las 6:00 PM y sábado a las 12:00 PM. Niños y Adolescentes es miércoles a las 4:00 PM y viernes a las 5:00 PM. Boxeo para Mujeres es sábado a las 11:00 AM. El Programa de Competidores corre lunes, martes, miércoles y viernes a las 7:00 PM. También tenemos una carrera grupal los jueves a las 8:00 PM, que se reúne en Clove Lakes Park y no en el gimnasio.',
   },
   {
     group: 'Getting Started',

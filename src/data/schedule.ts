@@ -50,7 +50,7 @@ export const schedule: ClassSlot[] = [
     label: 'Group Run',
     labelEs: 'Carrera Grupal',
     track: 'run',
-    offsite: 'Clove Lake Park',
+    offsite: 'Clove Lakes Park',
   },
   { day: 'Friday', dayEs: 'Viernes', short: 'Fri', shortEs: 'Vie', time: '5:00 PM', label: 'Kids & Teens', labelEs: 'Niños y Adolescentes', track: 'youth' },
   { day: 'Friday', dayEs: 'Viernes', short: 'Fri', shortEs: 'Vie', time: '6:00 PM', label: 'Group Class', labelEs: 'Clase Grupal', track: 'group' },
