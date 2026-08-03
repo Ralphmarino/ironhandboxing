@@ -37,7 +37,7 @@ export const faqs: Faq[] = [
   {
     group: 'Membership',
     q: 'What Are the Personal Session Options at Ironhand Boxing?',
-    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one sessions with Coach Ian are $250 for two sessions, and Wednesdays and Thursdays are set aside for them. We also offer virtual training, $45 for a 1-on-1 virtual session and $25 for a small group virtual session, so there are options for every budget and goal.',
+    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one training with Coach Ian is $180 for two sessions, and Wednesdays and Thursdays are set aside for them. Coach Ian books personal sessions in pairs only, he does not run single sessions, so the two session block is the entry point. We also offer virtual training, $45 for a 1-on-1 virtual session and $25 for a small group virtual session, so there are options for every budget and goal.',
   },
   {
     group: 'Membership',
@@ -59,7 +59,7 @@ export const faqs: Faq[] = [
   {
     group: 'Visiting',
     q: 'What are your class times?',
-    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Thursday at 11:00 AM, Friday at 6:00 PM, and Saturday at 12:00 PM. Kids & Teens run Wednesday at 4:00 PM and Friday at 5:00 PM. Women’s Boxing is Saturday at 11:00 AM. The Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM.',
+    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Thursday at 11:00 AM, Friday at 6:00 PM, and Saturday at 12:00 PM. Kids & Teens run Wednesday at 4:00 PM and Friday at 5:00 PM. Women’s Boxing is Saturday at 11:00 AM. The Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM. We also run a group run on Thursdays at 8:00 PM, which meets at Clove Lake Park rather than the gym.',
   },
   {
     group: 'Getting Started',
@@ -99,12 +99,12 @@ export const faqs: Faq[] = [
   {
     group: 'Classes',
     q: 'Do you offer women’s boxing classes?',
-    a: 'Women train in every class we run, and one of our coaches, Arianne Elshawarby, is an active open-class female amateur competitor and a Silver Level USA Boxing coach. There is no separate track, everyone trains on the same floor at their own level.',
+    a: 'Yes. Women’s Boxing runs Saturdays at 11:00 AM. Women also train in every other class we run, and one of our coaches, Arianne Elshawarby, is an active open-class female amateur competitor and a Silver Level USA Boxing coach. The Saturday class is a dedicated space to start in; every other session on the schedule is open to everyone at their own level.',
   },
   {
     group: 'Membership',
     q: 'How much are boxing classes in Staten Island?',
-    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes three personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $250 for two sessions.',
+    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes three personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $180 for two sessions, booked in pairs rather than as single sessions.',
   },
   {
     group: 'Membership',

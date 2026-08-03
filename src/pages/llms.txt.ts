@@ -26,7 +26,10 @@ export const GET: APIRoute = async () => {
   const addr = `${site.address.street}, ${site.address.locality}, ${site.address.region} ${site.address.postalCode}`;
 
   const classLines = schedule.map(
-    (s) => `- ${s.day} ${s.time}: ${s.label}${s.note ? ` (${s.note})` : ''}`,
+    (s) =>
+      `- ${s.day} ${s.time}: ${s.label}` +
+      `${s.offsite ? ` at ${s.offsite}, not at the gym` : ''}` +
+      `${s.note ? ` (${s.note})` : ''}`,
   );
 
   const body = `# ${site.legalName}
@@ -43,6 +46,7 @@ coach, bag work and conditioning.
 
 - Address: ${addr}
 - Phone: ${site.phone}
+- Spanish-speaking line: ${site.phoneEs.number}
 - Instagram: ${site.social.instagram}
 - Google rating: ${site.reviews.rating.toFixed(1)} from ${site.reviews.count}+ reviews
 - Founded and head-coached by Ian Sampaga

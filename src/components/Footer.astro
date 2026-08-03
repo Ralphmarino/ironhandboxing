@@ -74,6 +74,11 @@ const mapQuery = encodeURIComponent(
         </a>
         {site.phone && <a href={`tel:${site.phone.replace(/[^0-9+]/g, '')}`}>{site.phone}</a>}
         <a href={`mailto:${site.email}`}>Email us</a>
+
+        <p class="ftr__es" lang="es">
+          <span>{site.phoneEs.label}</span>
+          <a href={`tel:${site.phoneEs.number.replace(/[^0-9+]/g, '')}`}>{site.phoneEs.number}</a>
+        </p>
       </div>
     </div>
 
@@ -93,6 +98,24 @@ const mapQuery = encodeURIComponent(
 </footer>
 
 <style>
+  /* Spanish line, marked lang="es" so screen readers switch pronunciation. */
+  .ftr__es {
+    margin-top: 0.35rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .ftr__es span {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+  }
+
   .ftr {
     position: relative;
     border-top: 1px solid var(--line);

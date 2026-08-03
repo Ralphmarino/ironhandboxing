@@ -65,6 +65,13 @@ const referralSources = [
             <span class="contact__lbl">Email</span>
             <a href={`mailto:${site.email}`}>Email us</a>
           </li>
+          <li lang="es">
+            <span class="contact__lbl">{site.phoneEs.label}</span>
+            <a href={`tel:${site.phoneEs.number.replace(/[^0-9+]/g, '')}`}>
+              {site.phoneEs.number}
+            </a>
+            <span class="contact__sub">{site.phoneEs.note}</span>
+          </li>
           <li>
             <span class="contact__lbl">Instagram</span>
             <a href={site.social.instagram} rel="noopener" target="_blank">
@@ -252,6 +259,13 @@ const referralSources = [
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+  }
+
+  .contact__sub {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
   }
 
   .contact__lbl {

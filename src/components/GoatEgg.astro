@@ -1,0 +1,173 @@
+---
+/**
+ * Easter egg: click Ian's name anywhere on the site and a goat appears.
+ *
+ * The GOAT. That is the whole joke.
+ *
+ * Rather than hand-tagging every place his name is written (it appears in the
+ * hero, the coach card, the about page, several FAQ answers and the blog), a
+ * TreeWalker finds the text at runtime and wraps each occurrence. That way the
+ * egg keeps working when new copy mentions him, and no author has to remember
+ * it exists.
+ *
+ * Deliberately NOT keyboard focusable and not announced to screen readers. It
+ * is decoration with no content behind it, so putting it in the tab order would
+ * mean every keyboard user tabs through a joke on their way to the nav.
+ */
+---
+
+<script>
+  const NAME = 'Ian Sampaga';
+  const GOATS = ['🐐'];
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /** Elements whose text must never be rewritten. */
+  const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'OPTION', 'TITLE']);
+
+  function wrapNames() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.includes(NAME)) return NodeFilter.FILTER_REJECT;
+        const parent = node.parentElement;
+        if (!parent || SKIP.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        // Already processed
+        if (parent.classList.contains('goat-name')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      },
+    });
+
+    const targets: Text[] = [];
+    let n: Node | null;
+    while ((n = walker.nextNode())) targets.push(n as Text);
+
+    for (const node of targets) {
+      const frag = document.createDocumentFragment();
+      const parts = node.nodeValue!.split(NAME);
+
+      parts.forEach((part, i) => {
+        if (part) frag.appendChild(document.createTextNode(part));
+        if (i < parts.length - 1) {
+          const span = document.createElement('span');
+          span.className = 'goat-name';
+          span.textContent = NAME;
+          frag.appendChild(span);
+        }
+      });
+
+      node.parentNode?.replaceChild(frag, node);
+    }
+  }
+
+  let released = 0;
+
+  function releaseGoat(x: number, y: number) {
+    const goat = document.createElement('span');
+    goat.className = 'goat';
+    goat.setAttribute('aria-hidden', 'true');
+    goat.textContent = GOATS[0];
+
+    // Slight randomness so repeat clicks do not look like a loop
+    const drift = (Math.random() - 0.5) * 90;
+    const tilt = (Math.random() - 0.5) * 40;
+    goat.style.left = `${x}px`;
+    goat.style.top = `${y}px`;
+    goat.style.setProperty('--drift', `${drift}px`);
+    goat.style.setProperty('--tilt', `${tilt}deg`);
+
+    document.body.appendChild(goat);
+    goat.addEventListener('animationend', () => goat.remove(), { once: true });
+
+    // Every tenth goat brings friends. No reason. It is an easter egg.
+    released += 1;
+    if (released % 10 === 0 && !reduced) {
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => releaseGoatQuiet(x, y), 90 * (i + 1));
+      }
+    }
+  }
+
+  /** Same as above minus the counter, so the herd cannot trigger itself. */
+  function releaseGoatQuiet(x: number, y: number) {
+    const goat = document.createElement('span');
+    goat.className = 'goat';
+    goat.setAttribute('aria-hidden', 'true');
+    goat.textContent = GOATS[0];
+    goat.style.left = `${x + (Math.random() - 0.5) * 120}px`;
+    goat.style.top = `${y + (Math.random() - 0.5) * 40}px`;
+    goat.style.setProperty('--drift', `${(Math.random() - 0.5) * 140}px`);
+    goat.style.setProperty('--tilt', `${(Math.random() - 0.5) * 50}deg`);
+    document.body.appendChild(goat);
+    goat.addEventListener('animationend', () => goat.remove(), { once: true });
+  }
+
+  // One delegated listener rather than one per name, so rewrapping is free.
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const hit = target?.closest?.('.goat-name');
+    if (!hit) return;
+
+    const r = hit.getBoundingClientRect();
+    releaseGoat(r.left + r.width / 2, r.top);
+  });
+
+  wrapNames();
+</script>
+
+<style is:global>
+  .goat-name {
+    cursor: pointer;
+    /* No visual treatment at rest. Finding it is the point. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .goat {
+    position: fixed;
+    z-index: 9999;
+    font-size: 2.5rem;
+    line-height: 1;
+    pointer-events: none;
+    translate: -50% -100%;
+    animation: goat-pop 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+  }
+
+  @keyframes goat-pop {
+    0% {
+      opacity: 0;
+      scale: 0.3;
+      rotate: 0deg;
+      translate: -50% -100%;
+    }
+    22% {
+      opacity: 1;
+      scale: 1.15;
+      rotate: var(--tilt, 0deg);
+    }
+    35% {
+      scale: 1;
+    }
+    100% {
+      opacity: 0;
+      scale: 0.95;
+      rotate: var(--tilt, 0deg);
+      translate: calc(-50% + var(--drift, 0px)) -260%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .goat {
+      animation: goat-fade 1.1s linear forwards;
+    }
+
+    @keyframes goat-fade {
+      0%,
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+</style>

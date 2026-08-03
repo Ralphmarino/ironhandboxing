@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
 import BackToTop from '../components/BackToTop.astro';
+import GoatEgg from '../components/GoatEgg.astro';
 import { site } from '../data/site';
 import { schedule } from '../data/schedule';
 
@@ -17,8 +18,11 @@ const hour24 = (t: string) => {
 const hhmm = (v: number) =>
   `${String(Math.floor(v)).padStart(2, '0')}:${String(Math.round((v % 1) * 60)).padStart(2, '0')}`;
 
+// Offsite sessions (the Thursday run at Clove Lake Park) are skipped: they say
+// nothing about when the Castleton Avenue address is open.
 const byDay = new Map<string, number[]>();
 for (const slot of schedule) {
+  if (slot.offsite) continue;
   byDay.set(slot.day, [...(byDay.get(slot.day) ?? []), hour24(slot.time)]);
 }
 
@@ -147,6 +151,7 @@ const schema = {
     </main>
     <Footer />
     <BackToTop />
+    <GoatEgg />
 
     <script>
       import '../scripts/motion.ts';

@@ -24,6 +24,18 @@ export const site = {
   phone: '347-499-4133',
 
   /**
+   * Spanish line. Ian's wife handles these calls, so this is a real person who
+   * speaks Spanish rather than a menu. The label is written in Spanish on
+   * purpose: someone scanning the page for help in their own language needs to
+   * recognise it without reading the English around it.
+   */
+  phoneEs: {
+    number: '718-619-0468',
+    label: '¿Hablas español?',
+    note: 'Llámanos y te atendemos en español.',
+  },
+
+  /**
    * Never rendered as visible text, the site links it as "Email us" instead.
    * Note the address is still present in the mailto: href, so a determined
    * scraper can read it from the page source. If you want it fully off the
