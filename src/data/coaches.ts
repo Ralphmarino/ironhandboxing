@@ -32,15 +32,11 @@ export const coaches: Coach[] = [
     // environment to confirm the record it points to, so give it a look before
     // launch.
     boxrec: 'https://boxrec.com/en/box-pro/10828',
-    /**
-     * ⚠️ AWAITING PHOTO. carlos.png turned out to be someone else, confirmed by
-     * Ian, so it has been taken down rather than left captioned with Carlos's
-     * name and linked to his professional record. The replacement is
-     * IMG_0615.jpeg, which has not reached the repo yet. Drop it in, run it
-     * through the same 4:5 treatment as the other portraits, and set this to
-     * /photos/coach-carlos.jpg.
-     */
-    image: '/example.png',
+    // An archive shot from Carlos's fighting days, sent by Ian to replace the
+    // photo that turned out to be somebody else. It is a scan, so it is smaller
+    // and softer than the other portraits, but the card desaturates at rest and
+    // the age of it suits a coach whose record goes back that far.
+    image: '/photos/coach-carlos.jpg',
     bio: 'A professional record of his own behind him, Carlos brings his own roster and his own approach to the Ironhand floor, coaching members one-on-one and in small groups out of the Castleton Avenue gym.',
   },
   {
