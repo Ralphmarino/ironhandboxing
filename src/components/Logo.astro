@@ -11,8 +11,10 @@
  * a 16-colour palette handles almost perfectly. One file serves every size on
  * the site, so it is fetched once and cached.
  *
- * Master source is kept at public/ironhand-boxing-logo-transparent.png.
- * Regenerate the derived assets from it if the logo ever changes.
+ * Master source is kept in art-masters/, which is outside public/ so the
+ * full-size artwork is never shipped. See art-masters/README.md to regenerate.
+ *
+ * For the chrome medallion version of the mark, see Medallion.astro.
  */
 interface Props {
   /** Number for px, or a CSS length such as "100%" to fill the parent. */

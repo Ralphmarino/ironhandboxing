@@ -54,6 +54,7 @@ const offers = [
                 alt={o.photo.alt}
                 width={o.photo.width}
                 height={o.photo.height}
+                style={o.photo.focal ? `object-position:${o.photo.focal}` : undefined}
                 loading="lazy"
                 decoding="async"
               />

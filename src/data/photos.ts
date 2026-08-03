@@ -20,6 +20,12 @@ export type Photo = {
   height: number;
   /** Mosaic sizing on the gallery page. */
   span?: 'wide' | 'tall';
+  /**
+   * `object-position` for the fixed-ratio cards that crop this photo. Tall
+   * portraits forced into a 16:10 card default to a centre crop, which on a
+   * standing shot lands on torsos and cuts the faces off.
+   */
+  focal?: string;
 };
 
 export const photos = {
@@ -42,24 +48,11 @@ export const photos = {
     height: 940,
     span: 'wide',
   },
-  fightersInRing: {
-    src: '/photos/fighters-in-the-ring.jpg',
-    alt: 'Three Ironhand boxers with gloves up in the ring after a fight night',
-    width: 1358,
-    height: 1358,
-  },
   fighterPortrait: {
     src: '/photos/fighter-portrait-red-singlet.jpg',
     alt: 'An Ironhand amateur boxer in a red competition singlet with wrapped hands',
     width: 1290,
     height: 2536,
-    span: 'tall',
-  },
-  ringside: {
-    src: '/photos/amateur-show-ringside.jpg',
-    alt: 'Ringside at an amateur boxing show with Ironhand fighters and their corner',
-    width: 2000,
-    height: 3556,
     span: 'tall',
   },
   coachMittWork: {
@@ -140,13 +133,6 @@ export const photos = {
   },
 
   /* ---- Second batch ---- */
-  kidsClass: {
-    src: '/photos/kids-class-group.jpg',
-    alt: 'The Ironhand kids boxing class with gloves up alongside their coach',
-    width: 1027,
-    height: 1104,
-    span: 'wide',
-  },
   teamAtMSG: {
     src: '/photos/team-at-madison-square-garden.jpg',
     alt: 'Ironhand fighters and families at Madison Square Garden',
@@ -184,13 +170,20 @@ export const photos = {
     width: 642,
     height: 802,
   },
-  /* Replaces two ringside photos removed at the client's request. */
+  /**
+   * Photos removed at the client's request, do not restore without asking:
+   * ringside-corner, corner-between-rounds, fighters-in-the-ring,
+   * amateur-show-ringside, kids-class-group.
+   */
   fightersProgram: {
     src: '/photos/fighters-program.jpg',
     alt: 'An Ironhand fighter with his championship belt alongside his coach after a bout',
     width: 1320,
     height: 2346,
     span: 'tall',
+    // A standing full-length shot. Centred, the card frame lands between chin
+    // and knees. This pulls it up to head-and-belt.
+    focal: 'center 37%',
   },
   afterTheBout: {
     src: '/photos/fighters-after-the-bout.jpg',
@@ -220,6 +213,13 @@ export const photos = {
     height: 960,
   },
 
+  kidsPunch: {
+    src: '/photos/kids-class-punch.jpg',
+    alt: 'A young Ironhand member throwing a punch on the pads during the Kids & Teens class',
+    width: 1284,
+    height: 1593,
+  },
+
   betweenRounds: {
     src: '/photos/boxer-between-rounds.jpg',
     alt: 'An Ironhand boxer catching their breath during training',
@@ -240,14 +240,12 @@ export const galleryPhotos: Photo[] = [
   photos.kidsStance,
   photos.gymFloor,
   photos.coachMittWork,
-  photos.fightersInRing,
   photos.heavyBags,
-  photos.kidsClass,
   photos.memberTraining,
   photos.speedBag,
   photos.amateurBout,
-  photos.ringside,
   photos.youthMittWork,
+  photos.kidsPunch,
   photos.teenGuardUp,
   photos.bagsWall,
   photos.gloveCloseup,
