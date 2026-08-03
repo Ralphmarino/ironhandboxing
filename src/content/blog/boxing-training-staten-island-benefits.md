@@ -1,6 +1,6 @@
 ---
 title: 'Benefits of Boxing Training in Staten Island'
-description: 'What boxing actually does for your body, your head and your confidence — and why a real boxing gym beats a fitness class that borrows the gloves.'
+description: 'What boxing actually does for your body, your head and your confidence, and why a real boxing gym beats a fitness class that borrows the gloves.'
 pubDate: 2024-06-18
 author: 'Ian Sampaga'
 image: '/photos/coach-mitt-work-youth.jpg'
@@ -23,7 +23,7 @@ That's fine. Boxing gives all of it back anyway.
 
 Three minutes on a heavy bag will tell you more about your cardio than an hour
 on a treadmill. Boxing works in rounds, which means it trains your body to go
-hard, recover fast, and go again — the exact pattern almost every sport and
+hard, recover fast, and go again. That is the exact pattern almost every sport and
 almost every physical emergency in real life follows.
 
 You're moving your feet, rotating through your hips, and keeping your hands up
@@ -39,7 +39,7 @@ Not a video. Not a trainer counting reps from across the room. A coach holding
 pads, watching your feet, and correcting your stance in real time.
 
 That matters for two reasons. First, bad punching mechanics hurt your wrists and
-shoulders — the fastest way to end someone's boxing is to let them throw
+shoulders. The fastest way to end someone's boxing is to let them throw
 incorrectly for six months. Second, learning something genuinely difficult, and
 watching yourself get better at it week over week, does something for a person
 that burning calories never will.
@@ -47,7 +47,7 @@ that burning calories never will.
 ## It builds confidence you can feel outside the gym
 
 We hear a version of the same thing constantly: people start standing
-differently. Not because they're looking for trouble — because knowing you can
+differently. Not because they're looking for trouble, because knowing you can
 handle yourself quietly removes a background hum of anxiety most people didn't
 realize they were carrying.
 

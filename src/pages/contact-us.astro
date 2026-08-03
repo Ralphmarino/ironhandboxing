@@ -4,7 +4,7 @@ import { site } from '../data/site';
 
 const title = 'Contact Us – Ironhand Boxing';
 const description =
-  'Get in touch with Ironhand Boxing in Staten Island. Ask about classes, pricing, kids programs or the Fighters Program — we will get you into the right class.';
+  'Get in touch with Ironhand Boxing in Staten Island. Ask about classes, pricing, kids programs or the Fighters Program, we will get you into the right class.';
 
 const mapQuery = encodeURIComponent(
   `${site.address.street}, ${site.address.locality}, ${site.address.region} ${site.address.postalCode}`,
@@ -75,7 +75,7 @@ const referralSources = [
       <div class="contact__formwrap card" data-reveal data-reveal-index="2">
         {/*
           Netlify Forms. Submissions are picked up from the static HTML at deploy
-          time — `name`, `data-netlify` and the hidden `form-name` input are all
+          time, `name`, `data-netlify` and the hidden `form-name` input are all
           required for that detection to work. `bot-field` is the honeypot: real
           users never see it, bots fill it in and get silently dropped.
         */}
@@ -310,9 +310,7 @@ const referralSources = [
     color: var(--ember-2);
   }
 
-  .field input,
-  .field select,
-  .field textarea {
+  .field input.field select.field textarea {
     width: 100%;
     padding: 0.85rem 1rem;
     background: var(--ink-900);
@@ -330,20 +328,17 @@ const referralSources = [
     min-height: 120px;
   }
 
-  .field input::placeholder,
-  .field textarea::placeholder {
+  .field input::placeholder.field textarea::placeholder {
     color: var(--chrome-3);
   }
 
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus {
+  .field input:focus.field select:focus.field textarea:focus {
     outline: none;
     border-color: var(--ember);
     background: var(--ink-800);
   }
 
-  /* Native select arrow is invisible on a dark field in Safari — draw our own */
+  /* Native select arrow is invisible on a dark field in Safari, draw our own */
   .field select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8b0ba' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -380,7 +375,7 @@ const referralSources = [
     gap: 0.5rem;
   }
 
-  /* Radios are styled as selectable chips — easier to hit on a phone than a
+  /* Radios are styled as selectable chips, easier to hit on a phone than a
      native radio, and it keeps the form visually consistent with the site. */
   .radio {
     position: relative;

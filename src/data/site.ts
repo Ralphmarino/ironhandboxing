@@ -24,7 +24,7 @@ export const site = {
   phone: '347-499-4133',
 
   /**
-   * Never rendered as visible text — the site links it as "Email us" instead.
+   * Never rendered as visible text, the site links it as "Email us" instead.
    * Note the address is still present in the mailto: href, so a determined
    * scraper can read it from the page source. If you want it fully off the
    * site, point those links at /contact-us/ instead and let the form carry it.
@@ -52,7 +52,7 @@ export const site = {
 
 export const seo = {
   home: {
-    // Carried over verbatim from the live site — do not rewrite casually.
+    // Carried over verbatim from the live site, do not rewrite casually.
     title: 'Staten Island Boxing - Ironhand Boxing Gym & Training',
     description:
       'Train like the pros with world-class boxing classes here. The #1 Staten Island Boxing lessons in NY brought to you by Ian Sampaga.',
@@ -62,12 +62,12 @@ export const seo = {
 
 /** Scrolling announcement strip above the header on the homepage. */
 export const announcement =
-  "Welcome to Ironhand Boxing — Staten Island's Premier Boxing Training & Gym";
+  "Welcome to Ironhand Boxing - Staten Island's Premier Boxing Training & Gym";
 
 /**
  * Where contact form submissions are emailed.
  *
- * ⚠️ Netlify does NOT read this — form notification recipients can only be set
+ * ⚠️ Netlify does NOT read this, form notification recipients can only be set
  * in the Netlify dashboard (Forms → contact → Settings → Form notifications →
  * Add notification → Email notification). This list exists so the intended
  * recipients are recorded in the repo; add BOTH addresses there after the first
@@ -79,7 +79,7 @@ export const IG_EMBED = {
   /**
    * Third-party Instagram feed (Behold.so).
    *
-   * Paste the feed ID from the Behold dashboard here — that is the only step.
+   * Paste the feed ID from the Behold dashboard here, that is the only step.
    * While this is empty the site renders a curated static grid that links out
    * to Instagram, so the section is never broken or blank in production.
    */

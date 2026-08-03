@@ -6,7 +6,7 @@ export type Plan = {
   featured?: boolean;
 };
 
-/** Monthly memberships — the main offer. */
+/** Monthly memberships, the main offer. */
 export const monthlyPlans: Plan[] = [
   { name: '1 Day / Week', price: '125', unit: 'per month' },
   { name: '2 Days / Week', price: '150', unit: 'per month' },
@@ -35,8 +35,8 @@ export const sessionPlans: Plan[] = [
     note: 'One-on-one with Coach Ian',
     featured: true,
   },
-  { name: 'Virtual — Small Group', price: '25', unit: 'per session' },
-  { name: 'Virtual — 1-on-1', price: '45', unit: 'per session' },
+  { name: 'Virtual Small Group', price: '25', unit: 'per session' },
+  { name: 'Virtual 1-on-1', price: '45', unit: 'per session' },
   { name: 'Add-On Classes', price: '30', unit: 'for the month' },
   { name: 'Custom Plan', price: 'TBD', unit: 'built around you', note: 'Contact us' },
 ];
@@ -49,7 +49,7 @@ export const fightersProgram = {
   name: 'Fighters Program',
   price: '150',
   unit: 'per month',
-  days: 'Monday · Tuesday · Wednesday — 7:00 PM',
+  days: 'Monday · Tuesday · Wednesday at 7:00 PM',
   requirement: 'Registered competitors only. You must have your book.',
   blurb:
     'The competition track. Three nights a week of rounds, ring work and corner-ready preparation for athletes actively campaigning as amateurs.',

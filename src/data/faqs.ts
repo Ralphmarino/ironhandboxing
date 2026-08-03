@@ -16,7 +16,7 @@ export type Faq = {
  * tier, $250 including two personal sessions, sessions with "Coach Ian & Gary").
  * Those answers have been updated to the current pricing in src/data/pricing.ts.
  * If any of the current numbers are wrong, fix pricing.ts and these answers
- * together — never let the two disagree on a live page.
+ * together, never let the two disagree on a live page.
  */
 export const faqs: Faq[] = [
   {
@@ -32,12 +32,12 @@ export const faqs: Faq[] = [
   {
     group: 'Competing',
     q: 'How Does Ironhand Boxing Accommodate Experienced Fighters?',
-    a: 'Experienced fighters will find Ironhand Boxing’s training sessions both challenging and rewarding. We offer advanced techniques, sparring sessions, and personalized feedback to refine your skills and strategy. Our Fighters Program runs Monday, Tuesday and Wednesday at 7:00 PM for registered competitors, and our coaches provide targeted preparation for amateur competition — technique, strategy and physical conditioning.',
+    a: 'Experienced fighters will find Ironhand Boxing’s training sessions both challenging and rewarding. We offer advanced techniques, sparring sessions, and personalized feedback to refine your skills and strategy. Our Fighters Program runs Monday, Tuesday and Wednesday at 7:00 PM for registered competitors, and our coaches provide targeted preparation for amateur competition, technique, strategy and physical conditioning.',
   },
   {
     group: 'Membership',
     q: 'What Are the Personal Session Options at Ironhand Boxing?',
-    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one sessions with Coach Ian are $115 per hour, and Wednesdays and Thursdays are set aside for them. We also offer virtual training — $45 for a 1-on-1 virtual session and $25 for a small group virtual session — so there are options for every budget and goal.',
+    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one sessions with Coach Ian are $115 per hour, and Wednesdays and Thursdays are set aside for them. We also offer virtual training, $45 for a 1-on-1 virtual session and $25 for a small group virtual session, so there are options for every budget and goal.',
   },
   {
     group: 'Membership',
@@ -69,12 +69,12 @@ export const faqs: Faq[] = [
   {
     group: 'Getting Started',
     q: 'What should I bring to my first boxing class?',
-    a: 'Athletic clothes you can move in, sneakers, water and a towel. We will get you set up with gloves and wraps for your first session. Do not buy equipment before you come — once you know you are staying, a coach will tell you what is actually worth spending money on.',
+    a: 'Athletic clothes you can move in, sneakers, water and a towel. We will get you set up with gloves and wraps for your first session. Do not buy equipment before you come. Once you know you are staying, a coach will tell you what is actually worth spending money on.',
   },
   {
     group: 'Getting Started',
     q: 'Is boxing hard?',
-    a: 'Boxing is demanding, but it is not out of reach. The footwork and the punches are simple movements taught in a specific order, and every class is scaled to the person doing it. What is hard is the conditioning — and that arrives on its own once you show up consistently. Most people find the first two weeks humbling and the third week addictive.',
+    a: 'Boxing is demanding, but it is not out of reach. The footwork and the punches are simple movements taught in a specific order, and every class is scaled to the person doing it. What is hard is the conditioning, and that arrives on its own once you show up consistently. Most people find the first two weeks humbling and the third week addictive.',
   },
   {
     group: 'Getting Started',
@@ -84,7 +84,7 @@ export const faqs: Faq[] = [
   {
     group: 'Classes',
     q: 'What happens in a boxing class at Ironhand?',
-    a: 'Every class covers proper boxing technique, one-on-one mitt work with a coach, bag work, and conditioning. The mitt work is where the actual coaching happens — no one leaves a class without hands-on time with a coach. Group classes run about an hour.',
+    a: 'Every class covers proper boxing technique, one-on-one mitt work with a coach, bag work, and conditioning. The mitt work is where the actual coaching happens, no one leaves a class without hands-on time with a coach. Group classes run about an hour.',
   },
   {
     group: 'Classes',
@@ -94,12 +94,12 @@ export const faqs: Faq[] = [
   {
     group: 'Classes',
     q: 'Is boxing a good workout for weight loss?',
-    a: 'It is one of the best. Boxing works in rounds, which trains your body to go hard, recover fast and go again. Members have lost anywhere from 20 to 88 pounds training here — and unlike a treadmill, you are learning a skill the whole time, which is why people actually keep showing up.',
+    a: 'It is one of the best. Boxing works in rounds, which trains your body to go hard, recover fast and go again. Members have lost anywhere from 20 to 88 pounds training here, and unlike a treadmill, you are learning a skill the whole time, which is why people actually keep showing up.',
   },
   {
     group: 'Classes',
     q: 'Do you offer women’s boxing classes?',
-    a: 'Women train in every class we run, and one of our coaches, Arianne Elshawarby, is an active open-class female amateur competitor and a Silver Level USA Boxing coach. There is no separate track — everyone trains on the same floor at their own level.',
+    a: 'Women train in every class we run, and one of our coaches, Arianne Elshawarby, is an active open-class female amateur competitor and a Silver Level USA Boxing coach. There is no separate track, everyone trains on the same floor at their own level.',
   },
   {
     group: 'Membership',
@@ -109,7 +109,7 @@ export const faqs: Faq[] = [
   {
     group: 'Membership',
     q: 'Is there a contract or joining fee?',
-    a: 'Memberships are month to month. Come talk to us about what you are trying to accomplish and we will put you on the plan that fits — including a custom one if none of the standard tiers do.',
+    a: 'Memberships are month to month. Come talk to us about what you are trying to accomplish and we will put you on the plan that fits, including a custom one if none of the standard tiers do.',
   },
   {
     group: 'Membership',
@@ -124,7 +124,7 @@ export const faqs: Faq[] = [
   {
     group: 'Kids & Teens',
     q: 'Is boxing safe for my child?',
-    a: 'The youth class is technique and conditioning — pads, bags and footwork. Contact is not part of the program unless a young athlete moves toward competing, and that only happens with a parent involved in the decision.',
+    a: 'The youth class is technique and conditioning, pads, bags and footwork. Contact is not part of the program unless a young athlete moves toward competing, and that only happens with a parent involved in the decision.',
   },
   {
     group: 'Kids & Teens',
@@ -139,6 +139,6 @@ export const faqs: Faq[] = [
   {
     group: 'Competing',
     q: 'How do I get into the Fighters Program?',
-    a: 'Train in the regular classes first. When a coach thinks you are ready, they will tell you — and then we will walk you through registering with USA Boxing and getting your book.',
+    a: 'Train in the regular classes first. When a coach thinks you are ready, they will tell you, and then we will walk you through registering with USA Boxing and getting your book.',
   },
 ];

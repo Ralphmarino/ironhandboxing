@@ -3,10 +3,10 @@ import Base from '../layouts/Base.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { faqs } from '../data/faqs';
 
-// Title preserved from the WordPress site — it ranks for local FAQ queries.
+// Title preserved from the WordPress site, it ranks for local FAQ queries.
 const title = 'Boxing Frequently Asked Questions - Staten Island';
 const description =
-  'Answers to the questions we hear most at Ironhand Boxing in Staten Island — starting out with no experience, class structure, pricing, kids programs and competing.';
+  'Answers to the questions we hear most at Ironhand Boxing in Staten Island, starting out with no experience, class structure, pricing, kids programs and competing.';
 
 const groups = [...new Set(faqs.map((f) => f.group))];
 
@@ -33,7 +33,7 @@ const faqSchema = {
       </h1>
       <p class="lede faq-hero__lede" data-reveal data-reveal-index="2">
         The questions we get asked most, answered straight. If yours is not
-        here, message us — we would rather answer it than have you guess.
+        here, message us. We would rather answer it than have you guess.
       </p>
     </div>
   </section>
@@ -180,8 +180,7 @@ const faqSchema = {
     flex-shrink: 0;
   }
 
-  .qa__icon::before,
-  .qa__icon::after {
+  .qa__icon::before.qa__icon::after {
     content: '';
     position: absolute;
     inset: 50% 0 auto 0;

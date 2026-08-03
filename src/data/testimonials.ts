@@ -7,8 +7,8 @@ export type Testimonial = {
 };
 
 /**
- * Verbatim Google Business Profile reviews. Selected for range — results,
- * kids' classes, absolute beginners, and competition coaching — rather than
+ * Verbatim Google Business Profile reviews. Selected for range across results,
+ * kids' classes, absolute beginners and competition coaching, rather than
  * simply the most recent. Do not edit the wording of a review.
  */
 export const testimonials: Testimonial[] = [
@@ -93,7 +93,7 @@ export const testimonials: Testimonial[] = [
     name: 'Juan Aucaquizhpio',
     date: 'Nov 2023',
     quote:
-      'Wonderful trainer one of a kind Ian works with you and guides you to become better by finding your flaws and turning them into your strongest points , If you want to get in shape Iron Hand Boxing is the way.',
+      'Wonderful trainer one of a kind Ian works with you and guides you to become better by finding your flaws and turning them into your strongest points, If you want to get in shape Iron Hand Boxing is the way.',
     highlight: 'Flaws into strengths',
   },
   {

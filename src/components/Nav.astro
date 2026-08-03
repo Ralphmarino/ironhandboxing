@@ -16,7 +16,7 @@ const path = Astro.url.pathname;
 
 <header class="hdr" data-header>
   <div class="hdr__inner wrap">
-    <a class="hdr__brand" href="/" aria-label="Ironhand Boxing — home">
+    <a class="hdr__brand" href="/" aria-label="Ironhand Boxing, home">
       <Logo size={46} loading="eager" />
       <span class="hdr__word">
         Ironhand Boxing
@@ -52,7 +52,7 @@ const path = Astro.url.pathname;
   Full-screen overlay with its own brand row and close button.
 
   Deliberately a SIBLING of <header>, not a child. The header is
-  `position:sticky; z-index:100`, which creates a stacking context — nesting the
+  `position:sticky; z-index:100`, which creates a stacking context, nesting the
   panel inside meant its z-index was clamped within the header, so the
   announcement bar (z-index 101) painted straight over the open menu. As a
   root-level sibling its z-index competes properly.
@@ -63,7 +63,7 @@ const path = Astro.url.pathname;
 */}
 <div class="menu" id="mobile-menu" data-menu>
     <div class="menu__bar wrap">
-      <a class="menu__brand" href="/" aria-label="Ironhand Boxing — home">
+      <a class="menu__brand" href="/" aria-label="Ironhand Boxing, home">
         <Logo size={46} />
         <span class="hdr__word">
           Ironhand Boxing
@@ -156,7 +156,7 @@ const path = Astro.url.pathname;
     transition: color 0.3s var(--ease-out);
   }
 
-  /* Underline grows from the left on hover — small, but it's the kind of
+  /* Underline grows from the left on hover, small, but it's the kind of
      detail that separates "template" from "designed". */
   .hdr__nav a::after {
     content: '';
@@ -171,13 +171,11 @@ const path = Astro.url.pathname;
     transition: transform 0.4s var(--ease-out);
   }
 
-  .hdr__nav a:hover,
-  .hdr__nav a[aria-current='page'] {
+  .hdr__nav a:hover.hdr__nav a[aria-current='page'] {
     color: var(--chrome);
   }
 
-  .hdr__nav a:hover::after,
-  .hdr__nav a[aria-current='page']::after {
+  .hdr__nav a:hover::after.hdr__nav a[aria-current='page']::after {
     transform: scaleX(1);
   }
 
@@ -315,12 +313,10 @@ const path = Astro.url.pathname;
   }
 
   @media (min-width: 1080px) {
-    .hdr__nav,
-    .hdr__cta {
+    .hdr__nav.hdr__cta {
       display: flex;
     }
-    .hdr__burger,
-    .menu {
+    .hdr__burger.menu {
       display: none;
     }
   }

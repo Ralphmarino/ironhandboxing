@@ -1,6 +1,6 @@
 ---
 title: 'So You Want to Compete: Getting Your USA Boxing Book'
-description: 'How an Ironhand member goes from the group class to the Fighters Program — what the book is, how you get one, and what actually qualifies you to compete.'
+description: 'How an Ironhand member goes from the group class to the Fighters Program, what the book is, how you get one, and what actually qualifies you to compete.'
 pubDate: 2025-05-21
 author: 'Ian Sampaga'
 image: '/photos/amateur-bout-headgear.jpg'
@@ -16,8 +16,7 @@ Here's the real path.
 ## First, you train
 
 There is no shortcut past this and we won't pretend otherwise. Before anyone
-steps into the Fighters Program, they put in months in the regular classes —
-fundamentals, mitt work, conditioning, and eventually supervised sparring.
+steps into the Fighters Program, they put in months in the regular classes: fundamentals, mitt work, conditioning, and eventually supervised sparring.
 
 You don't ask to move up. A coach tells you when you're ready. That's not
 gatekeeping for its own sake; it's the difference between a first fight that
@@ -27,7 +26,7 @@ builds someone and a first fight that ends their interest in the sport.
 
 USA Boxing is the national governing body for amateur boxing. To compete in a
 sanctioned amateur bout you need to be a registered member, pass a physical,
-and carry a **passbook** — the record of your registration, your medicals, and
+and carry a **passbook**: the record of your registration, your medicals, and
 every bout you've had.
 
 No book, no fight. It's the sport's safety system, and it's non-negotiable.
@@ -46,8 +45,7 @@ with the competition group. It's $150 per month, and you need your book to be
 in it.
 
 The work is different from a group class. More rounds. More ring time. More
-attention on the specific things that will get exposed against a live opponent
-— defense, distance, output, and what you do when you're tired and behind.
+attention on the specific things that will get exposed against a live opponent, defense, distance, output, and what you do when you're tired and behind.
 
 ## Who this is for
 

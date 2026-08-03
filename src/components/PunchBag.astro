@@ -3,7 +3,7 @@
  * Interactive heavy bag. Click, tap, or hit Space/Enter to punch it.
  *
  * The swing is a damped pendulum integrated in requestAnimationFrame and
- * applied as a single `rotate()` on one group — no layout, no paint, so it
+ * applied as a single `rotate()` on one group, no layout, no paint, so it
  * stays smooth on a phone. Impact bursts are short-lived absolutely-positioned
  * elements that remove themselves on animationend.
  *
@@ -19,7 +19,7 @@
       <p class="eyebrow">Warm Up</p>
       <h2 class="h2 steel">Go on.<br />Hit it.</h2>
       <p class="lede">
-        No wraps needed for this one. Click the bag — or tap it if you’re on
+        No wraps needed for this one. Click the bag, or tap it if you’re on
         your phone. It’s the only round at Ironhand you can do in jeans.
       </p>
 
@@ -99,7 +99,7 @@
             <!-- Specular highlight -->
             <path
               d="M74 104 c-4 60 -4 180 0 250"
-              stroke="rgba(255,255,255,.16)"
+              stroke="rgba(255,255,255.16)"
               stroke-width="9"
               fill="none"
               stroke-linecap="round"></path>
@@ -144,7 +144,7 @@
     const BEST_KEY = 'ironhand:bag-best';
 
     // Personal best survives reloads. localStorage can throw in private mode
-    // or when storage is blocked, so every access is guarded — a failure here
+    // or when storage is blocked, so every access is guarded, a failure here
     // must not take the whole game down.
     const readBest = (): number => {
       try {
@@ -157,13 +157,13 @@
       try {
         localStorage.setItem(BEST_KEY, String(n));
       } catch {
-        /* storage unavailable — the run still counts, it just won't persist */
+        /* storage unavailable, the run still counts, it just won't persist */
       }
     };
 
     /**
      * The record carried in from previous visits, captured once at load.
-     * The celebration compares against THIS, not against `best` — `best`
+     * The celebration compares against THIS, not against `best`, `best`
      * tracks the live count, so comparing to it would fire on every punch.
      */
     const storedRecord = readBest();
@@ -192,7 +192,7 @@
       1000: 'One thousand. You win. There is nothing else. Go book a class.',
     };
 
-    /** Running commentary — highest threshold at or below the count wins. */
+    /** Running commentary, highest threshold at or below the count wins. */
     const MESSAGES: [number, string][] = [
       [750, 'We have stopped keeping track. You have not.'],
       [400, 'The bag has left the building.'],
@@ -205,7 +205,7 @@
       [1, 'That’s one. Keep going.'],
     ];
 
-    /** Damped pendulum — spring back to centre, bleed energy each frame. */
+    /** Damped pendulum, spring back to centre, bleed energy each frame. */
     function tick() {
       vel += -angle * 0.014;
       vel *= 0.975;
@@ -474,7 +474,7 @@
 
   /* Sized by HEIGHT, not width. The bag is 200x440, so constraining width
      makes it disproportionately tall on a phone and pushes the counter off
-     screen — you need to see the stats while you punch. */
+     screen, you need to see the stats while you punch. */
   .bag__svg {
     height: clamp(240px, 34vh, 380px);
     width: auto;
@@ -572,8 +572,7 @@
     filter: blur(3px);
   }
 
-  /* On phones the bag comes first so it and the counter share the screen —
-     otherwise you punch blind with the stats scrolled out of view. */
+  /* On phones the bag comes first so it and the counter share the screen, otherwise you punch blind with the stats scrolled out of view. */
   @media (max-width: 899px) {
     .bag__stage {
       order: -1;
@@ -592,10 +591,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bag__hint,
-    .bag__hit.is-hit .bag__svg,
-    .bag__msg.is-pop,
-    .bag__stat--record.is-new {
+    .bag__hint.bag__hit.is-hit .bag__svg.bag__msg.is-pop.bag__stat--record.is-new {
       animation: none;
     }
   }

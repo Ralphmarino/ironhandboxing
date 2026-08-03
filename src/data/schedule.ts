@@ -28,4 +28,4 @@ export const schedule: ClassSlot[] = [
 export const dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
 
 export const personalSessionNote =
-  'Wednesdays & Thursdays are open for Personal Sessions — times to be determined.';
+  'Wednesdays & Thursdays are open for Personal Sessions at times to be determined.';

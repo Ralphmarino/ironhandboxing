@@ -1,5 +1,5 @@
 /**
- * Site motion. Deliberately small and dependency-free — everything here is
+ * Site motion. Deliberately small and dependency-free, everything here is
  * IntersectionObserver plus transform/opacity, so it stays smooth on the low-end
  * Android phones a lot of local traffic arrives on.
  */
@@ -55,7 +55,7 @@ function initCounters() {
 
     const tick = (now: number) => {
       const p = Math.min((now - start) / duration, 1);
-      // easeOutExpo — fast off the line, settles gently, like a speed bag slowing
+      // easeOutExpo, fast off the line, settles gently, like a speed bag slowing
       const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
       el.textContent = (target * eased).toFixed(decimals);
       if (p < 1) requestAnimationFrame(tick);
@@ -134,7 +134,7 @@ function initMenu() {
   const closeBtn = panel.querySelector<HTMLButtonElement>('[data-menu-close]');
 
   const setOpen = (open: boolean) => {
-    // aria-expanded stays on the header burger — that is the control the
+    // aria-expanded stays on the header burger, that is the control the
     // panel belongs to, even though the close button lives inside the panel.
     toggle.setAttribute('aria-expanded', String(open));
     panel.classList.toggle('is-open', open);
@@ -154,7 +154,7 @@ function initMenu() {
 
   closeBtn?.addEventListener('click', () => setOpen(false));
 
-  // Any link closes the panel — including same-page #anchors, which would
+  // Any link closes the panel, including same-page #anchors, which would
   // otherwise scroll behind an open overlay.
   panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
 
@@ -165,7 +165,7 @@ function initMenu() {
 
 /* ---------- Hero parallax ------------------------------------------------- */
 /**
- * Pointer-driven drift on the hero badge. Desktop + fine pointer only — on
+ * Pointer-driven drift on the hero badge. Desktop + fine pointer only, on
  * touch this would never fire and the listener would just cost battery.
  */
 function initPointerDrift() {

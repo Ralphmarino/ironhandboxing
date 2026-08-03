@@ -4,7 +4,7 @@
  *
  * This renders the real logo artwork (`public/logo.png`) rather than a vector
  * recreation. The source is white-on-transparent, which is exactly right on the
- * dark shell — no recolouring needed.
+ * dark shell, no recolouring needed.
  *
  * The file is a 768px indexed PNG (~45KB). Indexed beats WebP by ~4x here:
  * the artwork is high-contrast line work, which lossy codecs handle badly and
@@ -27,7 +27,7 @@ const {
   size = 200,
   class: className = '',
   loading = 'lazy',
-  title = 'Ironhand Boxing — Staten Island',
+  title = 'Ironhand Boxing, Staten Island',
 } = Astro.props;
 
 const numeric = typeof size === 'number';

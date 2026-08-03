@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 /**
  * Blog posts live as markdown in src/content/blog/. The filename becomes the
  * URL slug, so `boxing-training-staten-island-benefits.md` publishes at
- * /blog/boxing-training-staten-island-benefits/ — matching the WordPress URL
+ * /blog/boxing-training-staten-island-benefits/, matching the WordPress URL
  * that is already indexed. Keep existing filenames when migrating posts.
  */
 const blog = defineCollection({

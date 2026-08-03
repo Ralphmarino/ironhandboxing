@@ -5,13 +5,13 @@ import { photos } from '../data/photos';
 /**
  * Instagram feed.
  *
- * Uses Behold.so — it holds the long-lived Instagram token and refreshes it,
+ * Uses Behold.so, it holds the long-lived Instagram token and refreshes it,
  * which is the part that breaks on every DIY integration. Drop the feed ID
  * into `IG_EMBED.beholdFeedId` in src/data/site.ts and the live grid replaces
  * the fallback automatically.
  *
  * Until then this renders a static grid so the section is never empty in
- * production — the same reason the script is only emitted when an ID exists.
+ * production, the same reason the script is only emitted when an ID exists.
  */
 const feedId = IG_EMBED.beholdFeedId;
 

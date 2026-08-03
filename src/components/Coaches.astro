@@ -8,8 +8,7 @@ import { coaches } from '../data/coaches';
       <p class="eyebrow">The Corner</p>
       <h2 class="h2 steel">Coaches who<br />actually coach.</h2>
       <p class="lede">
-        Ironhand is not a one-man gym anymore. Five coaches work the floor —
-        active competitors, certified cornermen, and fighters who came up
+        Ironhand is not a one-man gym anymore. Five coaches work the floor: active competitors, certified cornermen, and fighters who came up
         through this program themselves.
       </p>
     </div>
@@ -43,16 +42,34 @@ import { coaches } from '../data/coaches';
                 </ul>
               )}
 
-              {coach.instagram && (
-                <a class="coach__ig" href={coach.instagram} rel="noopener" target="_blank">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
-                  </svg>
-                  {coach.handle}
-                </a>
-              )}
+              <div class="coach__links">
+                {coach.instagram && (
+                  <a class="coach__link" href={coach.instagram} rel="noopener" target="_blank">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <rect x="2" y="2" width="20" height="20" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                    </svg>
+                    {coach.handle}
+                  </a>
+                )}
+
+                {coach.boxrec && (
+                  <a
+                    class="coach__link coach__link--boxrec"
+                    href={coach.boxrec}
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M4 7h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
+                      <path d="M3 3h18v4H3z" />
+                      <path d="M10 12h4" />
+                    </svg>
+                    BoxRec
+                  </a>
+                )}
+              </div>
             </div>
           </article>
         ))
@@ -102,7 +119,7 @@ import { coaches } from '../data/coaches';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Desaturated at rest, full colour on hover — keeps the grid cohesive
+    /* Desaturated at rest, full colour on hover, keeps the grid cohesive
        even when the source photos vary in lighting. */
     filter: grayscale(1) contrast(1.08);
     transition:
@@ -177,19 +194,38 @@ import { coaches } from '../data/coaches';
     background: var(--gold);
   }
 
-  .coach__ig {
+  /* Pinned to the bottom of the card so link rows line up across the grid
+     whether a coach has one link or two. */
+  .coach__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+  }
+
+  .coach__link {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    margin-top: auto;
-    padding-top: 0.85rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--chrome-3);
     transition: color 0.3s var(--ease-out);
   }
 
-  .coach__ig:hover {
+  .coach__link:hover {
     color: var(--ember-2);
+  }
+
+  /* Gold marks the fight record apart from the social link */
+  .coach__link--boxrec {
+    color: var(--gold);
+    opacity: 0.85;
+  }
+
+  .coach__link--boxrec:hover {
+    color: var(--gold);
+    opacity: 1;
   }
 </style>

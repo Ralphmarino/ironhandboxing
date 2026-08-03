@@ -1,6 +1,6 @@
 ---
 title: 'Why Boxing Works for Kids and Teens'
-description: 'What our Friday Kids & Teens class actually teaches — coordination, discipline and confidence — and why parents keep telling us the change shows up at home first.'
+description: 'What our Friday Kids & Teens class actually teaches, coordination, discipline and confidence, and why parents keep telling us the change shows up at home first.'
 pubDate: 2025-02-04
 author: 'Ian Sampaga'
 image: '/photos/kids-class-group.jpg'
@@ -28,7 +28,7 @@ tends to show up at school and at home before it shows up in the gym.
 
 Boxing is a full-body skill. Feet, hips, shoulders and hands all have to
 sequence correctly, in balance, while something is moving in front of you.
-Young athletes who train it pick up other sports noticeably faster — the
+Young athletes who train it pick up other sports noticeably faster. The
 body awareness carries.
 
 ## Confidence, not aggression
@@ -44,7 +44,7 @@ stands differently. Handles a bad day better. Stops shrinking in rooms.
 ## What the class looks like
 
 Our Kids & Teens class runs **Fridays at 5:00 PM**. It's pads, bags, footwork
-and conditioning — technique and fitness, not contact. If a young athlete later
+and conditioning, technique and fitness, not contact. If a young athlete later
 moves toward competing, that's a separate conversation and a parent is part of
 it from the start.
 

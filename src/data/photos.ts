@@ -3,11 +3,11 @@
  *
  * Every entry is a real gym photo, optimized from the originals in Google Drive
  * (2000px max, jpg + webp) via `npm run photos`. Width/height are the actual
- * output dimensions — they're set on the <img> tags to reserve space and stop
+ * output dimensions, they're set on the <img> tags to reserve space and stop
  * layout shift while images load.
  *
  * ⚠️ ALT TEXT: written from what is visible in each photo. Where people are
- * recognisable they are described, not named — except Coach Ian, whose photo
+ * recognisable they are described, not named, except Coach Ian, whose photo
  * came named. If you want members or coaches named in the alt text, tell me who
  * is who and I'll update it. Alt text is what image search reads, so it is
  * worth getting right.
@@ -212,7 +212,7 @@ export const photos = {
 } as const satisfies Record<string, Photo>;
 
 /**
- * Order shown on /gallery/ — deliberately interleaved so the mosaic mixes
+ * Order shown on /gallery/, deliberately interleaved so the mosaic mixes
  * orientations and subjects rather than clustering all the gym interiors or
  * all the kids' shots together.
  */

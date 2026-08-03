@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Ironhand Boxing — design system
+   Ironhand Boxing, design system
    Dark "forge" palette: black steel, chrome type, ember accent.
    Every animation is transform/opacity only so it stays on the compositor.
    ========================================================================== */
 
 /* ---------- Tokens ------------------------------------------------------ */
 :root {
-  /* Surfaces — near-black with a cool cast, like gym floor rubber */
+  /* Surfaces, near-black with a cool cast, like gym floor rubber */
   --ink-900: #08090b;
   --ink-800: #0c0e11;
   --ink-700: #121519;
@@ -22,7 +22,7 @@
   --chrome-2: #a8b0ba;
   --chrome-3: #6b7480;
 
-  /* Accent — heated iron */
+  /* Accent, heated iron */
   --ember: #e63a1f;
   --ember-2: #ff7a29;
   --gold: #d4af37;
@@ -293,7 +293,7 @@ p {
   white-space: nowrap;
 }
 
-/* Sheen that sweeps across on hover — reads as polished metal, not neon */
+/* Sheen that sweeps across on hover, reads as polished metal, not neon */
 .btn::before {
   content: '';
   position: absolute;
@@ -338,7 +338,7 @@ p {
 }
 
 /* ---------- Scroll reveal ----------------------------------------------- */
-/* Elements start hidden ONLY when JS is available to reveal them — the
+/* Elements start hidden ONLY when JS is available to reveal them, the
    .js class is set synchronously in <head>, so a no-JS visitor sees
    everything rendered normally instead of a blank page. */
 .js [data-reveal] {
@@ -391,7 +391,7 @@ p {
 }
 
 /* ---------- Texture ----------------------------------------------------- */
-/* Fine film grain over the whole page. Pure CSS/SVG — no image request. */
+/* Fine film grain over the whole page. Pure CSS/SVG, no image request. */
 .grain {
   position: fixed;
   inset: 0;

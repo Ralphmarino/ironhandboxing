@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 // Title preserved from the WordPress site.
 const title = 'Blog – Ironhand Boxing';
 const description =
-  'Boxing training, technique and gym news from Ironhand Boxing in Staten Island — written by Coach Ian Sampaga and the Ironhand coaching staff.';
+  'Boxing training, technique and gym news from Ironhand Boxing in Staten Island, written by Coach Ian Sampaga and the Ironhand coaching staff.';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -266,8 +266,7 @@ const fmt = (d: Date) =>
     transition: transform 0.35s var(--ease-out);
   }
 
-  .post:hover .post__more,
-  .feat:hover .post__more {
+  .post:hover .post__more.feat:hover .post__more {
     transform: translateX(4px);
   }
 
