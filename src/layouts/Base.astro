@@ -3,7 +3,31 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
+import BackToTop from '../components/BackToTop.astro';
 import { site } from '../data/site';
+import { schedule } from '../data/schedule';
+
+/** "6:00 PM" -> 18, for sorting and for schema's 24-hour format. */
+const hour24 = (t: string) => {
+  const [, h, m, ap] = t.match(/(\d+):(\d+)\s*(AM|PM)/i)!;
+  let hh = Number(h) % 12;
+  if (ap.toUpperCase() === 'PM') hh += 12;
+  return hh + Number(m) / 60;
+};
+const hhmm = (v: number) =>
+  `${String(Math.floor(v)).padStart(2, '0')}:${String(Math.round((v % 1) * 60)).padStart(2, '0')}`;
+
+const byDay = new Map<string, number[]>();
+for (const slot of schedule) {
+  byDay.set(slot.day, [...(byDay.get(slot.day) ?? []), hour24(slot.time)]);
+}
+
+const openingHours = [...byDay.entries()].map(([day, hours]) => ({
+  '@type': 'OpeningHoursSpecification',
+  dayOfWeek: [day],
+  opens: hhmm(Math.min(...hours)),
+  closes: hhmm(Math.max(...hours) + 1),
+}));
 
 interface Props {
   title: string;
@@ -53,19 +77,10 @@ const schema = {
     reviewCount: site.reviews.count,
     bestRating: 5,
   },
-  openingHoursSpecification: [
-    { days: ['Monday', 'Tuesday'], opens: '18:00', closes: '20:00' },
-    { days: ['Wednesday'], opens: '16:00', closes: '20:00' },
-    { days: ['Thursday'], opens: '11:00', closes: '12:00' },
-    { days: ['Friday'], opens: '17:00', closes: '19:00' },
-    { days: ['Saturday'], opens: '12:00', closes: '13:00' },
-    { days: ['Sunday'], opens: '18:00', closes: '19:00' },
-  ].map((s) => ({
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: s.days,
-    opens: s.opens,
-    closes: s.closes,
-  })),
+  // Derived from src/data/schedule.ts rather than hand-written, so adding or
+  // moving a class updates the structured data too. Classes run about an hour,
+  // so each day opens at its first class and closes an hour after its last.
+  openingHoursSpecification: openingHours,
 };
 ---
 
@@ -131,6 +146,7 @@ const schema = {
       <slot />
     </main>
     <Footer />
+    <BackToTop />
 
     <script>
       import '../scripts/motion.ts';

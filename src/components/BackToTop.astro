@@ -1,0 +1,182 @@
+---
+/**
+ * Scroll-to-top button, drawn as a boxing glove throwing an uppercut.
+ *
+ * Appears once you are a screen or so down the page, and the glove throws a
+ * little punch upward on hover and again on click before the scroll starts.
+ * Hidden until needed so it never covers content near the top.
+ */
+---
+
+<button class="totop" data-to-top aria-label="Back to top" hidden>
+  <svg viewBox="0 0 48 48" aria-hidden="true" class="totop__glove">
+    <defs>
+      <linearGradient id="gloveGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ff8a3d"></stop>
+        <stop offset="100%" stop-color="#d8331a"></stop>
+      </linearGradient>
+    </defs>
+
+    {/* Cuff */}
+    <rect x="15" y="33" width="18" height="10" rx="3.5" fill="#8f2214"></rect>
+    <rect x="15" y="33" width="18" height="3.4" rx="1.7" fill="#6d1a0f"></rect>
+
+    {/* Main body of the glove */}
+    <path
+      d="M13 21c0-6.6 5-11 11-11s11 4.4 11 11v7c0 3.3-2.6 6-6 6H19c-3.3 0-6-2.7-6-6z"
+      fill="url(#gloveGrad)"></path>
+
+    {/* Thumb */}
+    <path d="M13 22c-2.8 0-5 2.2-5 5s2.2 5 5 5h1.5V22z" fill="#e6482b"></path>
+
+    {/* Knuckle seam and highlight */}
+    <path d="M17 24h14" stroke="#8f2214" stroke-width="1.8" stroke-linecap="round"></path>
+    <path
+      d="M19 15.5c1.4-1.6 3.2-2.4 5.2-2.4"
+      stroke="rgba(255,255,255,.55)"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      fill="none"></path>
+  </svg>
+
+  <span class="totop__label">Top</span>
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-to-top]');
+
+  if (btn) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // `hidden` (not just opacity) so it is out of the tab order until it is
+    // actually usable.
+    let shown = false;
+    const setShown = (next: boolean) => {
+      if (next === shown) return;
+      shown = next;
+      if (next) {
+        btn.hidden = false;
+        requestAnimationFrame(() => btn.classList.add('is-in'));
+      } else {
+        btn.classList.remove('is-in');
+        setTimeout(() => {
+          if (!shown) btn.hidden = true;
+        }, 300);
+      }
+    };
+
+    let ticking = false;
+    const update = () => {
+      setShown(window.scrollY > window.innerHeight * 0.9);
+      ticking = false;
+    };
+
+    update();
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+
+    btn.addEventListener('click', () => {
+      // Let the punch animation land before the page starts moving
+      btn.classList.remove('is-punching');
+      void btn.offsetWidth;
+      btn.classList.add('is-punching');
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+      setTimeout(() => btn.classList.remove('is-punching'), 500);
+    });
+  }
+</script>
+
+<style>
+  .totop {
+    position: fixed;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    gap: 0.1rem;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgba(12, 14, 17, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+    transition:
+      opacity 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+
+  .totop.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .totop:hover {
+    border-color: var(--ember);
+  }
+
+  .totop__glove {
+    width: 30px;
+    height: 30px;
+    /* Cocked slightly so the uppercut on hover reads as a wind-up and release */
+    transform: rotate(-8deg);
+    transition: transform 0.35s var(--ease-punch);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+  }
+
+  .totop:hover .totop__glove {
+    transform: translateY(-5px) rotate(-8deg) scale(1.08);
+  }
+
+  .totop.is-punching .totop__glove {
+    animation: uppercut 0.45s var(--ease-punch);
+  }
+
+  @keyframes uppercut {
+    0% {
+      transform: translateY(3px) rotate(-8deg) scale(0.94);
+    }
+    45% {
+      transform: translateY(-13px) rotate(-8deg) scale(1.14);
+    }
+    100% {
+      transform: translateY(0) rotate(-8deg) scale(1);
+    }
+  }
+
+  .totop__label {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+    line-height: 1;
+  }
+
+  .totop:hover .totop__label {
+    color: var(--ember-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .totop,
+    .totop__glove {
+      transition: opacity 0.2s linear;
+    }
+    .totop.is-punching .totop__glove {
+      animation: none;
+    }
+  }
+</style>

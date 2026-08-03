@@ -62,7 +62,7 @@ export const coaches: Coach[] = [
     bio: 'Ian’s protégé. Mark came up through Ironhand as a student and now coaches on the same floor he learned on, which is exactly why newer members gravitate to him.',
   },
   {
-    name: 'Emmanuel',
+    name: 'Emmanuel Sandoval',
     role: 'Coach',
     instagram: 'https://www.instagram.com/popeyes_emma13',
     handle: '@popeyes_emma13',

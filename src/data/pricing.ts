@@ -26,33 +26,42 @@ export const monthlyPlans: Plan[] = [
   { name: 'Family Package', price: '150', unit: 'per student', note: '2+ kids' },
 ];
 
-/** One-off and add-on options. */
+/**
+ * One-off and add-on options.
+ *
+ * ⚠️ PERSONAL SESSIONS: Ian's note read "Personal session are 2 now for 250",
+ * which is taken here as a two-session block for $250, replacing the old $115
+ * single hour. If he meant something else (a rate rise to $125 per single
+ * hour, or two hours in one sitting), change it here AND in the two FAQ
+ * answers that quote the figure, so the site never states two prices.
+ *
+ * The $30 add-on class line was removed on his instruction.
+ */
 export const sessionPlans: Plan[] = [
   {
-    name: 'Personal Session',
-    price: '115',
-    unit: 'per hour',
+    name: 'Personal Sessions',
+    price: '250',
+    unit: 'for two sessions',
     note: 'One-on-one with Coach Ian',
     featured: true,
   },
   { name: 'Virtual Small Group', price: '25', unit: 'per session' },
   { name: 'Virtual 1-on-1', price: '45', unit: 'per session' },
-  { name: 'Add-On Classes', price: '30', unit: 'for the month' },
   { name: 'Custom Plan', price: 'TBD', unit: 'built around you', note: 'Contact us' },
 ];
 
 /**
- * The Fighters Program is a separate track from the open membership: Mon/Tue/Wed
- * at 7pm, competitors only, USA Boxing book required.
+ * The Fighters Program is a separate track from the open membership:
+ * Mon/Tue/Wed/Fri at 7pm, competitors only, USA Boxing book required.
  */
 export const fightersProgram = {
   name: 'Fighters Program',
   price: '150',
   unit: 'per month',
-  days: 'Monday · Tuesday · Wednesday at 7:00 PM',
+  days: 'Monday · Tuesday · Wednesday · Friday at 7:00 PM',
   requirement: 'Registered competitors only. You must have your book.',
   blurb:
-    'The competition track. Three nights a week of rounds, ring work and corner-ready preparation for athletes actively campaigning as amateurs.',
+    'The competition track. Four nights a week of rounds, ring work and corner-ready preparation for athletes actively campaigning as amateurs.',
 };
 
 /**

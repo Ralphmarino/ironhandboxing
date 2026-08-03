@@ -32,12 +32,12 @@ export const faqs: Faq[] = [
   {
     group: 'Competing',
     q: 'How Does Ironhand Boxing Accommodate Experienced Fighters?',
-    a: 'Experienced fighters will find Ironhand Boxing’s training sessions both challenging and rewarding. We offer advanced techniques, sparring sessions, and personalized feedback to refine your skills and strategy. Our Fighters Program runs Monday, Tuesday and Wednesday at 7:00 PM for registered competitors, and our coaches provide targeted preparation for amateur competition, technique, strategy and physical conditioning.',
+    a: 'Experienced fighters will find Ironhand Boxing’s training sessions both challenging and rewarding. We offer advanced techniques, sparring sessions, and personalized feedback to refine your skills and strategy. Our Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM for registered competitors, and our coaches provide targeted preparation for amateur competition, technique, strategy and physical conditioning.',
   },
   {
     group: 'Membership',
     q: 'What Are the Personal Session Options at Ironhand Boxing?',
-    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one sessions with Coach Ian are $115 per hour, and Wednesdays and Thursdays are set aside for them. We also offer virtual training, $45 for a 1-on-1 virtual session and $25 for a small group virtual session, so there are options for every budget and goal.',
+    a: 'Ironhand Boxing offers a variety of personal session options to meet different needs and schedules. One-on-one sessions with Coach Ian are $250 for two sessions, and Wednesdays and Thursdays are set aside for them. We also offer virtual training, $45 for a 1-on-1 virtual session and $25 for a small group virtual session, so there are options for every budget and goal.',
   },
   {
     group: 'Membership',
@@ -59,7 +59,7 @@ export const faqs: Faq[] = [
   {
     group: 'Visiting',
     q: 'What are your class times?',
-    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Wednesday at 4:00 PM, Thursday at 11:00 AM, Friday at 5:00 PM for Kids & Teens and 6:00 PM for adults, and Saturday at 12:00 PM. The Fighters Program runs Monday, Tuesday and Wednesday at 7:00 PM.',
+    a: 'Group classes run seven days a week: Sunday, Monday and Tuesday at 6:00 PM, Thursday at 11:00 AM, Friday at 6:00 PM, and Saturday at 12:00 PM. Kids & Teens run Wednesday at 4:00 PM and Friday at 5:00 PM. Women’s Boxing is Saturday at 11:00 AM. The Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM.',
   },
   {
     group: 'Getting Started',
@@ -104,7 +104,7 @@ export const faqs: Faq[] = [
   {
     group: 'Membership',
     q: 'How much are boxing classes in Staten Island?',
-    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes three personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $115 per hour.',
+    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes three personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $250 for two sessions.',
   },
   {
     group: 'Membership',
@@ -134,7 +134,7 @@ export const faqs: Faq[] = [
   {
     group: 'Competing',
     q: 'Can I compete as an amateur out of Ironhand?',
-    a: 'Yes. Our Fighters Program runs Monday, Tuesday and Wednesday at 7:00 PM for registered competitors and costs $150 per month. You need your USA Boxing passbook to train in it, and a coach will walk you through registering and getting one.',
+    a: 'Yes. Our Fighters Program runs Monday, Tuesday, Wednesday and Friday at 7:00 PM for registered competitors and costs $150 per month. You need your USA Boxing passbook to train in it, and a coach will walk you through registering and getting one.',
   },
   {
     group: 'Competing',

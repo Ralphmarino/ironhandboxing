@@ -135,6 +135,17 @@ const byDay = dayOrder.map((short) => ({
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.12), transparent);
   }
 
+  /* Women's class gets its own colour so the four tracks stay distinguishable
+     at a glance rather than blurring into the neutral group-class styling. */
+  .slot--womens {
+    border-left-color: #7cc4d8;
+    background: linear-gradient(90deg, rgba(124, 196, 216, 0.14), transparent);
+  }
+
+  .slot--womens .slot__label {
+    color: #7cc4d8;
+  }
+
   .slot__time {
     font-family: var(--font-display);
     font-size: 1.0625rem;

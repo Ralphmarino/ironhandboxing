@@ -78,8 +78,11 @@ import { site, seo } from '../data/site';
     position: relative;
     display: flex;
     align-items: center;
-    min-height: clamp(640px, 92svh, 1000px);
-    padding-block: clamp(3rem, 8vw, 6rem) clamp(5rem, 10vw, 8rem);
+    /* Sized so the badge clears the fold on a 1366x768 laptop. The header and
+       announcement bar eat ~110px above this, so a 92svh hero with generous
+       padding pushed the logo below the viewport on common laptop heights. */
+    min-height: clamp(560px, 74svh, 860px);
+    padding-block: clamp(2rem, 4vw, 3.25rem) clamp(3rem, 6vw, 4.5rem);
     overflow: hidden;
     z-index: 2;
   }
@@ -126,7 +129,7 @@ import { site, seo } from '../data/site';
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1.1rem;
     max-width: 40ch;
   }
 
@@ -149,6 +152,7 @@ import { site, seo } from '../data/site';
 
   .hero__h1 {
     /* Fight-poster compression: tight leading, slight negative tracking */
+    font-size: clamp(2.25rem, 5.6vw, 4.25rem);
     letter-spacing: -0.03em;
     line-height: 0.85;
   }
@@ -286,8 +290,15 @@ import { site, seo } from '../data/site';
       grid-template-columns: 1.1fr 0.9fr;
     }
 
+    /* Wider than the 40ch prose cap so the two CTAs sit on one row. Stacking
+       them pushed the Google rating chip below the fold, which is the piece of
+       social proof most worth keeping above it. */
+    .hero__copy {
+      max-width: 36rem;
+    }
+
     .hero__badge {
-      width: min(42vw, 520px);
+      width: min(36vw, 430px);
     }
   }
 

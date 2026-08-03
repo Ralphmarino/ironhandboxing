@@ -40,7 +40,7 @@ had to figure this out alone.
 
 ## The Fighters Program
 
-Once you're registered, you train **Monday, Tuesday and Wednesday at 7:00 PM**
+Once you're registered, you train **Monday, Tuesday, Wednesday and Friday at 7:00 PM**
 with the competition group. It's $150 per month, and you need your book to be
 in it.
 

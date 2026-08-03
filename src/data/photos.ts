@@ -184,18 +184,13 @@ export const photos = {
     width: 642,
     height: 802,
   },
-  cornerBetweenRounds: {
-    src: '/photos/corner-between-rounds.jpg',
-    alt: 'An Ironhand corner talking to their fighter between rounds',
-    width: 720,
-    height: 958,
-    span: 'wide',
-  },
-  ringsideCorner: {
-    src: '/photos/ringside-corner.jpg',
-    alt: 'Ironhand coaches working the corner at an amateur show',
-    width: 720,
-    height: 958,
+  /* Replaces two ringside photos removed at the client's request. */
+  fightersProgram: {
+    src: '/photos/fighters-program.jpg',
+    alt: 'An Ironhand fighter with his championship belt alongside his coach after a bout',
+    width: 1320,
+    height: 2346,
+    span: 'tall',
   },
   afterTheBout: {
     src: '/photos/fighters-after-the-bout.jpg',
@@ -241,6 +236,7 @@ export const photos = {
 export const galleryPhotos: Photo[] = [
   photos.teamPhoto,
   photos.fighterPortrait,
+  photos.fightersProgram,
   photos.kidsStance,
   photos.gymFloor,
   photos.coachMittWork,
@@ -254,7 +250,6 @@ export const galleryPhotos: Photo[] = [
   photos.youthMittWork,
   photos.teenGuardUp,
   photos.bagsWall,
-  photos.cornerBetweenRounds,
   photos.gloveCloseup,
   photos.youthBag,
   photos.cage,
@@ -265,7 +260,6 @@ export const galleryPhotos: Photo[] = [
   photos.afterTheBout,
   photos.ringPortrait,
   photos.coachPadWork,
-  photos.ringsideCorner,
   photos.betweenRounds,
   photos.guests,
 ];
