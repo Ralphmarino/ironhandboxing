@@ -69,7 +69,7 @@ export const faqs: Faq[] = [
   {
     group: 'Getting Started',
     q: 'What should I bring to my first boxing class?',
-    a: 'Athletic clothes you can move in, sneakers, water and a towel. We will get you set up with gloves and wraps for your first session. Do not buy equipment before you come. Once you know you are staying, a coach will tell you what is actually worth spending money on.',
+    a: 'Athletic clothes you can move in, boxing shoes, water and a towel. We will get you set up with gloves and wraps for your first session, so do not go buying equipment before you come. Once you know you are staying, a coach will tell you what is actually worth spending money on.',
   },
   {
     group: 'Getting Started',
