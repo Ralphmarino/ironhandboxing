@@ -1,0 +1,191 @@
+---
+/**
+ * Language switch, drawn as a two-position segmented control.
+ *
+ * It reads as a switch and not as another link because both languages are
+ * always visible with one of them lit: the shape tells you there are exactly
+ * two states and which one you are in, before you read a word of it.
+ *
+ * The active side is a <span aria-current="true">, not a link to the page you
+ * are already on. The inactive side is the only thing clickable.
+ *
+ * No JavaScript. The active side is known at build time, so the lit thumb is
+ * positioned in CSS off a single class.
+ */
+import type { Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+  /** Where the other language lives. Null hides the control entirely. */
+  altUrl: string | null;
+  /** `compact` for the header row, `full` for the mobile menu. */
+  size?: 'compact' | 'full';
+  class?: string;
+}
+
+const { lang, altUrl, size = 'compact', class: className = '' } = Astro.props;
+
+const labels = {
+  en: { short: 'EN', long: 'English' },
+  es: { short: 'ES', long: 'Español' },
+};
+
+const other: Lang = lang === 'en' ? 'es' : 'en';
+const key = size === 'compact' ? 'short' : 'long';
+
+/**
+ * Both languages are named in the accessible label. Someone reaching for this
+ * control is, by definition, the person least likely to read the page's own
+ * language.
+ */
+const groupLabel = 'Language / Idioma';
+const switchTo = other === 'es' ? 'Cambiar a español' : 'Switch to English';
+---
+
+{
+  altUrl && (
+    <div
+      class={`lang lang--${size} ${lang === 'es' ? 'is-es' : 'is-en'} ${className}`}
+      role="group"
+      aria-label={groupLabel}
+    >
+      <span class="lang__thumb" aria-hidden="true" />
+
+      {size === 'full' && (
+        <svg class="lang__globe" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.6 2.9 2.6 15.1 0 18M12 3c-2.6 2.9-2.6 15.1 0 18" />
+        </svg>
+      )}
+
+      {lang === 'en' ? (
+        <Fragment>
+          <span class="lang__opt is-on" aria-current="true" lang="en">
+            {labels.en[key]}
+          </span>
+          <a class="lang__opt" href={altUrl} lang="es" hreflang="es" aria-label={switchTo}>
+            {labels.es[key]}
+          </a>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <a class="lang__opt" href={altUrl} lang="en" hreflang="en" aria-label={switchTo}>
+            {labels.en[key]}
+          </a>
+          <span class="lang__opt is-on" aria-current="true" lang="es">
+            {labels.es[key]}
+          </span>
+        </Fragment>
+      )}
+    </div>
+  )
+}
+
+<style>
+  .lang {
+    position: relative;
+    display: inline-grid;
+    grid-auto-flow: column;
+    align-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--font-mono);
+    line-height: 1;
+    isolation: isolate;
+  }
+
+  /* The lit half. One element that slides, rather than two states of styling,
+     so switching languages animates instead of cutting. */
+  .lang__thumb {
+    position: absolute;
+    z-index: -1;
+    top: 3px;
+    bottom: 3px;
+    border-radius: 100px;
+    background: var(--grad-ember);
+    transition: transform 0.4s var(--ease-punch);
+  }
+
+  .lang__opt {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: var(--chrome-3);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .lang__opt.is-on {
+    color: #fff;
+  }
+
+  /* Only the inactive side is a link, so this only ever hits that one. */
+  a.lang__opt:hover {
+    color: var(--chrome);
+  }
+
+  .lang__globe {
+    color: var(--chrome-3);
+    justify-self: center;
+  }
+
+  /* ---- Compact: sits in the desktop header row ---- */
+  .lang--compact {
+    grid-template-columns: repeat(2, 2.4rem);
+    height: 2.1rem;
+    padding: 0 3px;
+    font-size: 0.6875rem;
+  }
+
+  .lang--compact .lang__thumb {
+    left: 3px;
+    width: 2.4rem;
+  }
+
+  .lang--compact.is-es .lang__thumb {
+    transform: translateX(100%);
+  }
+
+  .lang--compact .lang__opt {
+    height: 100%;
+  }
+
+  /* ---- Full: bottom of the mobile menu ---- */
+  .lang--full {
+    grid-template-columns: 2.75rem 1fr 1fr;
+    width: 100%;
+    height: 3.25rem;
+    padding: 0 4px 0 0;
+    font-size: 0.8125rem;
+  }
+
+  .lang--full .lang__thumb {
+    left: 2.75rem;
+    right: 4px;
+    width: auto;
+  }
+
+  /* Two equal halves after the globe column, so the thumb is exactly half the
+     remaining width whichever side is lit. */
+  .lang--full .lang__thumb {
+    right: auto;
+    width: calc((100% - 2.75rem - 4px) / 2);
+  }
+
+  .lang--full.is-es .lang__thumb {
+    transform: translateX(100%);
+  }
+
+  .lang--full .lang__opt {
+    height: calc(100% - 8px);
+    align-self: center;
+    text-transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lang__thumb {
+      transition: none;
+    }
+  }
+</style>

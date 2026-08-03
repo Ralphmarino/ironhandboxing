@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import LangToggle from './LangToggle.astro';
 import { path as route, type Lang } from '../i18n/config';
 import { useTranslations } from '../i18n/ui';
 
@@ -49,24 +50,12 @@ const path = Astro.url.pathname;
       }
     </nav>
 
-    {
-      altUrl && (
-        <a
-          class="hdr__lang"
-          href={altUrl}
-          lang={lang === 'en' ? 'es' : 'en'}
-          hreflang={lang === 'en' ? 'es' : 'en'}
-          aria-label={t('nav.langSwitch')}
-          title={t('nav.langSwitch')}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" />
-            <path d="M3 12h18M12 3c2.6 2.9 2.6 15.1 0 18M12 3c-2.6 2.9-2.6 15.1 0 18" />
-          </svg>
-          {t('nav.langLabel')}
-        </a>
-      )
-    }
+    {/* Wrapped rather than styled directly: LangToggle's own scoped rules set
+        its display, and a bare class from here loses to them on source order,
+        which left the switch showing in the mobile header. */}
+    <div class="hdr__lang">
+      <LangToggle lang={lang} altUrl={altUrl} size="compact" />
+    </div>
 
     <a class="btn hdr__cta" href={route('contact', lang)}>{t('nav.cta')}</a>
 
@@ -111,15 +100,19 @@ const path = Astro.url.pathname;
 
     <nav class="menu__nav wrap" aria-label={t('nav.mobile')}>
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a class="btn menu__cta" href={route('contact', lang)}>{t('nav.cta')}</a>
+
+      {/* Deliberately below the CTA and outside the link list: it changes what
+          the site is, it is not another place to go. */}
       {
         altUrl && (
-          <a class="menu__lang" href={altUrl} lang={lang === 'en' ? 'es' : 'en'}>
-            {lang === 'en' ? 'Ver en español' : 'View in English'}
-          </a>
+          <div class="menu__langwrap">
+            <p class="menu__langlbl">Language / Idioma</p>
+            <LangToggle lang={lang} altUrl={altUrl} size="full" />
+          </div>
         )
       }
-    <a class="btn menu__cta" href={route('contact', lang)}>{t('nav.cta')}</a>
-  </nav>
+    </nav>
 </div>
 
 <style>
@@ -182,40 +175,55 @@ const path = Astro.url.pathname;
     color: var(--chrome-3);
   }
 
-  /* Globe + language code. Deliberately quiet: it matters enormously to the
-     people who need it and should be invisible to everyone else. */
+  /* The language switch is a control, not a nav link, so it sits outside
+     .hdr__nav and only appears once the desktop row does. */
   .hdr__lang {
     display: none;
-    align-items: center;
-    gap: 0.35rem;
+  }
+
+  .hdr__lang:empty {
+    display: none !important;
+  }
+
+  .menu__langwrap {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  /* Named in both languages on purpose: the person reaching for this is the
+     one least likely to read the language the page is currently in. */
+  .menu__langlbl {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: var(--chrome-3);
-    padding: 0.4rem 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 100px;
-    transition:
-      color 0.3s var(--ease-out),
-      border-color 0.3s var(--ease-out);
-  }
-
-  .hdr__lang:hover {
-    color: var(--chrome);
-    border-color: var(--line-strong);
-  }
-
-  .menu__lang {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    letter-spacing: 0.1em;
-    color: var(--ember-2);
   }
 
   .hdr__nav {
     display: none;
-    /* Tightened again: eight links, the language chip and the CTA share the row */
+    /* Eight links, the language switch and the CTA all share this row */
     gap: 1.1rem;
+  }
+
+  /*
+   * The header row is capped at --page, so a wider window does not buy space:
+   * the Spanish labels ("Nuevos Clientes" against "New Clients") simply need
+   * more of it than the English ones, and without this they run back into the
+   * wordmark at every desktop width. Scoped off the document language, which
+   * the layout already sets.
+   */
+  :global(html[lang='es']) .hdr__nav {
+    gap: 0.8rem;
+    font-size: 0.8125rem;
+  }
+
+  :global(html[lang='es']) .hdr__nav a {
+    font-size: inherit;
   }
 
   .hdr__nav a {
@@ -397,9 +405,12 @@ const path = Astro.url.pathname;
      experience in the gap. */
   @media (min-width: 1280px) {
     .hdr__nav,
-    .hdr__cta,
-    .hdr__lang {
+    .hdr__cta {
       display: flex;
+    }
+
+    .hdr__lang {
+      display: block;
     }
     .hdr__burger,
     .menu {
