@@ -9,6 +9,9 @@ const links = [
   { href: '/gallery/', label: 'Gallery' },
   { href: '/blog/', label: 'Blog' },
   { href: '/frequently-asked-questions/', label: 'FAQ' },
+  // Duplicates the "Start Training" CTA on purpose. The button is the
+  // conversion path, but people scan a nav for the words "Contact Us".
+  { href: '/contact-us/', label: 'Contact Us' },
 ];
 
 const path = Astro.url.pathname;
@@ -143,7 +146,8 @@ const path = Astro.url.pathname;
 
   .hdr__nav {
     display: none;
-    gap: 1.9rem;
+    /* Tightened from 1.9rem: eight links plus the CTA no longer fit otherwise */
+    gap: 1.35rem;
   }
 
   .hdr__nav a {
@@ -312,11 +316,15 @@ const path = Astro.url.pathname;
     color: #fff !important;
   }
 
-  @media (min-width: 1080px) {
-    .hdr__nav.hdr__cta {
+  /* Raised from 1080px: the extra "Contact Us" link needs more room before the
+     horizontal nav can replace the burger without crowding the CTA. */
+  @media (min-width: 1180px) {
+    .hdr__nav,
+    .hdr__cta {
       display: flex;
     }
-    .hdr__burger.menu {
+    .hdr__burger,
+    .menu {
       display: none;
     }
   }

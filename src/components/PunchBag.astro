@@ -99,7 +99,7 @@
             <!-- Specular highlight -->
             <path
               d="M74 104 c-4 60 -4 180 0 250"
-              stroke="rgba(255,255,255.16)"
+              stroke="rgba(255,255,255,.16)"
               stroke-width="9"
               fill="none"
               stroke-linecap="round"></path>
@@ -572,11 +572,78 @@
     filter: blur(3px);
   }
 
-  /* On phones the bag comes first so it and the counter share the screen, otherwise you punch blind with the stats scrolled out of view. */
+  /*
+   * Phone layout is tuned so the bag, the counter and the power meter all fit
+   * one screen at 390x844. Punching while the score is scrolled out of view is
+   * the whole game missing its feedback loop, so everything here is sized to
+   * that budget: compact section padding, a shorter bag, a smaller heading, and
+   * three stat tiles on one row with the meter spanning underneath.
+   */
   @media (max-width: 899px) {
+    .bag {
+      padding-block: clamp(2rem, 6vw, 3rem);
+    }
+
+    .bag__inner {
+      gap: 1rem;
+    }
+
     .bag__stage {
       order: -1;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0;
+    }
+
+    .bag__svg {
+      height: clamp(180px, 26vh, 250px);
+    }
+
+    .bag__copy {
+      gap: 0.7rem;
+    }
+
+    .bag__copy .h2 {
+      font-size: clamp(1.6rem, 7.5vw, 2.1rem);
+    }
+
+    /* Flavour text, not instructions: the "Punch me" chip already says what to
+       do, so this drops out rather than pushing the score off screen. */
+    .bag__copy .lede {
+      display: none;
+    }
+
+    .bag__stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+      margin-top: 0;
+    }
+
+    .bag__stat {
+      padding: 0.55rem 0.6rem;
+    }
+
+    .bag__stat dt {
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+    }
+
+    .bag__stat dd {
+      font-size: 1.3rem;
+      margin-top: 0.15rem;
+    }
+
+    .bag__meter {
+      height: 8px;
+      margin-top: 0.35rem;
+    }
+
+    .bag__msg {
+      font-size: 0.6875rem;
+    }
+
+    .bag__cta {
+      margin-top: 0;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
     }
   }
 
@@ -591,7 +658,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bag__hint.bag__hit.is-hit .bag__svg.bag__msg.is-pop.bag__stat--record.is-new {
+    .bag__hint,
+    .bag__hit.is-hit .bag__svg,
+    .bag__msg.is-pop,
+    .bag__stat--record.is-new {
       animation: none;
     }
   }

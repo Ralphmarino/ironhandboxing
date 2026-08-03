@@ -3,8 +3,8 @@ title: 'Why Boxing Works for Kids and Teens'
 description: 'What our Friday Kids & Teens class actually teaches, coordination, discipline and confidence, and why parents keep telling us the change shows up at home first.'
 pubDate: 2025-02-04
 author: 'Ian Sampaga'
-image: '/photos/kids-class-group.jpg'
-imageAlt: 'The Ironhand kids boxing class with gloves up alongside their coach'
+image: '/photos/kids-classes.jpg'
+imageAlt: 'Three young Ironhand members holding their boxing stance during the Kids & Teens class'
 tags: ['Kids & Teens', 'Parents']
 ---
 

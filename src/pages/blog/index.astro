@@ -266,7 +266,8 @@ const fmt = (d: Date) =>
     transition: transform 0.35s var(--ease-out);
   }
 
-  .post:hover .post__more.feat:hover .post__more {
+  .post:hover .post__more,
+  .feat:hover .post__more {
     transform: translateX(4px);
   }
 

@@ -4,7 +4,7 @@ import { photos } from '../data/photos';
 const offers = [
   {
     n: '01',
-    photo: photos.jumpRope,
+    photo: photos.teamPhoto,
     title: 'Group Classes',
     body: 'The core of the gym. Technique, one-on-one mitt work with a coach, bag work and conditioning. Every session, seven days a week. Beginners and experienced boxers train on the same floor at their own level.',
     tag: 'All levels',
@@ -137,7 +137,9 @@ const offers = [
     color: var(--ember-2);
   }
 
-  .offer__ttl.offer__body.offer__tag {
+  .offer__ttl,
+  .offer__body,
+  .offer__tag {
     margin-inline: clamp(1.25rem, 2.5vw, 1.75rem);
   }
 

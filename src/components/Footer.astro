@@ -78,7 +78,13 @@ const mapQuery = encodeURIComponent(
     </div>
 
     <div class="ftr__bottom">
-      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <p class="ftr__legal">
+        © {year} {site.legalName}. All rights reserved.
+        <span class="ftr__sep" aria-hidden="true">|</span>
+        <a href="/sitemap-index.xml">Sitemap</a>
+        <span class="ftr__sep" aria-hidden="true">|</span>
+        <a href="/llms.txt">llms.txt</a>
+      </p>
       <p class="ftr__built">
         <a href={site.builtBy.url} rel="noopener" target="_blank">{site.builtBy.label}</a>
       </p>
@@ -173,6 +179,21 @@ const mapQuery = encodeURIComponent(
     border-top: 1px solid var(--line);
     font-size: 0.8125rem;
     color: var(--chrome-3);
+  }
+
+  .ftr__legal a {
+    color: var(--chrome-2);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .ftr__legal a:hover {
+    color: var(--ember-2);
+  }
+
+  .ftr__sep {
+    margin-inline: 0.4rem;
+    color: var(--chrome-3);
+    opacity: 0.6;
   }
 
   .ftr__built {
