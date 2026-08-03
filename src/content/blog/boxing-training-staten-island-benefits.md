@@ -5,13 +5,14 @@ pubDate: 2024-06-18
 author: 'Ian Sampaga'
 image: '/photos/coach-mitt-work-youth.jpg'
 imageAlt: 'A coach holding mitts for a boxer during a class at Ironhand Boxing in Staten Island'
+translationEs: 'beneficios-del-boxeo-en-staten-island'
 tags: ['Training', 'Beginners']
 ---
 
-> **Migration note (delete before launch):** this slug matches the post already
-> published at `/blog/boxing-training-staten-island-benefits/` on WordPress.
-> Replace the body below with the original copy so the existing rankings and
-> backlinks carry over cleanly.
+<!-- ⚠️ MIGRATION: this slug matches the post already published at
+     /blog/boxing-training-staten-island-benefits/ on WordPress. The body below
+     is newly written, not the original copy. If the original is recoverable,
+     swap it in so the existing rankings and backlinks carry over cleanly. -->
 
 People walk into Ironhand for a hundred different reasons. They want to lose
 weight. They want to feel safer walking home. They had a bad year and they need

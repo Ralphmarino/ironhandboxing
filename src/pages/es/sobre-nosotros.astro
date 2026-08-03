@@ -1,0 +1,209 @@
+---
+import Base from '../../layouts/Base.astro';
+import Coaches from '../../components/Coaches.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Ticker from '../../components/Ticker.astro';
+import { photos } from '../../data/photos';
+
+const title = 'Sobre Nosotros – Ironhand Boxing Staten Island';
+const description =
+  'Ironhand Boxing fue fundado por Ian Sampaga para servir, influir e inspirar a la comunidad de Staten Island con entrenamiento de boxeo de primer nivel para todas las edades y niveles.';
+
+const values = [
+  {
+    title: 'Aquí a todos se les entrena',
+    body: 'El trabajo de manoplas uno a uno está dentro de cada clase, sin excepción. Nadie te deja frente a un saco a ver cómo te las arreglas. Un entrenador se pone las manoplas contigo, siempre.',
+  },
+  {
+    title: 'La familia primero',
+    body: 'Aquí entrenan niños. Aquí entrenan sus padres. Aquí entrena gente de sesenta y tantos. La sala está armada para que alguien nervioso en su primer día y un competidor amateur puedan compartirla sin que ninguno se sienta fuera de lugar.',
+  },
+  {
+    title: 'Técnica por encima del ego',
+    body: 'El sparring es opcional y siempre supervisado. A nadie se le echa al agua a ver si se hunde. Los fundamentos van primero, y siguen yendo primero por más tiempo que lleves aquí.',
+  },
+  {
+    title: 'Staten Island de verdad',
+    body: 'Este es un gimnasio de barrio en Castleton Avenue, no una franquicia. Carácter neoyorquino y una sala llena de gente que de verdad se sabe los nombres.',
+  },
+];
+---
+
+<Base title={title} description={description}>
+  <section class="section abt-hero gridlines">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Sobre Ironhand</p>
+      <h1 class="display steel abt-hero__h1" data-reveal data-reveal-index="1">
+        Lo construyó un<br />entrenador, no una cadena.
+      </h1>
+      <p class="lede abt-hero__lede" data-reveal data-reveal-index="2">
+        Ironhand Boxing, en Staten Island, fue fundado por Ian Sampaga para
+        servir, influir e inspirar a nuestros clientes y a la comunidad con
+        entrenamiento de boxeo de primer nivel. El compromiso de Ian con el
+        boxeo es lo que dio origen a Ironhand.
+      </p>
+    </div>
+  </section>
+
+  <Ticker lang="es" />
+
+  <section class="section abt-story">
+    <div class="wrap abt-story__grid">
+      <div class="abt-story__media" data-reveal>
+        <img
+          src={photos.teamPhoto.src}
+          alt={photos.teamPhoto.altEs ?? photos.teamPhoto.alt}
+          width={photos.teamPhoto.width}
+          height={photos.teamPhoto.height}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="abt-story__copy" data-reveal data-reveal-index="1">
+        <p class="eyebrow">El Gimnasio</p>
+        <h2 class="h2 steel">Una sala que devuelve lo que le pones.</h2>
+        <p>
+          Ironhand se ganó su reputación como el mejor gimnasio de boxeo de
+          Staten Island haciendo algo poco vistoso de forma constante: entrenar
+          bien a cada persona que entra. Los programas están armados para que
+          cada miembro reciba el entrenamiento que de verdad necesita, ya sea
+          afinar la técnica, trabajar las manoplas, sumar rounds en el saco o
+          simplemente ponerse en la mejor forma de su vida.
+        </p>
+        <p>
+          Las clases están diseñadas para todos los niveles, desde quien se
+          asoma al boxeo por primera vez hasta competidores curtidos que pulen
+          su oficio. Lo que las une es el estándar: técnica correcta, atención
+          uno a uno y una sala donde el respeto es el precio de entrada.
+        </p>
+        <p>
+          Ian ya no entrena solo. Hoy Ironhand funciona con un equipo completo:
+          entrenadores certificados, competidores amateur en activo y
+          boxeadores que se formaron en este programa y se quedaron a
+          enseñarlo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section abt-values">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">En Lo Que Nos Paramos</p>
+        <h2 class="h2 steel">Cuatro cosas que no negociamos.</h2>
+      </div>
+
+      <div class="abt-values__grid">
+        {
+          values.map((v, i) => (
+            <article class="card" data-reveal data-reveal-index={i}>
+              <h3 class="h3 abt-values__ttl">{v.title}</h3>
+              <p class="abt-values__body">{v.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Coaches lang="es" />
+  <CtaBand
+    lang="es"
+    title="Ven a ver la sala."
+    body="La mejor forma de entender Ironhand es entrar durante una clase. Escríbenos y te decimos a cuál venir."
+    cta="Escríbenos"
+  />
+</Base>
+
+<style>
+  .abt-hero {
+    position: relative;
+    z-index: 2;
+    background: var(--ink-900);
+    padding-block: clamp(4rem, 9vw, 7rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  /* Spanish headline words run longer than their English counterparts
+     ("PREGÚNTANOS" against "ASK US", "ENTRENADOR" against "COACH"), and Anton
+     is a display face with no hyphenation to fall back on. The floor of this
+     clamp is lower than the English page's so a single long word still fits a
+     320px screen. Astro scopes this style to the Spanish page, the English one
+     keeps its larger minimum. */
+  .abt-hero__h1 {
+    font-size: clamp(2rem, 8vw, 6.5rem);
+    letter-spacing: -0.03em;
+    margin-block: 1.25rem;
+  }
+
+  .abt-hero__lede {
+    max-width: 60ch;
+  }
+
+  .abt-story {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+  }
+
+  .abt-story__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .abt-story__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--ink-700);
+  }
+
+  .abt-story__media img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  .abt-story__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    align-items: flex-start;
+  }
+
+  .abt-story__copy p {
+    max-width: 58ch;
+    color: var(--chrome-2);
+  }
+
+  .abt-values {
+    background: linear-gradient(180deg, var(--ink-900), var(--ink-800));
+    position: relative;
+    z-index: 2;
+  }
+
+  .abt-values__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .abt-values__ttl {
+    font-size: 1.375rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .abt-values__body {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--chrome-3);
+  }
+
+  @media (min-width: 900px) {
+    .abt-story__grid {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+  }
+</style>

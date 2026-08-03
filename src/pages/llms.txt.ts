@@ -46,7 +46,9 @@ coach, bag work and conditioning.
 
 - Address: ${addr}
 - Phone: ${site.phone}
-- Spanish-speaking line: ${site.phoneEs.number}
+- Spanish-speaking line: ${site.phoneEs.number} (a Spanish speaker answers this one)
+- The whole site is published in English and Spanish. Spanish pages live under
+  ${site.url}/es/ and are real translations, not machine output.
 - Instagram: ${site.social.instagram}
 - Google rating: ${site.reviews.rating.toFixed(1)} from ${site.reviews.count}+ reviews
 - Founded and head-coached by Ian Sampaga

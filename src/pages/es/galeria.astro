@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import InstagramFeed from '../../components/InstagramFeed.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { galleryPhotos } from '../../data/photos';
+
+const title = 'Galería - Fotos del Gimnasio de Boxeo en Staten Island';
+const description =
+  'Fotos desde adentro de Ironhand Boxing en Staten Island: clases grupales, trabajo de manoplas, niños y adolescentes, y nuestros boxeadores amateur en el ring.';
+---
+
+<Base title={title} description={description}>
+  <section class="section gal-hero gridlines">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Galería</p>
+      <h1 class="display steel gal-hero__h1" data-reveal data-reveal-index="1">
+        Por dentro.
+      </h1>
+      <p class="lede gal-hero__lede" data-reveal data-reveal-index="2">
+        Clases reales, miembros reales, trabajo real. Así se ve de verdad una
+        noche en Ironhand.
+      </p>
+    </div>
+  </section>
+
+  <section class="section gal">
+    <div class="wrap">
+      <div class="gal__grid">
+        {
+          galleryPhotos.map((p, i) => (
+            <figure
+              class={`gal__item ${p.span ? `gal__item--${p.span}` : ''}`}
+              data-reveal
+              data-reveal-index={i % 6}
+            >
+              <img
+                src={p.src}
+                alt={p.altEs ?? p.alt}
+                width={p.width}
+                height={p.height}
+                loading={i < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <figcaption class="visually-hidden">{p.altEs ?? p.alt}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <InstagramFeed lang="es" />
+  <CtaBand
+    lang="es"
+    title="Sal tú en la próxima foto."
+    body="La siguiente clase ya está en el horario. Escríbenos y te guardamos un lugar."
+    cta="Reserva tu primera clase"
+  />
+</Base>
+
+<style>
+  .gal-hero {
+    background: var(--ink-900);
+    padding-block: clamp(3.5rem, 8vw, 6rem) clamp(1.5rem, 3vw, 2.5rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Spanish headline words run longer than their English counterparts
+     ("PREGÚNTANOS" against "ASK US", "ENTRENADOR" against "COACH"), and Anton
+     is a display face with no hyphenation to fall back on. The floor of this
+     clamp is lower than the English page's so a single long word still fits a
+     320px screen. Astro scopes this style to the Spanish page, the English one
+     keeps its larger minimum. */
+  .gal-hero__h1 {
+    font-size: clamp(2rem, 8vw, 5rem);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+  }
+
+  .gal-hero__lede {
+    max-width: 46ch;
+    margin-top: 1.1rem;
+  }
+</style>

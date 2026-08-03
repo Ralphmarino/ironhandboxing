@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Ticker from '../../components/Ticker.astro';
+import Stats from '../../components/Stats.astro';
+import Offer from '../../components/Offer.astro';
+import Schedule from '../../components/Schedule.astro';
+import Pricing from '../../components/Pricing.astro';
+import Coaches from '../../components/Coaches.astro';
+import PunchBag from '../../components/PunchBag.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import InstagramFeed from '../../components/InstagramFeed.astro';
+import Cosign from '../../components/Cosign.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+/**
+ * Spanish homepage.
+ *
+ * The title and description are written for Spanish search, not translated from
+ * the English ones. "Gimnasio de boxeo en Staten Island" is what someone
+ * actually types; a literal rendering of the English title would target a
+ * phrase nobody searches.
+ */
+const title = 'Boxeo en Staten Island - Ironhand Boxing, Gimnasio y Entrenamiento';
+const description =
+  'Clases de boxeo en Staten Island para todos los niveles, en español e inglés. Técnica, manoplas uno a uno y acondicionamiento con el equipo de Ian Sampaga.';
+---
+
+<Base title={title} description={description} isHome>
+  <Hero lang="es" />
+  <Ticker lang="es" />
+  <Stats lang="es" />
+  <Offer lang="es" />
+  <Schedule lang="es" />
+  <PunchBag lang="es" />
+  <Pricing lang="es" />
+  <Coaches lang="es" />
+  <Testimonials lang="es" />
+  <InstagramFeed lang="es" />
+  <Cosign lang="es" />
+  <CtaBand lang="es" />
+</Base>

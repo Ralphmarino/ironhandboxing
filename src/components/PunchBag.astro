@@ -1,4 +1,12 @@
 ---
+import { path as route, type Lang } from '../i18n/config';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const es = lang === 'es';
+
 /**
  * Interactive heavy bag. Click, tap, or hit Space/Enter to punch it.
  *
@@ -16,41 +24,53 @@
 <section class="section bag" id="bag-game">
   <div class="wrap bag__inner">
     <div class="bag__copy" data-reveal>
-      <p class="eyebrow">Warm Up</p>
-      <h2 class="h2 steel">Go on.<br />Hit it.</h2>
+      <p class="eyebrow">{es ? 'Calentamiento' : 'Warm Up'}</p>
+      <h2 class="h2 steel">
+        {es ? <Fragment>Anda.<br />Pégale.</Fragment> : <Fragment>Go on.<br />Hit it.</Fragment>}
+      </h2>
       <p class="lede">
-        No wraps needed for this one. Click the bag, or tap it if you’re on
-        your phone. It’s the only round at Ironhand you can do in jeans.
+        {
+          es
+            ? 'Para este no hacen falta vendas. Haz clic en el saco, o tócalo si estás en el teléfono. Es el único round de Ironhand que puedes hacer en jeans.'
+            : 'No wraps needed for this one. Click the bag, or tap it if you’re on your phone. It’s the only round at Ironhand you can do in jeans.'
+        }
       </p>
 
       <dl class="bag__stats">
         <div class="bag__stat">
-          <dt>Punches</dt>
+          <dt>{es ? 'Golpes' : 'Punches'}</dt>
           <dd><span data-bag-count aria-live="off">0</span></dd>
         </div>
         <div class="bag__stat">
-          <dt>Best combo</dt>
+          <dt>{es ? 'Mejor combo' : 'Best combo'}</dt>
           <dd><span data-bag-combo aria-live="off">0</span></dd>
         </div>
         <div class="bag__stat bag__stat--record">
-          <dt>Personal best</dt>
+          <dt>{es ? 'Tu récord' : 'Personal best'}</dt>
           <dd><span data-bag-best aria-live="off">0</span></dd>
         </div>
         <div class="bag__stat bag__stat--wide">
-          <dt>Power</dt>
+          <dt>{es ? 'Potencia' : 'Power'}</dt>
           <dd>
             <span class="bag__meter"><i data-bag-power></i></span>
           </dd>
         </div>
       </dl>
 
-      <p class="bag__msg" data-bag-msg aria-live="polite">Take a swing.</p>
+      <p class="bag__msg" data-bag-msg aria-live="polite">{es ? 'Tira un golpe.' : 'Take a swing.'}</p>
 
-      <a class="btn bag__cta" href="/contact-us/">Try the real thing</a>
+      <a class="btn bag__cta" href={route('contact', lang)}>
+        {es ? 'Prueba el de verdad' : 'Try the real thing'}
+      </a>
     </div>
 
     <div class="bag__stage" data-reveal data-reveal-index="1">
-      <button class="bag__hit" data-bag-hit aria-label="Punch the heavy bag">
+      <button
+        class="bag__hit"
+        data-bag-hit
+        data-lang={lang}
+        aria-label={es ? 'Golpea el saco pesado' : 'Punch the heavy bag'}
+      >
         <svg class="bag__svg" viewBox="0 0 200 440" aria-hidden="true">
           <defs>
             <linearGradient id="bagLeather" x1="0" y1="0" x2="1" y2="0">
@@ -106,7 +126,7 @@
           </g>
         </svg>
 
-        <span class="bag__hint" data-bag-hint>Punch me</span>
+        <span class="bag__hint" data-bag-hint>{es ? 'Pégame' : 'Punch me'}</span>
       </button>
 
       <div class="bag__shadow" aria-hidden="true"></div>
@@ -175,7 +195,11 @@
      * Exact-hit callouts. These fire once, on the punch that lands the number,
      * and outrank the running commentary below.
      */
-    const EASTER_EGGS: Record<number, string> = {
+    // The bag reads its language off the button rather than taking a prop,
+    // because this script is inlined once and serves both pages.
+    const isEs = hit.dataset.lang === 'es';
+
+    const EASTER_EGGS_EN: Record<number, string> = {
       69: 'Nice.',
       100: 'Triple digits. The bag is filing a complaint.',
       111: 'Three jabs. Nothing but ones.',
@@ -192,8 +216,27 @@
       1000: 'One thousand. You win. There is nothing else. Go book a class.',
     };
 
+    const EASTER_EGGS_ES: Record<number, string> = {
+      69: 'Nice.',
+      100: 'Tres cifras. El saco va a poner una queja.',
+      111: 'Tres jabs. Puros unos.',
+      123: 'Uno. Dos. Tres. Fácil.',
+      187: 'Que alguien llame a un esquinero.',
+      222: 'Doble doble doble. Presumido.',
+      250: 'Has pegado más que algunos de nuestros miembros. En serio.',
+      300: 'Esto es Esparta. También: sal a tomar aire.',
+      404: 'Golpe no encontrado. Y aun así sigue contando.',
+      500: 'Quinientos. Ian quiere hablar contigo.',
+      666: 'Velocidad de manos endemoniada.',
+      777: 'Premio mayor. El saco paga en moretones.',
+      911: 'Bueno, en serio, ¿estás bien?',
+      1000: 'Mil. Ganaste. Ya no hay más. Ve y reserva una clase.',
+    };
+
+    const EASTER_EGGS = isEs ? EASTER_EGGS_ES : EASTER_EGGS_EN;
+
     /** Running commentary, highest threshold at or below the count wins. */
-    const MESSAGES: [number, string][] = [
+    const MESSAGES_EN: [number, string][] = [
       [750, 'We have stopped keeping track. You have not.'],
       [400, 'The bag has left the building.'],
       [150, 'Holy S#!T you’re still going?'],
@@ -204,6 +247,20 @@
       [10, 'Ten in. Feeling it yet?'],
       [1, 'That’s one. Keep going.'],
     ];
+
+    const MESSAGES_ES: [number, string][] = [
+      [750, 'Nosotros dejamos de contar. Tú no.'],
+      [400, 'El saco se fue del edificio.'],
+      [150, '¿En serio sigues ahí?'],
+      [120, 'Tu mouse tiene una lesión por estrés.'],
+      [80, 'Ochenta. Bueno, algo tienes.'],
+      [50, 'Cincuenta. Las manos se están soltando.'],
+      [25, 'Veinticinco. Ahora sube la guardia.'],
+      [10, 'Diez. ¿Ya lo sientes?'],
+      [1, 'Ese es uno. Sigue.'],
+    ];
+
+    const MESSAGES = isEs ? MESSAGES_ES : MESSAGES_EN;
 
     /** Damped pendulum, spring back to centre, bleed energy each frame. */
     function tick() {
@@ -275,7 +332,7 @@
       // running commentary. Whichever wins, the physics below still run.
       let celebrate = false;
       if (beatIt) {
-        msgEl.textContent = 'New personal best.';
+        msgEl.textContent = isEs ? 'Nuevo récord personal.' : 'New personal best.';
         recordTile.classList.remove('is-new');
         void recordTile.offsetWidth;
         recordTile.classList.add('is-new');

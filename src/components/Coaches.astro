@@ -1,16 +1,22 @@
 ---
 import { coaches } from '../data/coaches';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const es = lang === 'es';
 ---
 
 <section class="section coaches" id="coaches">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">The Corner</p>
-      <h2 class="h2 steel">Coaches who<br />actually coach.</h2>
-      <p class="lede">
-        Ironhand is not a one-man gym anymore. The whole corner works the floor: active competitors, certified cornermen, and fighters who came up
-        through this program themselves.
-      </p>
+      <p class="eyebrow">{t('coaches.eyebrow')}</p>
+      <h2 class="h2 steel" set:html={t('coaches.title')} />
+      <p class="lede">{t('coaches.lede')}</p>
     </div>
 
     <div class="coaches__grid">
@@ -20,7 +26,11 @@ import { coaches } from '../data/coaches';
             <div class="coach__media">
               <img
                 src={coach.image}
-                alt={`${coach.name}, ${coach.role} at Ironhand Boxing`}
+                alt={
+                  es
+                    ? `${coach.name}, ${coach.roleEs} en Ironhand Boxing`
+                    : `${coach.name}, ${coach.role} at Ironhand Boxing`
+                }
                 width="600"
                 height="750"
                 loading="lazy"
@@ -30,13 +40,13 @@ import { coaches } from '../data/coaches';
             </div>
 
             <div class="coach__body">
-              <p class="coach__role">{coach.role}</p>
+              <p class="coach__role">{es ? coach.roleEs : coach.role}</p>
               <h3 class="h3 coach__name">{coach.name}</h3>
-              <p class="coach__bio">{coach.bio}</p>
+              <p class="coach__bio">{es ? coach.bioEs : coach.bio}</p>
 
               {coach.credentials && (
                 <ul class="coach__creds">
-                  {coach.credentials.map((c) => (
+                  {(es ? (coach.credentialsEs ?? coach.credentials) : coach.credentials).map((c) => (
                     <li>{c}</li>
                   ))}
                 </ul>

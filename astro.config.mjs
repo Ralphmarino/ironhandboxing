@@ -15,7 +15,9 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/thank-you'),
+      // Both thank-you pages are noindex; keep them out of the sitemap too,
+      // otherwise Search Console reports them as 'excluded by noindex' errors.
+      filter: (page) => !page.includes('/thank-you') && !page.includes('/es/gracias'),
     }),
   ],
   prefetch: {

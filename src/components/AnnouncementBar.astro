@@ -1,5 +1,12 @@
 ---
-import { announcement } from '../data/site';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const announcement = useTranslations(lang)('ann.text');
 
 /**
  * Scrolling welcome strip that sits above the header on the homepage.

@@ -5,6 +5,7 @@ pubDate: 2025-02-04
 author: 'Ian Sampaga'
 image: '/photos/kids-classes.jpg'
 imageAlt: 'Three young Ironhand members holding their boxing stance during the Kids & Teens class'
+translationEs: 'boxeo-para-ninos-staten-island'
 tags: ['Kids & Teens', 'Parents']
 ---
 

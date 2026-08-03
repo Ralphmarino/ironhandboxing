@@ -1,6 +1,14 @@
 ---
 import { site, IG_EMBED } from '../data/site';
 import { photos } from '../data/photos';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
 
 /**
  * Instagram feed.
@@ -31,11 +39,11 @@ const fallbackTiles: { src: string; alt: string }[] = [
   <div class="wrap">
     <div class="section-head ig__head" data-reveal>
       <div>
-        <p class="eyebrow">Live From the Gym</p>
-        <h2 class="h2 steel">Inside Ironhand.</h2>
+        <p class="eyebrow">{t('ig.eyebrow')}</p>
+        <h2 class="h2 steel">{t('ig.title')}</h2>
       </div>
       <a class="btn btn--ghost" href={site.social.instagram} rel="noopener" target="_blank">
-        Follow {site.social.instagramHandle}
+        {t('ig.follow')} {site.social.instagramHandle}
       </a>
     </div>
 
@@ -56,7 +64,7 @@ const fallbackTiles: { src: string; alt: string }[] = [
             >
               <img
                 src={tile.src}
-                alt={tile.alt}
+                alt={(lang === 'es' && tile.altEs) || tile.alt}
                 width="500"
                 height="500"
                 loading="lazy"

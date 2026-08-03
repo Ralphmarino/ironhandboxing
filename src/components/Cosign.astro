@@ -18,10 +18,19 @@ import { site } from '../data/site';
  * is why he is named here and in the photo's alt text.
  */
 
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
 const names = [
-  { name: 'Joey Diaz', note: 'Comedian · @madflavors_world' },
-  { name: 'Frankie Edgar', note: 'UFC Hall of Famer' },
-  { name: 'Mark Molina', note: 'Ironhand Coach' },
+  { name: 'Joey Diaz', note: `${t('cosign.comedian')} · @madflavors_world` },
+  { name: 'Frankie Edgar', note: t('cosign.hof') },
+  { name: 'Mark Molina', note: t('cosign.coach') },
 ];
 ---
 
@@ -30,13 +39,9 @@ const names = [
 
   <div class="wrap cosign__inner">
     <div class="cosign__copy" data-reveal>
-      <p class="eyebrow">The Cosign</p>
-      <h2 class="h2 steel">Word<br />travels.</h2>
-      <p class="lede">
-        Joey Diaz put Ironhand on his Instagram story: a straight reshare of the
-        gym’s own post, out to his whole following. No agency, no campaign. That
-        is Ironhand coach Mark Molina in the photo with him and Frankie Edgar.
-      </p>
+      <p class="eyebrow">{t('cosign.eyebrow')}</p>
+      <h2 class="h2 steel" set:html={t('cosign.title')} />
+      <p class="lede">{t('cosign.lede')}</p>
 
       <ul class="cosign__names">
         {
@@ -53,7 +58,7 @@ const names = [
       </ul>
 
       <a class="btn btn--ghost" href={site.social.instagram} rel="noopener" target="_blank">
-        See it on Instagram
+        {t('cosign.cta')}
       </a>
     </div>
 
@@ -62,7 +67,7 @@ const names = [
       <figure class="cosign__card">
         <img
           src={photos.guests.src}
-          alt={photos.guests.alt}
+          alt={(lang === 'es' && photos.guests.altEs) || photos.guests.alt}
           width={photos.guests.width}
           height={photos.guests.height}
           loading="lazy"
@@ -78,7 +83,7 @@ const names = [
           <span class="phone__progress" aria-hidden="true"><i></i></span>
           <img
             src={photos.featured.src}
-            alt={photos.featured.alt}
+            alt={(lang === 'es' && photos.featured.altEs) || photos.featured.alt}
             width={photos.featured.width}
             height={photos.featured.height}
             loading="lazy"

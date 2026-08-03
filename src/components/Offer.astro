@@ -1,47 +1,22 @@
 ---
-import { photos } from '../data/photos';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+import { offerCopy } from '../data/offers';
 
-const offers = [
-  {
-    n: '01',
-    photo: photos.teamPhoto,
-    title: 'Group Classes',
-    body: 'The core of the gym. Technique, one-on-one mitt work with a coach, bag work and conditioning. Every session, seven days a week. Beginners and experienced boxers train on the same floor at their own level.',
-    tag: 'All levels',
-  },
-  {
-    n: '02',
-    photo: photos.personalSession,
-    title: 'Personal Sessions',
-    body: 'One-on-one hours with Coach Ian, set aside Wednesdays and Thursdays. This is where technique gets fixed properly, and where members chasing a specific goal make the fastest progress. Booked in pairs, never as single sessions.',
-    tag: '2 for $180',
-  },
-  {
-    n: '03',
-    photo: photos.kidsStance,
-    title: 'Kids & Teens',
-    body: 'Fridays at 5pm. Coordination, discipline and confidence first; boxing second. Parents keep telling us the same thing: their kid comes home wanting to show them what they learned.',
-    tag: 'Fridays 5PM',
-  },
-  {
-    n: '04',
-    photo: photos.fightersProgram,
-    title: 'Fighters Program',
-    body: 'The competition track. Monday, Tuesday, Wednesday and Friday at 7pm for registered amateurs actively campaigning. Rounds, ring work and corner-ready preparation.',
-    tag: 'Book required',
-  },
-];
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const offers = offerCopy(lang);
 ---
 
 <section class="section offer" id="offer">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">What We Offer</p>
-      <h2 class="h2 steel">Four ways in.</h2>
-      <p class="lede">
-        Whether you have never thrown a punch or you are three fights into an
-        amateur career, there is a lane here, and a coach in it with you.
-      </p>
+      <p class="eyebrow">{t('offer.eyebrow')}</p>
+      <h2 class="h2 steel">{t('offer.title')}</h2>
+      <p class="lede">{t('offer.lede')}</p>
     </div>
 
     <div class="offer__grid">
@@ -51,7 +26,7 @@ const offers = [
             <div class="offer__media">
               <img
                 src={o.photo.src}
-                alt={o.photo.alt}
+                alt={(lang === 'es' && o.photo.altEs) || o.photo.alt}
                 width={o.photo.width}
                 height={o.photo.height}
                 style={o.photo.focal ? `object-position:${o.photo.focal}` : undefined}

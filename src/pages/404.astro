@@ -25,11 +25,30 @@ import Logo from '../components/Logo.astro';
         <a class="btn btn--ghost" href="/#schedule">See the schedule</a>
         <a class="btn btn--ghost" href="/contact-us/">Contact us</a>
       </div>
+
+      {/* One 404 serves both languages. A visitor who took a wrong turn out of
+          the Spanish site should not be dropped into English with no way back. */}
+      <p class="nf__es" lang="es">
+        Esta página no existe. <a href="/es/">Volver al inicio</a> o
+        {' '}<a href="/es/contacto/">escríbenos</a>.
+      </p>
     </div>
   </section>
 </Base>
 
 <style>
+  .nf__es {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.9375rem;
+    color: var(--chrome-3);
+  }
+
+  .nf__es a {
+    color: var(--ember-2);
+  }
+
   .nf {
     position: relative;
     z-index: 2;
