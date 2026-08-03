@@ -120,8 +120,8 @@ export const photos = {
     span: 'wide',
   },
   guests: {
-    src: '/photos/joey-diaz-frankie-edgar-manny.jpg',
-    alt: 'Ironhand fighters with comedian Joey Diaz and UFC Hall of Famer Frankie Edgar',
+    src: '/photos/joey-diaz-frankie-edgar-mark.jpg',
+    alt: 'Ironhand coach Mark Molina with comedian Joey Diaz and UFC Hall of Famer Frankie Edgar',
     width: 1440,
     height: 1914,
   },
