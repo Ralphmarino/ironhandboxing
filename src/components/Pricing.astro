@@ -1,20 +1,25 @@
 ---
 import { monthlyPlans, sessionPlans, fightersProgram, coachTrainingFee } from '../data/pricing';
+import { path as route, type Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const es = lang === 'es';
 ---
 
 <section class="section pricing" id="pricing">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">What We Offer</p>
-      <h2 class="h2 steel">Pick your rounds.</h2>
-      <p class="lede">
-        Month-to-month memberships built around how often you can actually get
-        in. Train more, pay less per session, and the heavier plans include
-        one-on-one time with Coach Ian.
-      </p>
+      <p class="eyebrow">{t('pricing.eyebrow')}</p>
+      <h2 class="h2 steel">{t('pricing.title')}</h2>
+      <p class="lede">{t('pricing.lede')}</p>
     </div>
 
-    <h3 class="pricing__sub" data-reveal>Monthly Memberships</h3>
+    <h3 class="pricing__sub" data-reveal>{t('pricing.monthly')}</h3>
     <div class="pricing__grid">
       {
         monthlyPlans.map((plan, i) => (
@@ -23,20 +28,22 @@ import { monthlyPlans, sessionPlans, fightersProgram, coachTrainingFee } from '.
             data-reveal
             data-reveal-index={i}
           >
-            {plan.featured && <span class="plan__flag">Most popular</span>}
-            <p class="plan__name">{plan.name}</p>
+            {plan.featured && <span class="plan__flag">{t('pricing.popular')}</span>}
+            <p class="plan__name">{es ? plan.nameEs : plan.name}</p>
             <p class="plan__price">
               <span class="plan__cur">$</span>
               {plan.price}
             </p>
-            <p class="plan__unit">{plan.unit}</p>
-            {plan.note && <p class="plan__note">{plan.note}</p>}
+            <p class="plan__unit">{es ? plan.unitEs : plan.unit}</p>
+            {(es ? plan.noteEs : plan.note) && (
+              <p class="plan__note">{es ? plan.noteEs : plan.note}</p>
+            )}
           </div>
         ))
       }
     </div>
 
-    <h3 class="pricing__sub pricing__sub--gap" data-reveal>Sessions & Add-Ons</h3>
+    <h3 class="pricing__sub pricing__sub--gap" data-reveal>{t('pricing.sessions')}</h3>
     <div class="pricing__grid">
       {
         sessionPlans.map((plan, i) => (
@@ -45,13 +52,15 @@ import { monthlyPlans, sessionPlans, fightersProgram, coachTrainingFee } from '.
             data-reveal
             data-reveal-index={i}
           >
-            <p class="plan__name">{plan.name}</p>
+            <p class="plan__name">{es ? plan.nameEs : plan.name}</p>
             <p class="plan__price">
               {plan.price !== 'TBD' && <span class="plan__cur">$</span>}
               {plan.price}
             </p>
-            <p class="plan__unit">{plan.unit}</p>
-            {plan.note && <p class="plan__note">{plan.note}</p>}
+            <p class="plan__unit">{es ? plan.unitEs : plan.unit}</p>
+            {(es ? plan.noteEs : plan.note) && (
+              <p class="plan__note">{es ? plan.noteEs : plan.note}</p>
+            )}
           </div>
         ))
       }
@@ -62,15 +71,15 @@ import { monthlyPlans, sessionPlans, fightersProgram, coachTrainingFee } from '.
       <div class="fighters__glow" aria-hidden="true"></div>
 
       <div class="fighters__body">
-        <p class="eyebrow">By Invitation</p>
-        <h3 class="h2 fighters__ttl">{fightersProgram.name}</h3>
-        <p class="fighters__days">{fightersProgram.days}</p>
-        <p class="fighters__blurb">{fightersProgram.blurb}</p>
+        <p class="eyebrow">{es ? 'Por Invitación' : 'By Invitation'}</p>
+        <h3 class="h2 fighters__ttl">{es ? fightersProgram.nameEs : fightersProgram.name}</h3>
+        <p class="fighters__days">{es ? fightersProgram.daysEs : fightersProgram.days}</p>
+        <p class="fighters__blurb">{es ? fightersProgram.blurbEs : fightersProgram.blurb}</p>
         <p class="fighters__req">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M4 4v16l8-3 8 3V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"></path>
           </svg>
-          {fightersProgram.requirement}
+          {es ? fightersProgram.requirementEs : fightersProgram.requirement}
         </p>
       </div>
 
@@ -78,19 +87,23 @@ import { monthlyPlans, sessionPlans, fightersProgram, coachTrainingFee } from '.
         <p class="plan__price plan__price--xl">
           <span class="plan__cur">$</span>{fightersProgram.price}
         </p>
-        <p class="plan__unit">{fightersProgram.unit}</p>
-        <a class="btn" href="/contact-us/?interest=fighters">Ask about the program</a>
+        <p class="plan__unit">{es ? fightersProgram.unitEs : fightersProgram.unit}</p>
+        <a class="btn" href={`${route('contact', lang)}?interest=fighters`}>
+          {es ? 'Pregunta por el programa' : 'Ask about the program'}
+        </a>
       </div>
     </div>
 
     <div class="coachfee card" data-reveal>
       <div>
-        <p class="coachfee__ttl">Training with one of our coaches</p>
-        <p class="coachfee__blurb">{coachTrainingFee.blurb}</p>
+        <p class="coachfee__ttl">
+          {es ? 'Entrenar con uno de nuestros entrenadores' : 'Training with one of our coaches'}
+        </p>
+        <p class="coachfee__blurb">{es ? coachTrainingFee.blurbEs : coachTrainingFee.blurb}</p>
       </div>
       <p class="coachfee__price">
         <span class="plan__cur">$</span>{coachTrainingFee.price}
-        <small>{coachTrainingFee.unit}</small>
+        <small>{es ? coachTrainingFee.unitEs : coachTrainingFee.unit}</small>
       </p>
     </div>
   </div>

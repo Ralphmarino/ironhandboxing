@@ -5,6 +5,7 @@ pubDate: 2024-09-10
 author: 'Ian Sampaga'
 image: '/photos/glove-work-closeup.jpg'
 imageAlt: 'Boxing gloves during pad work on the mats at Ironhand Boxing'
+translationEs: 'que-esperar-en-tu-primera-clase-de-boxeo'
 tags: ['Beginners', 'Getting Started']
 ---
 

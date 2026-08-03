@@ -5,6 +5,7 @@ pubDate: 2025-05-21
 author: 'Ian Sampaga'
 image: '/photos/amateur-bout-headgear.jpg'
 imageAlt: 'Two amateur boxers in headgear trading punches during a sanctioned bout'
+translationEs: 'boxeo-amateur-sacar-tu-libro'
 tags: ['Competing', 'Fighters Program']
 ---
 

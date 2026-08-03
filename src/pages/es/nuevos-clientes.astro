@@ -1,59 +1,60 @@
 ---
-import Base from '../layouts/Base.astro';
-import Schedule from '../components/Schedule.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { monthlyPlans } from '../data/pricing';
-import { photos } from '../data/photos';
+import Base from '../../layouts/Base.astro';
+import Schedule from '../../components/Schedule.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { monthlyPlans } from '../../data/pricing';
+import { photos } from '../../data/photos';
 
-const title = 'New Clients – Ironhand Boxing';
+const title = 'Nuevos Clientes – Ironhand Boxing Staten Island';
 const description =
-  'New to boxing? Here is exactly what your first class at Ironhand Boxing in Staten Island looks like, what to bring, and how to get started.';
+  '¿Nunca has boxeado? Aquí está exactamente cómo es tu primera clase en Ironhand Boxing, Staten Island: qué llevar, qué pasa ese día y cómo empezar.';
 
 const steps = [
   {
     n: '01',
-    title: 'Reach out',
-    body: 'Send us a message with your experience level and what you are training for. We will tell you which class to come to first. That answer is different for a total beginner than it is for someone with a few fights.',
+    title: 'Escríbenos',
+    body: 'Mándanos un mensaje con tu nivel de experiencia y para qué quieres entrenar. Te decimos a qué clase venir primero. Esa respuesta no es la misma para alguien que empieza de cero que para alguien con unas cuantas peleas encima.',
   },
   {
     n: '02',
-    title: 'Show up early',
-    body: 'Get there ten minutes before the class starts. A coach will walk you around the gym, get you wrapped, and put gloves on you. You do not need to buy anything for the first session.',
+    title: 'Llega temprano',
+    body: 'Ven diez minutos antes de que empiece la clase. Un entrenador te muestra el gimnasio, te venda las manos y te pone los guantes. No necesitas comprar nada para la primera sesión.',
   },
   {
     n: '03',
-    title: 'Train',
-    body: 'Warm-up, then fundamentals: stance, guard, the jab. You will get one-on-one time on the mitts with a coach, work the bag, and finish with conditioning. Roughly an hour.',
+    title: 'Entrena',
+    body: 'Calentamiento y luego fundamentos: la postura, la guardia, el jab. Vas a tener tiempo uno a uno en las manoplas con un entrenador, trabajo de saco y cierre con acondicionamiento. Cerca de una hora.',
   },
   {
     n: '04',
-    title: 'Pick your plan',
-    body: 'Once you know it fits, we will put you on the membership that matches how often you can realistically train. Month to month, no long contracts.',
+    title: 'Elige tu plan',
+    body: 'Cuando veas que te acomoda, te ponemos en la membresía que va con los días que de verdad puedas entrenar. Mes a mes, sin contratos largos.',
   },
 ];
 
 const bring = [
-  'Athletic clothes you can move in',
-  'Boxing shoes',
-  'Water, more than you think',
-  'A towel',
-  'Hand wraps if you own them (we have you covered if not)',
+  'Ropa deportiva con la que puedas moverte',
+  'Zapatillas de boxeo',
+  'Agua, más de la que crees',
+  'Una toalla',
+  'Vendas si ya tienes (si no, nosotros te cubrimos)',
 ];
 ---
 
 <Base title={title} description={description}>
   <section class="section nc-hero gridlines">
     <div class="wrap">
-      <p class="eyebrow" data-reveal>New Clients</p>
+      <p class="eyebrow" data-reveal>Nuevos Clientes</p>
       <h1 class="display steel nc-hero__h1" data-reveal data-reveal-index="1">
-        Never boxed?<br />Perfect.
+        ¿Nunca has<br />boxeado? Perfecto.
       </h1>
       <p class="lede nc-hero__lede" data-reveal data-reveal-index="2">
-        Most of our members had never thrown a punch before they walked in. Here
-        is exactly what happens on day one, so nothing about it is a surprise.
+        La mayoría de nuestros miembros nunca había tirado un golpe antes de
+        entrar. Esto es exactamente lo que pasa el primer día, para que nada te
+        tome por sorpresa.
       </p>
       <div class="nc-hero__actions" data-reveal data-reveal-index="3">
-        <a class="btn btn--lg" href="/contact-us/">Book your first class</a>
+        <a class="btn btn--lg" href="/es/contacto/">Reserva tu primera clase</a>
       </div>
     </div>
   </section>
@@ -61,8 +62,8 @@ const bring = [
   <section class="section nc-steps">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <p class="eyebrow">How It Works</p>
-        <h2 class="h2 steel">Four steps in.</h2>
+        <p class="eyebrow">Cómo Funciona</p>
+        <h2 class="h2 steel">Cuatro pasos.</h2>
       </div>
 
       <ol class="nc-steps__list">
@@ -84,21 +85,21 @@ const bring = [
   <section class="section nc-bring">
     <div class="wrap nc-bring__grid">
       <div data-reveal>
-        <p class="eyebrow">Day One</p>
-        <h2 class="h2 steel">What to bring.</h2>
+        <p class="eyebrow">Primer Día</p>
+        <h2 class="h2 steel">Qué llevar.</h2>
         <ul class="nc-bring__list">
           {bring.map((b) => <li>{b}</li>)}
         </ul>
         <p class="nc-bring__note">
-          Do not buy gloves before your first class. Come train, then let a coach
-          tell you what is actually worth spending money on.
+          No compres guantes antes de tu primera clase. Ven a entrenar y deja
+          que un entrenador te diga en qué de verdad vale la pena gastar.
         </p>
       </div>
 
       <div class="nc-bring__media" data-reveal data-reveal-index="1">
         <img
           src={photos.jumpRope.src}
-          alt={photos.jumpRope.alt}
+          alt={photos.jumpRope.altEs ?? photos.jumpRope.alt}
           width={photos.jumpRope.width}
           height={photos.jumpRope.height}
           loading="lazy"
@@ -108,16 +109,16 @@ const bring = [
     </div>
   </section>
 
-  <Schedule lang="en" />
+  <Schedule lang="es" />
 
   <section class="section nc-plans">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <p class="eyebrow">Memberships</p>
-        <h2 class="h2 steel">Month to month.</h2>
+        <p class="eyebrow">Membresías</p>
+        <h2 class="h2 steel">Mes a mes.</h2>
         <p class="lede">
-          Pick based on how often you can genuinely get in. You can move up a
-          tier any time, most people do.
+          Elige según los días que de verdad puedas venir. Puedes subir de plan
+          cuando quieras, y la mayoría lo hace.
         </p>
       </div>
 
@@ -125,25 +126,26 @@ const bring = [
         {
           monthlyPlans.map((p, i) => (
             <div class="nc-plan" data-reveal data-reveal-index={i}>
-              <span class="nc-plan__name">{p.name}</span>
+              <span class="nc-plan__name">{p.nameEs}</span>
               <span class="nc-plan__price">${p.price}</span>
-              <span class="nc-plan__unit">{p.unit}</span>
+              <span class="nc-plan__unit">{p.unitEs}</span>
             </div>
           ))
         }
       </div>
 
       <p class="nc-plans__more">
-        Personal sessions, virtual training and the Fighters Program are listed
-        in full on the <a href="/#pricing">pricing section</a>.
+        Las sesiones personales, el entrenamiento virtual y el Programa de
+        Competidores están completos en la <a href="/es/#pricing">sección de precios</a>.
       </p>
     </div>
   </section>
 
   <CtaBand
-    title="Day one is on the calendar."
-    body="Message us with your experience level and we will tell you exactly which class to walk into first."
-    cta="Book your first class"
+    lang="es"
+    title="El primer día ya está en el calendario."
+    body="Escríbenos con tu nivel de experiencia y te decimos exactamente a qué clase entrar primero."
+    cta="Reserva tu primera clase"
   />
 </Base>
 
@@ -155,8 +157,14 @@ const bring = [
     padding-block: clamp(4rem, 9vw, 7rem) clamp(3rem, 6vw, 5rem);
   }
 
+  /* Spanish headline words run longer than their English counterparts
+     ("PREGÚNTANOS" against "ASK US", "ENTRENADOR" against "COACH"), and Anton
+     is a display face with no hyphenation to fall back on. The floor of this
+     clamp is lower than the English page's so a single long word still fits a
+     320px screen. Astro scopes this style to the Spanish page, the English one
+     keeps its larger minimum. */
   .nc-hero__h1 {
-    font-size: clamp(2.75rem, 8vw, 6.5rem);
+    font-size: clamp(2rem, 8vw, 6.5rem);
     letter-spacing: -0.03em;
     margin-block: 1.25rem;
   }

@@ -1,12 +1,12 @@
 ---
-import Base from '../../layouts/Base.astro';
-import CtaBand from '../../components/CtaBand.astro';
+import Base from '../../../layouts/Base.astro';
+import CtaBand from '../../../components/CtaBand.astro';
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { site } from '../../data/site';
+import { site } from '../../../data/site';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog-es', ({ data }) => !data.draft);
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 };
 
@@ -14,10 +14,10 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  d.toLocaleDateString('es-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
 // Two more posts to read, newest first, excluding this one.
-const more = (await getCollection('blog', ({ data }) => !data.draft))
+const more = (await getCollection('blog-es', ({ data }) => !data.draft))
   .filter((p) => p.id !== post.id)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 2);
@@ -36,11 +36,12 @@ const articleSchema = {
     name: site.legalName,
     url: site.url,
   },
-  mainEntityOfPage: new URL(`/blog/${post.id}/`, Astro.site).href,
+  mainEntityOfPage: new URL(`/es/blog/${post.id}/`, Astro.site).href,
+  inLanguage: 'es-US',
 };
 
-/** Per-post hreflang: the Spanish translation, when one exists. */
-const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` : null;
+/** Per-post hreflang: the English original, when this post is a translation. */
+const altUrl = post.data.translationOf ? `/blog/${post.data.translationOf}/` : null;
 ---
 
 <Base
@@ -54,7 +55,7 @@ const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` 
   <article class="art">
     <header class="art__head gridlines">
       <div class="wrap art__headinner">
-        <a class="art__back" href="/blog/">← All posts</a>
+        <a class="art__back" href="/es/blog/">← Todas las entradas</a>
 
         <p class="art__meta" data-reveal>
           {post.data.tags[0] && <span class="art__tag">{post.data.tags[0]}</span>}
@@ -102,7 +103,7 @@ const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` 
             <h2 class="h3 art__morettl">Keep reading</h2>
             <div class="art__moregrid">
               {more.map((p, i) => (
-                <a class="card art__morecard" href={`/blog/${p.id}/`} data-reveal data-reveal-index={i}>
+                <a class="card art__morecard" href={`/es/blog/${p.id}/`} data-reveal data-reveal-index={i}>
                   <p class="art__moremeta">{fmt(p.data.pubDate)}</p>
                   <h3 class="h3 art__morename">{p.data.title}</h3>
                   <p class="art__moredesc">{p.data.description}</p>
@@ -115,7 +116,7 @@ const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` 
     }
   </article>
 
-  <CtaBand />
+  <CtaBand lang="es" />
 </Base>
 
 <style>

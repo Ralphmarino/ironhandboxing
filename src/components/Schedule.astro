@@ -1,24 +1,40 @@
 ---
-import { schedule, dayOrder, personalSessionNote } from '../data/schedule';
+import {
+  schedule,
+  dayOrder,
+  personalSessionNote,
+  personalSessionNoteEs,
+} from '../data/schedule';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const es = lang === 'es';
 
 // Bucket by day so each weekday renders as one column that can hold both the
 // open class and the 7pm Fighters slot.
-const byDay = dayOrder.map((short) => ({
-  short,
-  full: schedule.find((s) => s.short === short)!.day,
-  slots: schedule.filter((s) => s.short === short),
-}));
+const byDay = dayOrder.map((short) => {
+  const first = schedule.find((s) => s.short === short)!;
+  return {
+    short: es ? first.shortEs : first.short,
+    full: es ? first.dayEs : first.day,
+    slots: schedule.filter((s) => s.short === short),
+  };
+});
+
+const footNote = es ? personalSessionNoteEs : personalSessionNote;
 ---
 
 <section class="section sched gridlines" id="schedule">
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">Weekly Schedule</p>
-      <h2 class="h2 steel">Seven days.<br />No wasted rounds.</h2>
-      <p class="lede">
-        Every class covers proper boxing technique, one-on-one mitt work, bag
-        work and conditioning. Show up to one a week or all of them.
-      </p>
+      <p class="eyebrow">{t('sched.eyebrow')}</p>
+      <h2 class="h2 steel" set:html={t('sched.title')} />
+      <p class="lede">{t('sched.lede')}</p>
     </div>
 
     <div class="sched__grid">
@@ -34,9 +50,11 @@ const byDay = dayOrder.map((short) => ({
               {day.slots.map((slot) => (
                 <div class={`slot slot--${slot.track}`}>
                   <p class="slot__time">{slot.time}</p>
-                  <p class="slot__label">{slot.label}</p>
+                  <p class="slot__label">{es ? slot.labelEs : slot.label}</p>
                   {slot.offsite && <p class="slot__where">{slot.offsite}</p>}
-                  {slot.note && <p class="slot__note">{slot.note}</p>}
+                  {(es ? slot.noteEs : slot.note) && (
+                    <p class="slot__note">{es ? slot.noteEs : slot.note}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -50,7 +68,7 @@ const byDay = dayOrder.map((short) => ({
         <circle cx="12" cy="12" r="9"></circle>
         <path d="M12 12V7M12 12l3.5 2"></path>
       </svg>
-      {personalSessionNote}
+      {footNote}
     </p>
   </div>
 </section>

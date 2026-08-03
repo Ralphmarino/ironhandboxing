@@ -1,4 +1,13 @@
 ---
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
 /**
  * Scroll-to-top button, drawn as a boxing glove throwing an uppercut.
  *
@@ -8,7 +17,7 @@
  */
 ---
 
-<button class="totop" data-to-top aria-label="Back to top" hidden>
+<button class="totop" data-to-top aria-label={t('toTop.label')} hidden>
   <svg viewBox="0 0 48 48" aria-hidden="true" class="totop__glove">
     <defs>
       <linearGradient id="gloveGrad" x1="0" y1="0" x2="0" y2="1">
@@ -39,7 +48,7 @@
       fill="none"></path>
   </svg>
 
-  <span class="totop__label">Top</span>
+  <span class="totop__label">{t('toTop.short')}</span>
 </button>
 
 <script>

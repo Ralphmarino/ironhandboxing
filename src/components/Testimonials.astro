@@ -1,6 +1,23 @@
 ---
 import { testimonials } from '../data/testimonials';
 import { site } from '../data/site';
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const es = lang === 'es';
+
+/**
+ * ⚠️ The quotes are NOT translated, in either direction. They are what real
+ * named people wrote on Google. Rewriting someone's public review into another
+ * language and leaving their name on it misrepresents them, and a visitor who
+ * looked the review up would find different words. The Spanish page says so in
+ * a line under the section instead.
+ */
 
 // Two counter-scrolling rows read as motion without becoming a slideshow the
 // visitor has to wait on.
@@ -11,14 +28,24 @@ const rows = [testimonials.slice(0, mid), testimonials.slice(mid)];
 <section class="section revs" id="reviews">
   <div class="wrap">
     <div class="section-head revs__head" data-reveal>
-      <p class="eyebrow">From the Neighborhood</p>
+      <p class="eyebrow">{t('revs.eyebrow')}</p>
       <h2 class="h2 steel">
-        {site.reviews.count}+ five-star<br />reviews. Zero luck.
+        {
+          es ? (
+            <Fragment>
+              Más de {site.reviews.count}<br />reseñas de cinco estrellas.
+            </Fragment>
+          ) : (
+            <Fragment>
+              {site.reviews.count}+ five-star<br />reviews. Zero luck.
+            </Fragment>
+          )
+        }
       </h2>
       <a class="revs__badge" href={site.reviews.url} rel="noopener" target="_blank">
         <span class="revs__stars" aria-hidden="true">★★★★★</span>
         <span class="revs__badgetxt">
-          <strong>{site.reviews.rating.toFixed(1)}</strong> on Google
+          <strong>{site.reviews.rating.toFixed(1)}</strong> {t('revs.onGoogle')}
         </span>
       </a>
     </div>
@@ -28,19 +55,19 @@ const rows = [testimonials.slice(0, mid), testimonials.slice(mid)];
     rows.map((row, rowIndex) => (
       <div class={`marquee revs__row ${rowIndex === 1 ? 'revs__row--rev' : ''}`}>
         <div class="marquee__track">
-          {row.map((t) => (
+          {row.map((rev) => (
             <figure class="rev">
               <span class="rev__stars" aria-hidden="true">
                 ★★★★★
               </span>
-              <blockquote class="rev__quote">{t.quote}</blockquote>
+              <blockquote class="rev__quote">{rev.quote}</blockquote>
               <figcaption class="rev__by">
                 <span class="rev__avatar" aria-hidden="true">
-                  {t.name.charAt(0)}
+                  {rev.name.charAt(0)}
                 </span>
                 <span>
-                  <strong>{t.name}</strong>
-                  <small>{t.date} · Google Review</small>
+                  <strong>{rev.name}</strong>
+                  <small>{rev.date} · {t('revs.review')}</small>
                 </span>
               </figcaption>
             </figure>
@@ -49,9 +76,24 @@ const rows = [testimonials.slice(0, mid), testimonials.slice(mid)];
       </div>
     ))
   }
+
+  {
+    es && (
+      <div class="wrap">
+        <p class="revs__note">{t('revs.original')}</p>
+      </div>
+    )
+  }
 </section>
 
 <style>
+  /* Only shown on the Spanish page, where quotes stay in their original English */
+  .revs__note {
+    margin-top: 1.75rem;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+  }
+
   .revs {
     background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
     overflow: hidden;

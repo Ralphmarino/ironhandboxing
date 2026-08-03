@@ -1,21 +1,27 @@
 ---
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
 interface Props {
   items?: string[];
   duration?: string;
+  lang?: Lang;
 }
+
+const { lang = 'en', duration = '38s' } = Astro.props;
+const t = useTranslations(lang);
 
 const {
   items = [
-    'Proper Technique',
-    '1-on-1 Mitt Work',
-    'Bag Work',
-    'Conditioning',
-    'All Levels Welcome',
-    'Kids & Teens',
-    'Amateur Fighters',
-    'Staten Island',
+    t('ticker.1'),
+    t('ticker.2'),
+    t('ticker.3'),
+    t('ticker.4'),
+    t('ticker.5'),
+    t('ticker.6'),
+    t('ticker.7'),
+    t('ticker.8'),
   ],
-  duration = '38s',
 } = Astro.props;
 ---
 

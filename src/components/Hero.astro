@@ -1,6 +1,25 @@
 ---
 import Medallion from './Medallion.astro';
 import { site, seo } from '../data/site';
+import { path as route, type Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
+/**
+ * ⚠️ The English H1 is carried over verbatim from the WordPress site and must
+ * not be rewritten, it is the phrase the homepage ranks for locally.
+ *
+ * The Spanish page gets its own H1 rather than reusing that one. They are
+ * separate URLs with hreflang between them, so a Spanish H1 cannot dilute the
+ * English page, and "Boxeo en Staten Island" is what a Spanish speaker here
+ * actually types into Google.
+ */
+const h1 = lang === 'es' ? 'Boxeo en Staten Island' : seo.home.h1;
 ---
 
 <section class="hero gridlines">
@@ -10,22 +29,22 @@ import { site, seo } from '../data/site';
   <div class="hero__inner wrap">
     <div class="hero__copy">
       <p class="eyebrow hero__eyebrow" data-reveal data-reveal-index="0">
-        1230 Castleton Ave · Staten Island
+        {t('hero.eyebrow')}
       </p>
 
       <h1 class="display steel hero__h1" data-reveal data-reveal-index="1">
-        {seo.home.h1}
+        {h1}
       </h1>
 
       <p class="lede hero__lede" data-reveal data-reveal-index="2">
-        Founded by Ian Sampaga to serve, influence and inspire our community
-        through world-class boxing training. Proper technique, one-on-one mitt
-        work, bag work and conditioning. Every class, every level.
+        {t('hero.lede')}
       </p>
 
       <div class="hero__actions" data-reveal data-reveal-index="3">
-        <a class="btn btn--lg" href="/contact-us/">Book your first class</a>
-        <a class="btn btn--ghost btn--lg" href="/#schedule">See the schedule</a>
+        <a class="btn btn--lg" href={route('contact', lang)}>{t('hero.cta')}</a>
+        <a class="btn btn--ghost btn--lg" href={`${route('home', lang)}#schedule`}>
+          {t('hero.ctaAlt')}
+        </a>
       </div>
 
       <a
@@ -39,7 +58,7 @@ import { site, seo } from '../data/site';
         <span class="hero__stars" aria-hidden="true">★★★★★</span>
         <span>
           <strong>{site.reviews.rating.toFixed(1)}</strong>
-          from {site.reviews.count}+ Google reviews
+          {' '}{t('hero.from')} {site.reviews.count}+ {t('hero.reviews')}
         </span>
       </a>
     </div>

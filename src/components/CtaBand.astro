@@ -1,18 +1,24 @@
 ---
 import Logo from './Logo.astro';
+import { path as route, type Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   title?: string;
   body?: string;
   cta?: string;
   href?: string;
+  lang?: Lang;
 }
 
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
 const {
-  title = 'Your first class is the hard one.',
-  body = 'After that it is just showing up. Tell us what you are after and we will put you in the right class: beginner, competitor, or somewhere in between.',
-  cta = 'Get started',
-  href = '/contact-us/',
+  title = t('cta.title'),
+  body = t('cta.body'),
+  cta = t('cta.button'),
+  href = route('contact', lang),
 } = Astro.props;
 ---
 

@@ -1,17 +1,29 @@
 ---
 import Logo from './Logo.astro';
+import { path as route, type Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+  /** Same page in the other language, or null when there is no counterpart. */
+  altUrl?: string | null;
+}
+
+const { lang = 'en', altUrl = null } = Astro.props;
+const t = useTranslations(lang);
+const home = route('home', lang);
 
 const links = [
-  { href: '/about-us/', label: 'About' },
-  { href: '/new-clients/', label: 'New Clients' },
-  { href: '/#schedule', label: 'Schedule' },
-  { href: '/#pricing', label: 'Pricing' },
-  { href: '/gallery/', label: 'Gallery' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/frequently-asked-questions/', label: 'FAQ' },
+  { href: route('about', lang), label: t('nav.about') },
+  { href: route('newClients', lang), label: t('nav.newClients') },
+  { href: `${home}#schedule`, label: t('nav.schedule') },
+  { href: `${home}#pricing`, label: t('nav.pricing') },
+  { href: route('gallery', lang), label: t('nav.gallery') },
+  { href: route('blog', lang), label: t('nav.blog') },
+  { href: route('faq', lang), label: t('nav.faq') },
   // Duplicates the "Start Training" CTA on purpose. The button is the
   // conversion path, but people scan a nav for the words "Contact Us".
-  { href: '/contact-us/', label: 'Contact Us' },
+  { href: route('contact', lang), label: t('nav.contact') },
 ];
 
 const path = Astro.url.pathname;
@@ -19,7 +31,7 @@ const path = Astro.url.pathname;
 
 <header class="hdr" data-header>
   <div class="hdr__inner wrap">
-    <a class="hdr__brand" href="/" aria-label="Ironhand Boxing, home">
+    <a class="hdr__brand" href={home} aria-label={t('nav.home')}>
       <Logo size={46} loading="eager" />
       <span class="hdr__word">
         Ironhandboxing
@@ -27,7 +39,7 @@ const path = Astro.url.pathname;
       </span>
     </a>
 
-    <nav class="hdr__nav" aria-label="Primary">
+    <nav class="hdr__nav" aria-label={t('nav.primary')}>
       {
         links.map((l) => (
           <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>
@@ -37,14 +49,33 @@ const path = Astro.url.pathname;
       }
     </nav>
 
-    <a class="btn hdr__cta" href="/contact-us/">Start Training</a>
+    {
+      altUrl && (
+        <a
+          class="hdr__lang"
+          href={altUrl}
+          lang={lang === 'en' ? 'es' : 'en'}
+          hreflang={lang === 'en' ? 'es' : 'en'}
+          aria-label={t('nav.langSwitch')}
+          title={t('nav.langSwitch')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.6 2.9 2.6 15.1 0 18M12 3c-2.6 2.9-2.6 15.1 0 18" />
+          </svg>
+          {t('nav.langLabel')}
+        </a>
+      )
+    }
+
+    <a class="btn hdr__cta" href={route('contact', lang)}>{t('nav.cta')}</a>
 
     <button
       class="hdr__burger"
       data-menu-toggle
       aria-expanded="false"
       aria-controls="mobile-menu"
-      aria-label="Open menu"
+      aria-label={t('nav.openMenu')}
     >
       <span></span><span></span><span></span>
     </button>
@@ -66,21 +97,28 @@ const path = Astro.url.pathname;
 */}
 <div class="menu" id="mobile-menu" data-menu>
     <div class="menu__bar wrap">
-      <a class="menu__brand" href="/" aria-label="Ironhand Boxing, home">
+      <a class="menu__brand" href={home} aria-label={t('nav.home')}>
         <Logo size={46} />
         <span class="hdr__word">
           Ironhandboxing
           <small>Staten Island</small>
         </span>
       </a>
-      <button class="menu__close" data-menu-close aria-label="Close menu">
+      <button class="menu__close" data-menu-close aria-label={t('nav.closeMenu')}>
         <span></span><span></span>
       </button>
     </div>
 
-    <nav class="menu__nav wrap" aria-label="Mobile">
+    <nav class="menu__nav wrap" aria-label={t('nav.mobile')}>
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
-    <a class="btn menu__cta" href="/contact-us/">Start Training</a>
+      {
+        altUrl && (
+          <a class="menu__lang" href={altUrl} lang={lang === 'en' ? 'es' : 'en'}>
+            {lang === 'en' ? 'Ver en español' : 'View in English'}
+          </a>
+        )
+      }
+    <a class="btn menu__cta" href={route('contact', lang)}>{t('nav.cta')}</a>
   </nav>
 </div>
 
@@ -144,14 +182,48 @@ const path = Astro.url.pathname;
     color: var(--chrome-3);
   }
 
+  /* Globe + language code. Deliberately quiet: it matters enormously to the
+     people who need it and should be invisible to everyone else. */
+  .hdr__lang {
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--chrome-3);
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    transition:
+      color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+
+  .hdr__lang:hover {
+    color: var(--chrome);
+    border-color: var(--line-strong);
+  }
+
+  .menu__lang {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    color: var(--ember-2);
+  }
+
   .hdr__nav {
     display: none;
-    /* Tightened from 1.9rem: eight links plus the CTA no longer fit otherwise */
-    gap: 1.35rem;
+    /* Tightened again: eight links, the language chip and the CTA share the row */
+    gap: 1.1rem;
   }
 
   .hdr__nav a {
     position: relative;
+    /* Spanish labels are longer than the English ones ("Nuevos Clientes" against
+       "New Clients"), and a wrapped link breaks the row alignment. Keep them on
+       one line and let the breakpoint decide when the row no longer fits. */
+    white-space: nowrap;
     font-size: 0.875rem;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -320,9 +392,13 @@ const path = Astro.url.pathname;
 
   /* Raised from 1080px: the extra "Contact Us" link needs more room before the
      horizontal nav can replace the burger without crowding the CTA. */
-  @media (min-width: 1180px) {
+  /* Was 1180px. The language chip plus the longer Spanish labels need more room
+     before the row is safe to show, and the burger menu is a perfectly good
+     experience in the gap. */
+  @media (min-width: 1280px) {
     .hdr__nav,
-    .hdr__cta {
+    .hdr__cta,
+    .hdr__lang {
       display: flex;
     }
     .hdr__burger,

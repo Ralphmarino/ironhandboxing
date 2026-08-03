@@ -1,9 +1,18 @@
 ---
+import type { Lang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
 const stats = [
-  { value: 5.0, decimals: 1, suffix: '', label: 'Google rating', sub: 'Across 66+ reviews' },
-  { value: 66, decimals: 0, suffix: '+', label: 'Five-star reviews', sub: 'And still climbing' },
-  { value: 11, decimals: 0, suffix: '', label: 'Classes a week', sub: 'Seven days, all levels' },
-  { value: 5, decimals: 0, suffix: '', label: 'Coaches on the floor', sub: 'Nobody trains alone' },
+  { value: 5.0, decimals: 1, suffix: '', label: t('stats.rating'), sub: t('stats.ratingSub') },
+  { value: 66, decimals: 0, suffix: '+', label: t('stats.reviews'), sub: t('stats.reviewsSub') },
+  { value: 11, decimals: 0, suffix: '', label: t('stats.classes'), sub: t('stats.classesSub') },
+  { value: 5, decimals: 0, suffix: '', label: t('stats.coaches'), sub: t('stats.coachesSub') },
 ];
 ---
 

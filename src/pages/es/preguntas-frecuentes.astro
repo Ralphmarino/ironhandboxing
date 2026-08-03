@@ -1,0 +1,240 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { faqs, groupLabelEs } from '../../data/faqs';
+
+const title = 'Preguntas Frecuentes sobre Boxeo - Staten Island';
+const description =
+  'Respuestas a las preguntas que más nos hacen en Ironhand Boxing, Staten Island: empezar sin experiencia, cómo son las clases, precios, programas para niños y competencia.';
+
+const groups = [...new Set(faqs.map((f) => f.group))];
+
+/**
+ * FAQPage schema for the Spanish page, built from the Spanish text. Feeding it
+ * the English answers would make Google show English snippets against a Spanish
+ * URL, which is the exact thing hreflang is meant to prevent.
+ */
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'es-US',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.qEs,
+    acceptedAnswer: { '@type': 'Answer', text: f.aEs },
+  })),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <section class="section faq-hero gridlines">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Preguntas Frecuentes</p>
+      <h1 class="display steel faq-hero__h1" data-reveal data-reveal-index="1">
+        Pregúntanos<br />lo que sea.
+      </h1>
+      <p class="lede faq-hero__lede" data-reveal data-reveal-index="2">
+        Las preguntas que más nos hacen, respondidas de frente. Si la tuya no
+        está aquí, escríbenos. Preferimos contestarla a que te quedes con la
+        duda.
+      </p>
+    </div>
+  </section>
+
+  <section class="section faq">
+    <div class="wrap">
+      <div class="faq__filters" data-reveal>
+        <button class="chip" data-faq-filter="all" aria-pressed="true">Todas</button>
+        {
+          groups.map((g) => (
+            <button class="chip" data-faq-filter={g} aria-pressed="false">
+              {groupLabelEs[g]}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="faq__list">
+        {
+          faqs.map((f, i) => (
+            <details class="qa" data-faq-group={f.group} data-reveal data-reveal-index={i % 6}>
+              <summary class="qa__q">
+                <span>{f.qEs}</span>
+                <span class="qa__icon" aria-hidden="true" />
+              </summary>
+              <div class="qa__a">
+                <p>{f.aEs}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    lang="es"
+    title="¿Te quedó una pregunta?"
+    body="Mándala. Una persona de verdad del gimnasio lee cada mensaje y lo responde."
+    cta="Pregúntanos"
+  />
+</Base>
+
+<style>
+  .faq-hero {
+    position: relative;
+    z-index: 2;
+    background: var(--ink-900);
+    padding-block: clamp(4rem, 9vw, 7rem) clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* Spanish headline words run longer than their English counterparts
+     ("PREGÚNTANOS" against "ASK US", "ENTRENADOR" against "COACH"), and Anton
+     is a display face with no hyphenation to fall back on. The floor of this
+     clamp is lower than the English page's so a single long word still fits a
+     320px screen. Astro scopes this style to the Spanish page, the English one
+     keeps its larger minimum. */
+  .faq-hero__h1 {
+    font-size: clamp(2rem, 8vw, 6.5rem);
+    letter-spacing: -0.03em;
+    margin-block: 1.25rem;
+  }
+
+  .faq-hero__lede {
+    max-width: 56ch;
+  }
+
+  .faq {
+    background: var(--ink-900);
+    position: relative;
+    z-index: 2;
+    padding-top: 0;
+  }
+
+  .faq__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chip {
+    padding: 0.5rem 1.05rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chrome-2);
+    cursor: pointer;
+    transition:
+      background 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out);
+  }
+
+  .chip:hover {
+    border-color: var(--ember-2);
+    color: var(--chrome);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--grad-ember);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .faq__list {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .qa {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, var(--ink-700), var(--ink-800));
+    overflow: hidden;
+    transition: border-color 0.4s var(--ease-out);
+  }
+
+  .qa[open] {
+    border-color: rgba(230, 58, 31, 0.35);
+  }
+
+  .qa__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.15rem clamp(1rem, 2.5vw, 1.6rem);
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.8vw, 1.3rem);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    color: var(--chrome);
+  }
+
+  /* Hide the native disclosure triangle in both engines */
+  .qa__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .qa__icon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .qa__icon::before,
+  .qa__icon::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    background: var(--ember-2);
+    border-radius: 2px;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .qa__icon::after {
+    rotate: 90deg;
+  }
+
+  .qa[open] .qa__icon::after {
+    transform: scaleX(0);
+  }
+
+  .qa__a {
+    padding: 0 clamp(1rem, 2.5vw, 1.6rem) 1.35rem;
+  }
+
+  .qa__a p {
+    max-width: 72ch;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--chrome-2);
+  }
+
+  /* Content fades in rather than snapping when the panel opens */
+  .qa[open] .qa__a {
+    animation: qaIn 0.4s var(--ease-out) both;
+  }
+
+  @keyframes qaIn {
+    from {
+      opacity: 0;
+      translate: 0 -6px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>

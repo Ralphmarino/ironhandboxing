@@ -349,6 +349,18 @@ p {
   }
 }
 
+/* Safety net for long labels on narrow phones. Spanish labels run longer than
+   their English counterparts ("Síguenos en @_ironhandboxing1" against
+   "Follow @_ironhandboxing1"), and a nowrap button cannot shrink below its own
+   text, so it pushes the whole page sideways instead. Below this width, let the
+   label wrap inside the button rather than break the layout around it. */
+@media (max-width: 430px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
 /* ---------- Scroll reveal ----------------------------------------------- */
 /* Elements start hidden ONLY when JS is available to reveal them, the
    .js class is set synchronously in <head>, so a no-JS visitor sees
