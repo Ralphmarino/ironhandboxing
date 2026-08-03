@@ -1,5 +1,5 @@
 ---
-import Logo from './Logo.astro';
+import Medallion from './Medallion.astro';
 import { site, seo } from '../data/site';
 ---
 
@@ -63,7 +63,9 @@ import { site, seo } from '../data/site';
       </svg>
 
       <div class="hero__logo" data-drift="14">
-        <Logo size="100%" loading="eager" />
+        {/* The badge is aria-hidden, so the medallion takes an empty alt rather
+            than repeating the gym's name to a screen reader for a third time. */}
+        <Medallion size="100%" loading="eager" alt="" />
       </div>
     </div>
   </div>
@@ -226,9 +228,11 @@ import { site, seo } from '../data/site';
     }
   }
 
+  /* The medallion sits inside the counter-rotating rings, lit from below by the
+     ember bloom. The chrome only pays off at this size, which is why the flat
+     mark is still what the header uses. */
   .hero__logo {
     width: 74%;
-    color: var(--chrome);
     filter: drop-shadow(0 18px 50px rgba(230, 58, 31, 0.28));
     transition: transform 0.45s var(--ease-out);
     animation: float 7s ease-in-out infinite;
