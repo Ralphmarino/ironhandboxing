@@ -175,11 +175,13 @@ const path = Astro.url.pathname;
     transition: transform 0.4s var(--ease-out);
   }
 
-  .hdr__nav a:hover.hdr__nav a[aria-current='page'] {
+  .hdr__nav a:hover,
+  .hdr__nav a[aria-current='page'] {
     color: var(--chrome);
   }
 
-  .hdr__nav a:hover::after.hdr__nav a[aria-current='page']::after {
+  .hdr__nav a:hover::after,
+  .hdr__nav a[aria-current='page']::after {
     transform: scaleX(1);
   }
 

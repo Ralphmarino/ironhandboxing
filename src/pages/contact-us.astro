@@ -39,7 +39,9 @@ const referralSources = [
           Let’s get you<br />in the gym.
         </h1>
         <p class="lede" data-reveal data-reveal-index="2">
-          Whatever your query, we’re here to help. Fill out the form below and a
+          {/* Deliberately does not say "below". The form sits alongside this
+              copy on desktop and below it on a phone. */}
+          Whatever your question, we’re here to help. Fill out the form and a
           member of our team will get back to you shortly.
         </p>
 
@@ -138,7 +140,7 @@ const referralSources = [
           <div class="field">
             <label for="inquiry">Type of Inquiry</label>
             <select id="inquiry" name="type of inquiry">
-              <option value="">Select Here</option>
+              <option value="">Choose one</option>
               {inquiryTypes.map((i) => <option value={i}>{i}</option>)}
             </select>
           </div>
@@ -170,7 +172,7 @@ const referralSources = [
           <div class="field">
             <label for="referral">How Did You Hear About Us?</label>
             <select id="referral" name="how did you hear about us">
-              <option value="">Select Here</option>
+              <option value="">Choose one</option>
               {referralSources.map((r) => <option value={r}>{r}</option>)}
             </select>
           </div>
@@ -310,7 +312,9 @@ const referralSources = [
     color: var(--ember-2);
   }
 
-  .field input.field select.field textarea {
+  .field input,
+  .field select,
+  .field textarea {
     width: 100%;
     padding: 0.85rem 1rem;
     background: var(--ink-900);
@@ -328,14 +332,22 @@ const referralSources = [
     min-height: 120px;
   }
 
-  .field input::placeholder.field textarea::placeholder {
+  .field input::placeholder,
+  .field textarea::placeholder {
     color: var(--chrome-3);
   }
 
-  .field input:focus.field select:focus.field textarea:focus {
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
     outline: none;
     border-color: var(--ember);
     background: var(--ink-800);
+  }
+
+  /* An unpicked select should read as a placeholder, not as an answer. */
+  .field select:has(option[value='']:checked) {
+    color: var(--chrome-3);
   }
 
   /* Native select arrow is invisible on a dark field in Safari, draw our own */
