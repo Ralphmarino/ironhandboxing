@@ -3,6 +3,8 @@ export type Coach = {
   role: string;
   instagram?: string;
   handle?: string;
+  /** Whose account it is, for cards that cover more than one person. */
+  handleNote?: string;
   /** BoxRec professional record. Adds real credibility for a coach who fought. */
   boxrec?: string;
   image: string;
@@ -11,12 +13,8 @@ export type Coach = {
 };
 
 /**
- * ⚠️ COACH PHOTOS: only Ian's is set, because his was the only photo in Drive
- * that came named for a specific person. There are good portraits in
- * /public/photos/ (fighter-portrait-red-singlet, boxer-heavy-bag-portrait,
- * member-training-gloves, boxer-ring-portrait) but I can't tell who is who, and
- * putting the wrong face next to a coach's name on a live site is worse than a
- * placeholder. Tell me which photo belongs to which coach and I'll set them.
+ * Every portrait here was named for its coach by Ian, then cropped to the 4:5
+ * frame the cards use. No placeholders left.
  */
 export const coaches: Coach[] = [
   {
@@ -34,7 +32,12 @@ export const coaches: Coach[] = [
     // environment to confirm the record it points to, so give it a look before
     // launch.
     boxrec: 'https://boxrec.com/en/box-pro/10828',
-    image: '/example.png',
+    // ⚠️ The photo Ian sent as "carlos.png" shows a young amateur in a blue
+    // singlet with a title belt, which does not obviously match a coach who
+    // already has a pro record on BoxRec. It is used because he named the file,
+    // but worth a second look before launch: if this is a fighter of his rather
+    // than Carlos himself, swap the image and the bio together.
+    image: '/photos/coach-carlos.jpg',
     bio: 'A professional record of his own behind him, Carlos brings his own roster and his own approach to the Ironhand floor, coaching members one-on-one and in small groups out of the Castleton Avenue gym.',
   },
   {
@@ -42,7 +45,7 @@ export const coaches: Coach[] = [
     role: 'Coach · USA Boxing Silver',
     instagram: 'https://www.instagram.com/arianneelshawarby',
     handle: '@arianneelshawarby',
-    image: '/example.png',
+    image: '/photos/coach-arianne.jpg',
     bio: 'An active open-class amateur and a certified coach who works corners as well as she works mitts. Arianne coaches from inside the sport, not beside it.',
     credentials: [
       'Silver Level USA Boxing Coach',
@@ -58,15 +61,18 @@ export const coaches: Coach[] = [
     role: 'Coach',
     instagram: 'https://www.instagram.com/the_prodigy581',
     handle: '@the_prodigy581',
-    image: '/example.png',
+    image: '/photos/coach-mark.jpg',
     bio: 'Ian’s protégé. Mark came up through Ironhand as a student and now coaches on the same floor he learned on, which is exactly why newer members gravitate to him.',
   },
   {
-    name: 'Emmanuel Sandoval',
-    role: 'Coach',
+    // Father and son share one card at Ian's request. The Instagram handle is
+    // Manny's, which is why the link is labelled with his name.
+    name: 'Manny & Raul Sandoval',
+    role: 'Coaches',
     instagram: 'https://www.instagram.com/popeyes_emma13',
     handle: '@popeyes_emma13',
-    image: '/example.png',
-    bio: 'Another product of the Ironhand program, Emmanuel helps run the floor and works with members building their fundamentals.',
+    handleNote: 'Manny',
+    image: '/photos/coach-manny-raul.jpg',
+    bio: 'Emmanuel “Manny” Sandoval is another product of the Ironhand program, helping run the floor and working with members building their fundamentals. His father Raul coaches alongside him. Between the two of them there is almost always a Sandoval in somebody’s corner.',
   },
 ];

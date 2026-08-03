@@ -13,7 +13,7 @@ here is the unknown, removed.
 
 ## Before you come
 
-Wear athletic clothes you can move in and sneakers with some support. Bring
+Wear athletic clothes you can move in and boxing shoes. Bring
 water, more than you think, and a towel. That's it. Do not buy gloves yet.
 We'll get you wrapped and gloved for your first session, and once you know
 you're sticking around, a coach will tell you what's actually worth spending
