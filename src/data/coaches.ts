@@ -32,12 +32,15 @@ export const coaches: Coach[] = [
     // environment to confirm the record it points to, so give it a look before
     // launch.
     boxrec: 'https://boxrec.com/en/box-pro/10828',
-    // ⚠️ The photo Ian sent as "carlos.png" shows a young amateur in a blue
-    // singlet with a title belt, which does not obviously match a coach who
-    // already has a pro record on BoxRec. It is used because he named the file,
-    // but worth a second look before launch: if this is a fighter of his rather
-    // than Carlos himself, swap the image and the bio together.
-    image: '/photos/coach-carlos.jpg',
+    /**
+     * ⚠️ AWAITING PHOTO. carlos.png turned out to be someone else, confirmed by
+     * Ian, so it has been taken down rather than left captioned with Carlos's
+     * name and linked to his professional record. The replacement is
+     * IMG_0615.jpeg, which has not reached the repo yet. Drop it in, run it
+     * through the same 4:5 treatment as the other portraits, and set this to
+     * /photos/coach-carlos.jpg.
+     */
+    image: '/example.png',
     bio: 'A professional record of his own behind him, Carlos brings his own roster and his own approach to the Ironhand floor, coaching members one-on-one and in small groups out of the Castleton Avenue gym.',
   },
   {
