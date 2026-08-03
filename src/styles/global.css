@@ -84,7 +84,19 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /*
+   * `hidden` makes the body a scroll container, and on iOS Safari that is a
+   * known source of phantom scrollable space below the content. `clip` does the
+   * same clipping without creating a scroll container at all. `hidden` stays as
+   * the fallback for anything that does not support clip.
+   */
   overflow-x: hidden;
+  overflow-x: clip;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img,

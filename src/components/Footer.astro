@@ -75,7 +75,7 @@ const mapQuery = encodeURIComponent(
         ))
       }
 
-      <div class="ftr__col">
+      <div class="ftr__col ftr__col--visit">
         <h2 class="ftr__ttl">{t('footer.visit')}</h2>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
@@ -137,14 +137,32 @@ const mapQuery = encodeURIComponent(
     z-index: 2;
   }
 
+  /*
+   * On a phone this used to stack all four blocks in one column, which made the
+   * footer 1242px tall on a 664px screen: nearly two full screens of footer to
+   * scroll through after the page had ended.
+   *
+   * The two link columns are short lists, so they sit side by side from the
+   * smallest screen up. That and a tighter gap cut roughly a third off the
+   * mobile footer.
+   */
   .ftr__top {
     display: grid;
-    gap: clamp(2.5rem, 5vw, 4rem);
-    grid-template-columns: 1fr;
+    gap: 2rem clamp(1.5rem, 5vw, 4rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     position: relative;
   }
 
+  /* The brand block keeps the full width above the two link columns. */
+  /* The address block spans, it has the longest lines in the footer.
+     NOT :last-of-type, which matches per element type and so was also hitting
+     the last <nav> column and pushing it onto its own row. */
+  .ftr__col--visit {
+    grid-column: 1 / -1;
+  }
+
   .ftr__brand {
+    grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -249,13 +267,21 @@ const mapQuery = encodeURIComponent(
 
   @media (min-width: 700px) {
     .ftr__top {
-      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .ftr__col--visit {
+      grid-column: auto;
     }
   }
 
   @media (min-width: 1000px) {
     .ftr__top {
       grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    }
+
+    .ftr__brand {
+      grid-column: auto;
     }
   }
 </style>
