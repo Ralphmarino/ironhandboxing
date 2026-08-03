@@ -35,6 +35,7 @@ const byDay = dayOrder.map((short) => ({
                 <div class={`slot slot--${slot.track}`}>
                   <p class="slot__time">{slot.time}</p>
                   <p class="slot__label">{slot.label}</p>
+                  {slot.offsite && <p class="slot__where">{slot.offsite}</p>}
                   {slot.note && <p class="slot__note">{slot.note}</p>}
                 </div>
               ))}
@@ -144,6 +145,35 @@ const byDay = dayOrder.map((short) => ({
 
   .slot--womens .slot__label {
     color: #7cc4d8;
+  }
+
+  /* The Thursday run is the only session that does not happen at the gym, so it
+     gets its own colour and carries its location on the card. */
+  .slot--run {
+    border-left-color: #8fce6d;
+    background: linear-gradient(90deg, rgba(143, 206, 109, 0.13), transparent);
+  }
+
+  .slot--run .slot__label {
+    color: #8fce6d;
+  }
+
+  .slot__where {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+    font-size: 0.6875rem;
+    color: var(--chrome-2);
+  }
+
+  .slot__where::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
   }
 
   .slot__time {

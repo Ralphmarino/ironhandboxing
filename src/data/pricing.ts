@@ -29,20 +29,21 @@ export const monthlyPlans: Plan[] = [
 /**
  * One-off and add-on options.
  *
- * ⚠️ PERSONAL SESSIONS: Ian's note read "Personal session are 2 now for 250",
- * which is taken here as a two-session block for $250, replacing the old $115
- * single hour. If he meant something else (a rate rise to $125 per single
- * hour, or two hours in one sitting), change it here AND in the two FAQ
- * answers that quote the figure, so the site never states two prices.
+ * ⚠️ PERSONAL SESSIONS ARE SOLD IN PAIRS ONLY. Ian does not do single sessions,
+ * and he cut the pair from $250 to $180 as a deliberate discount for committing
+ * to two. The "two sessions minimum" wording is the point of the offer, not
+ * small print, so it appears on the pricing card, the offer card and the FAQ.
+ * If the number ever changes, change it in all four places at once. The site
+ * must never quote two different prices.
  *
  * The $30 add-on class line was removed on his instruction.
  */
 export const sessionPlans: Plan[] = [
   {
     name: 'Personal Sessions',
-    price: '250',
+    price: '180',
     unit: 'for two sessions',
-    note: 'One-on-one with Coach Ian',
+    note: 'One-on-one with Coach Ian. Two session minimum, no singles.',
     featured: true,
   },
   { name: 'Virtual Small Group', price: '25', unit: 'per session' },

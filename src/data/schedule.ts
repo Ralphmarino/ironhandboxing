@@ -4,7 +4,14 @@ export type ClassSlot = {
   time: string;
   label: string;
   note?: string;
-  track: 'group' | 'fighters' | 'youth' | 'womens';
+  track: 'group' | 'fighters' | 'youth' | 'womens' | 'run';
+  /**
+   * Set when a session does not happen at the gym. Offsite sessions are shown
+   * with their location and are excluded from the opening hours in the
+   * structured data, so the schema never claims the Castleton Avenue address is
+   * open for something happening in a park.
+   */
+  offsite?: string;
 };
 
 /**
@@ -26,6 +33,14 @@ export const schedule: ClassSlot[] = [
   { day: 'Wednesday', short: 'Wed', time: '4:00 PM', label: 'Kids & Teens', track: 'youth' },
   { day: 'Wednesday', short: 'Wed', time: '7:00 PM', label: 'Fighters Only', note: 'Book required', track: 'fighters' },
   { day: 'Thursday', short: 'Thu', time: '11:00 AM', label: 'Group Class', track: 'group' },
+  {
+    day: 'Thursday',
+    short: 'Thu',
+    time: '8:00 PM',
+    label: 'Group Run',
+    track: 'run',
+    offsite: 'Clove Lake Park',
+  },
   { day: 'Friday', short: 'Fri', time: '5:00 PM', label: 'Kids & Teens', track: 'youth' },
   { day: 'Friday', short: 'Fri', time: '6:00 PM', label: 'Group Class', track: 'group' },
   { day: 'Friday', short: 'Fri', time: '7:00 PM', label: 'Fighters Only', note: 'Book required', track: 'fighters' },
