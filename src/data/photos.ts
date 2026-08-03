@@ -138,24 +138,110 @@ export const photos = {
     width: 640,
     height: 1153,
   },
+
+  /* ---- Second batch ---- */
+  kidsClass: {
+    src: '/photos/kids-class-group.jpg',
+    alt: 'The Ironhand kids boxing class with gloves up alongside their coach',
+    width: 1027,
+    height: 1104,
+    span: 'wide',
+  },
+  teamAtMSG: {
+    src: '/photos/team-at-madison-square-garden.jpg',
+    alt: 'Ironhand fighters and families at Madison Square Garden',
+    width: 642,
+    height: 802,
+  },
+  teenGuardUp: {
+    src: '/photos/teen-guard-up.jpg',
+    alt: 'A teenage boxer holding his guard during a class at Ironhand Boxing',
+    width: 720,
+    height: 1078,
+  },
+  youthBag: {
+    src: '/photos/youth-heavy-bag.jpg',
+    alt: 'A young Ironhand member working the heavy bag',
+    width: 1512,
+    height: 1890,
+    span: 'tall',
+  },
+  jumpRope: {
+    src: '/photos/jump-rope-conditioning.jpg',
+    alt: 'Members skipping rope during conditioning at Ironhand Boxing',
+    width: 720,
+    height: 1078,
+  },
+  speedBag: {
+    src: '/photos/speed-bag-work.jpg',
+    alt: 'Speed bag work on the gym floor at Ironhand Boxing',
+    width: 720,
+    height: 1078,
+  },
+  coachPadWork: {
+    src: '/photos/coach-pad-work.jpg',
+    alt: 'A coach gloved up and working pads at Ironhand Boxing',
+    width: 642,
+    height: 802,
+  },
+  cornerBetweenRounds: {
+    src: '/photos/corner-between-rounds.jpg',
+    alt: 'An Ironhand corner talking to their fighter between rounds',
+    width: 720,
+    height: 958,
+    span: 'wide',
+  },
+  ringsideCorner: {
+    src: '/photos/ringside-corner.jpg',
+    alt: 'Ironhand coaches working the corner at an amateur show',
+    width: 720,
+    height: 958,
+  },
+  afterTheBout: {
+    src: '/photos/fighters-after-the-bout.jpg',
+    alt: 'An Ironhand fighter with teammates after a bout',
+    width: 1020,
+    height: 1020,
+  },
+  betweenRounds: {
+    src: '/photos/boxer-between-rounds.jpg',
+    alt: 'An Ironhand boxer catching their breath during training',
+    width: 720,
+    height: 1078,
+  },
 } as const satisfies Record<string, Photo>;
 
-/** Order shown on /gallery/ — mixed orientations so the mosaic stays irregular. */
+/**
+ * Order shown on /gallery/ — deliberately interleaved so the mosaic mixes
+ * orientations and subjects rather than clustering all the gym interiors or
+ * all the kids' shots together.
+ */
 export const galleryPhotos: Photo[] = [
   photos.gymFloor,
   photos.fighterPortrait,
   photos.coachMittWork,
   photos.fightersInRing,
   photos.heavyBags,
+  photos.kidsClass,
   photos.memberTraining,
+  photos.speedBag,
   photos.amateurBout,
   photos.ringside,
   photos.youthMittWork,
+  photos.teenGuardUp,
   photos.bagsWall,
+  photos.cornerBetweenRounds,
   photos.gloveCloseup,
+  photos.youthBag,
   photos.cage,
+  photos.jumpRope,
   photos.bagPortrait,
+  photos.teamAtMSG,
   photos.bagRow,
+  photos.afterTheBout,
   photos.ringPortrait,
+  photos.coachPadWork,
+  photos.ringsideCorner,
+  photos.betweenRounds,
   photos.guests,
 ];

@@ -19,7 +19,7 @@ const path = Astro.url.pathname;
     <a class="hdr__brand" href="/" aria-label="Ironhand Boxing — home">
       <Logo size={46} loading="eager" />
       <span class="hdr__word">
-        Ironhand
+        Ironhand Boxing
         <small>Staten Island</small>
       </span>
     </a>
@@ -46,14 +46,40 @@ const path = Astro.url.pathname;
       <span></span><span></span><span></span>
     </button>
   </div>
-
-  <div class="menu" id="mobile-menu" data-menu>
-    <nav aria-label="Mobile">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
-      <a class="btn menu__cta" href="/contact-us/">Start Training</a>
-    </nav>
-  </div>
 </header>
+
+{/*
+  Full-screen overlay with its own brand row and close button.
+
+  Deliberately a SIBLING of <header>, not a child. The header is
+  `position:sticky; z-index:100`, which creates a stacking context — nesting the
+  panel inside meant its z-index was clamped within the header, so the
+  announcement bar (z-index 101) painted straight over the open menu. As a
+  root-level sibling its z-index competes properly.
+
+  It also covers the full viewport rather than being inset by a hardcoded header
+  height, which used to leave the close button stranded outside the panel once
+  the announcement bar pushed the header down.
+*/}
+<div class="menu" id="mobile-menu" data-menu>
+    <div class="menu__bar wrap">
+      <a class="menu__brand" href="/" aria-label="Ironhand Boxing — home">
+        <Logo size={46} />
+        <span class="hdr__word">
+          Ironhand Boxing
+          <small>Staten Island</small>
+        </span>
+      </a>
+      <button class="menu__close" data-menu-close aria-label="Close menu">
+        <span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="menu__nav wrap" aria-label="Mobile">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    <a class="btn menu__cta" href="/contact-us/">Start Training</a>
+  </nav>
+</div>
 
 <style>
   .hdr {
@@ -95,7 +121,9 @@ const path = Astro.url.pathname;
 
   .hdr__word {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    /* Steps down on narrow phones so "Ironhand Boxing" never collides with
+       the burger button. */
+    font-size: clamp(1.05rem, 4.2vw, 1.35rem);
     line-height: 1;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -103,6 +131,7 @@ const path = Astro.url.pathname;
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+    white-space: nowrap;
   }
 
   .hdr__word small {
@@ -190,18 +219,23 @@ const path = Astro.url.pathname;
   /* ---- Mobile panel ---- */
   .menu {
     position: fixed;
-    inset: 5rem 0 0 0;
-    background: rgba(8, 9, 11, 0.97);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: var(--gutter);
+    inset: 0;
+    /* Fully opaque: a translucent panel let bright page content bleed through
+       and made the menu hard to read on photo-heavy pages. */
+    background: var(--ink-900);
+    /* Above the sticky header, which it deliberately covers */
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
     transition:
-      opacity 0.35s var(--ease-out),
-      transform 0.35s var(--ease-out),
-      visibility 0.35s;
+      opacity 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out),
+      visibility 0.3s;
   }
 
   .menu.is-open {
@@ -210,26 +244,74 @@ const path = Astro.url.pathname;
     transform: none;
   }
 
-  .menu nav {
+  /* Mirrors the real header so the panel reads as the same bar, not a layer
+     floating over it. */
+  .menu__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 5rem;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .menu__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .menu__close {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .menu__close span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    margin-left: -10px;
+    background: var(--chrome);
+  }
+
+  .menu__close span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .menu__close span:nth-child(2) {
+    transform: rotate(-45deg);
+  }
+
+  .menu__nav {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    padding-block: 1.25rem 2rem;
   }
 
-  .menu a {
+  .menu__nav a {
     font-family: var(--font-display);
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 6vw, 2rem);
     text-transform: uppercase;
     color: var(--chrome);
-    padding-block: 0.6rem;
+    padding-block: 0.65rem;
     border-bottom: 1px solid var(--line);
   }
 
   .menu__cta {
     margin-top: 1.5rem;
-    border-bottom: 0;
+    border-bottom: 0 !important;
     font-size: 1rem !important;
     align-self: flex-start;
+    color: #fff !important;
   }
 
   @media (min-width: 1080px) {

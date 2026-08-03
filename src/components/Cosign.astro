@@ -329,16 +329,38 @@ const names = [
     }
   }
 
-  /* Stacked on phones: card sits below-left rather than overlapping badly */
+  /*
+   * On phones the overlapping composition pushed the group photo off the left
+   * edge and `overflow:hidden` clipped it — Frankie Edgar was invisible. Stack
+   * them instead so both photos are fully on screen.
+   */
   @media (max-width: 899px) {
     .cosign__media {
-      padding-left: 22%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
       margin-top: 1rem;
+      perspective: none;
+    }
+
+    .phone {
+      order: 1;
+      width: min(66vw, 280px);
     }
 
     .cosign__card {
-      width: min(46vw, 190px);
-      translate: -88% -30%;
+      order: 2;
+      position: static;
+      width: min(74vw, 320px);
+      translate: none;
+      rotate: -3deg;
+    }
+
+    .cosign__card img {
+      aspect-ratio: 4 / 3;
+      /* Full colour on mobile — there is no hover to reveal it */
+      filter: none;
     }
   }
 

@@ -32,6 +32,10 @@
           <dt>Best combo</dt>
           <dd><span data-bag-combo aria-live="off">0</span></dd>
         </div>
+        <div class="bag__stat bag__stat--record">
+          <dt>Personal best</dt>
+          <dd><span data-bag-best aria-live="off">0</span></dd>
+        </div>
         <div class="bag__stat bag__stat--wide">
           <dt>Power</dt>
           <dd>
@@ -118,6 +122,7 @@
     const countEl = root.querySelector<HTMLElement>('[data-bag-count]')!;
     const comboEl = root.querySelector<HTMLElement>('[data-bag-combo]')!;
     const powerEl = root.querySelector<HTMLElement>('[data-bag-power]')!;
+    const bestEl = root.querySelector<HTMLElement>('[data-bag-best]')!;
     const msgEl = root.querySelector<HTMLElement>('[data-bag-msg]')!;
     const hintEl = root.querySelector<HTMLElement>('[data-bag-hint]')!;
 
@@ -133,9 +138,67 @@
     let lastPunch = 0;
     let power = 0;
 
+    // Declared before readBest() uses it. A `const` below its first call sits
+    // in the temporal dead zone, and the guard below would quietly swallow the
+    // resulting ReferenceError and report "no saved record".
+    const BEST_KEY = 'ironhand:bag-best';
+
+    // Personal best survives reloads. localStorage can throw in private mode
+    // or when storage is blocked, so every access is guarded — a failure here
+    // must not take the whole game down.
+    const readBest = (): number => {
+      try {
+        return Number(localStorage.getItem(BEST_KEY)) || 0;
+      } catch {
+        return 0;
+      }
+    };
+    const writeBest = (n: number) => {
+      try {
+        localStorage.setItem(BEST_KEY, String(n));
+      } catch {
+        /* storage unavailable — the run still counts, it just won't persist */
+      }
+    };
+
+    /**
+     * The record carried in from previous visits, captured once at load.
+     * The celebration compares against THIS, not against `best` — `best`
+     * tracks the live count, so comparing to it would fire on every punch.
+     */
+    const storedRecord = readBest();
+    let best = storedRecord;
+    bestEl.textContent = String(best);
+    const recordTile = bestEl.closest('.bag__stat') as HTMLElement;
+
+    /**
+     * Exact-hit callouts. These fire once, on the punch that lands the number,
+     * and outrank the running commentary below.
+     */
+    const EASTER_EGGS: Record<number, string> = {
+      69: 'Nice.',
+      100: 'Triple digits. The bag is filing a complaint.',
+      111: 'Three jabs. Nothing but ones.',
+      123: 'One. Two. Three. Easy.',
+      187: 'Somebody call a corner man.',
+      222: 'Double double double. Showoff.',
+      250: 'You have punched more than some of our members. Genuinely.',
+      300: 'This is Sparta. Also: go outside.',
+      404: 'Punch not found. Somehow still counting.',
+      500: 'Five hundred. Ian would like a word.',
+      666: 'Demonic hand speed.',
+      777: 'Jackpot. The bag pays out in bruises.',
+      911: 'Okay, seriously, are you alright?',
+      1000: 'One thousand. You win. There is nothing else. Go book a class.',
+    };
+
+    /** Running commentary — highest threshold at or below the count wins. */
     const MESSAGES: [number, string][] = [
-      [200, 'Okay, champ. Come take a real class.'],
-      [100, 'A hundred. The bag gives up.'],
+      [750, 'We have stopped keeping track. You have not.'],
+      [400, 'The bag has left the building.'],
+      [150, 'Holy S#!T you’re still going?'],
+      [120, 'Your mouse has a stress injury.'],
+      [80, 'Eighty. Okay, you’ve got something.'],
       [50, 'Fifty. Hands are getting fast.'],
       [25, 'Twenty-five. Now keep your guard up.'],
       [10, 'Ten in. Feeling it yet?'],
@@ -200,8 +263,36 @@
       comboEl.textContent = String(bestCombo);
       powerEl.style.width = power + '%';
 
-      const msg = MESSAGES.find(([n]) => count >= n);
-      if (msg) msgEl.textContent = msg[1];
+      // Fires on exactly the punch that passes the record you arrived with.
+      const beatIt = storedRecord > 0 && count === storedRecord + 1;
+      if (count > best) {
+        best = count;
+        bestEl.textContent = String(best);
+        writeBest(best);
+      }
+
+      // Message priority: beating your record > exact-number callout > the
+      // running commentary. Whichever wins, the physics below still run.
+      let celebrate = false;
+      if (beatIt) {
+        msgEl.textContent = 'New personal best.';
+        recordTile.classList.remove('is-new');
+        void recordTile.offsetWidth;
+        recordTile.classList.add('is-new');
+        celebrate = true;
+      } else if (EASTER_EGGS[count]) {
+        msgEl.textContent = EASTER_EGGS[count];
+        celebrate = true;
+      } else {
+        const msg = MESSAGES.find(([n]) => count >= n);
+        if (msg) msgEl.textContent = msg[1];
+      }
+
+      if (celebrate) {
+        msgEl.classList.remove('is-pop');
+        void msgEl.offsetWidth;
+        msgEl.classList.add('is-pop');
+      }
 
       hintEl.classList.add('is-gone');
       hit.classList.remove('is-hit');
@@ -302,6 +393,28 @@
     transition: width 0.12s linear;
   }
 
+  .bag__stat--record dd {
+    color: var(--gold);
+  }
+
+  /* Gold flash when the record falls */
+  .bag__stat--record.is-new {
+    animation: record 1s var(--ease-out);
+  }
+
+  @keyframes record {
+    0% {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.22);
+      transform: scale(1.03);
+    }
+    100% {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      transform: scale(1);
+    }
+  }
+
   .bag__msg {
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -309,6 +422,28 @@
     text-transform: uppercase;
     color: var(--ember-2);
     min-height: 1.2em;
+  }
+
+  /* Milestone lines land with a small kick so they read as an event */
+  .bag__msg.is-pop {
+    animation: msgPop 0.55s var(--ease-punch);
+  }
+
+  @keyframes msgPop {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.3;
+      color: var(--gold);
+    }
+    60% {
+      transform: scale(1.06);
+      color: var(--gold);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+      color: var(--ember-2);
+    }
   }
 
   .bag__cta {
@@ -457,10 +592,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bag__hint {
-      animation: none;
-    }
-    .bag__hit.is-hit .bag__svg {
+    .bag__hint,
+    .bag__hit.is-hit .bag__svg,
+    .bag__msg.is-pop,
+    .bag__stat--record.is-new {
       animation: none;
     }
   }

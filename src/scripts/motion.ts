@@ -131,20 +131,35 @@ function initMenu() {
   const panel = document.querySelector<HTMLElement>('[data-menu]');
   if (!toggle || !panel) return;
 
+  const closeBtn = panel.querySelector<HTMLButtonElement>('[data-menu-close]');
+
   const setOpen = (open: boolean) => {
+    // aria-expanded stays on the header burger — that is the control the
+    // panel belongs to, even though the close button lives inside the panel.
     toggle.setAttribute('aria-expanded', String(open));
     panel.classList.toggle('is-open', open);
+    panel.setAttribute('aria-hidden', String(!open));
     document.body.style.overflow = open ? 'hidden' : '';
+
+    // Move focus with the panel so keyboard users aren't left behind it
+    if (open) closeBtn?.focus();
+    else if (document.activeElement && panel.contains(document.activeElement)) toggle.focus();
   };
+
+  setOpen(false);
 
   toggle.addEventListener('click', () => {
     setOpen(toggle.getAttribute('aria-expanded') !== 'true');
   });
 
+  closeBtn?.addEventListener('click', () => setOpen(false));
+
+  // Any link closes the panel — including same-page #anchors, which would
+  // otherwise scroll behind an open overlay.
   panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setOpen(false);
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) setOpen(false);
   });
 }
 

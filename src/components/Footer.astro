@@ -73,7 +73,7 @@ const mapQuery = encodeURIComponent(
           {site.address.locality}, {site.address.region} {site.address.postalCode}
         </a>
         {site.phone && <a href={`tel:${site.phone.replace(/[^0-9+]/g, '')}`}>{site.phone}</a>}
-        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`mailto:${site.email}`}>Email us</a>
       </div>
     </div>
 

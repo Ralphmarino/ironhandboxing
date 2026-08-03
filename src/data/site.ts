@@ -22,6 +22,13 @@ export const site = {
   },
 
   phone: '347-499-4133',
+
+  /**
+   * Never rendered as visible text — the site links it as "Email us" instead.
+   * Note the address is still present in the mailto: href, so a determined
+   * scraper can read it from the page source. If you want it fully off the
+   * site, point those links at /contact-us/ instead and let the form carry it.
+   */
   email: 'iansampaga1@gmail.com',
 
   social: {
