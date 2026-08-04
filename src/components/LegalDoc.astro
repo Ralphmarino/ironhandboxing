@@ -1,0 +1,228 @@
+---
+/**
+ * Renders a privacy policy or terms page.
+ *
+ * Long-form legal prose is the one place on this site where readability beats
+ * art direction: narrow measure, generous leading, real hierarchy, and none of
+ * the reveal animation, so nothing a visitor may urgently need is hidden behind
+ * a scroll trigger or a JS failure.
+ */
+import type { LegalDoc } from '../data/legal';
+import type { Lang } from '../i18n/config';
+
+interface Props {
+  doc: LegalDoc;
+  lang: Lang;
+}
+
+const { doc, lang } = Astro.props;
+const updatedLabel = lang === 'es' ? 'Última actualización' : 'Last updated';
+const contentsLabel = lang === 'es' ? 'En esta página' : 'On this page';
+
+/** Stable anchor per heading, so a section can be linked to directly. */
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+---
+
+<article class="legal">
+  <header class="legal__head gridlines">
+    <div class="wrap legal__headinner">
+      <h1 class="h1 steel legal__h1">{doc.h1}</h1>
+      <p class="lede legal__intro">{doc.intro}</p>
+      <p class="legal__updated">
+        {updatedLabel}: <time>{doc.updated}</time>
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap legal__body">
+    <nav class="legal__toc" aria-label={contentsLabel}>
+      <p class="legal__toclbl">{contentsLabel}</p>
+      <ol>
+        {doc.sections.map((s) => <li><a href={`#${slug(s.h)}`}>{s.h}</a></li>)}
+      </ol>
+    </nav>
+
+    <div class="legal__prose">
+      {
+        doc.sections.map((s) => (
+          <section class="legal__section">
+            <h2 id={slug(s.h)} class="legal__h2">
+              {s.h}
+            </h2>
+            {s.p.map((para) => (
+              <p>{para}</p>
+            ))}
+            {s.list && (
+              <ul>
+                {s.list.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .legal {
+    position: relative;
+    z-index: 2;
+    background: var(--ink-900);
+  }
+
+  .legal__head {
+    padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .legal__headinner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+
+  .legal__h1 {
+    /* Lower floor than the marketing pages: "Términos y condiciones" is a long
+       phrase and this is a page people read, not one they admire. */
+    font-size: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .legal__intro {
+    max-width: 58ch;
+  }
+
+  .legal__updated {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  .legal__body {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(4rem, 9vw, 7rem);
+  }
+
+  /* ---- Contents ---- */
+  .legal__toc {
+    align-self: start;
+  }
+
+  .legal__toclbl {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+    margin-bottom: 0.85rem;
+  }
+
+  .legal__toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    counter-reset: toc;
+  }
+
+  .legal__toc li {
+    counter-increment: toc;
+  }
+
+  .legal__toc a {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    color: var(--chrome-3);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .legal__toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--chrome-3);
+    opacity: 0.6;
+    padding-top: 0.15em;
+  }
+
+  .legal__toc a:hover {
+    color: var(--chrome);
+  }
+
+  /* ---- Prose ---- */
+  .legal__prose {
+    max-width: 68ch;
+  }
+
+  .legal__section + .legal__section {
+    margin-top: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .legal__h2 {
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+    color: var(--chrome);
+    margin-bottom: 0.9rem;
+    /* Clears the sticky header when jumped to from the contents list */
+    scroll-margin-top: 6.5rem;
+  }
+
+  .legal__prose p {
+    color: var(--chrome-2);
+    line-height: 1.75;
+  }
+
+  .legal__prose p + p {
+    margin-top: 0.9rem;
+  }
+
+  .legal__prose ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .legal__prose li {
+    position: relative;
+    padding-left: 1.35rem;
+    color: var(--chrome-2);
+    line-height: 1.7;
+  }
+
+  .legal__prose li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--grad-ember);
+  }
+
+  @media (min-width: 900px) {
+    .legal__body {
+      grid-template-columns: 15rem 1fr;
+    }
+
+    .legal__toc {
+      position: sticky;
+      top: 6.5rem;
+    }
+  }
+</style>

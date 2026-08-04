@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import { terms } from '../data/legal';
+
+const doc = terms('en');
+---
+
+<Base title={doc.title} description={doc.description}>
+  <LegalDoc doc={doc} lang="en" />
+</Base>

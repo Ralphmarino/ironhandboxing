@@ -99,6 +99,10 @@ const mapQuery = encodeURIComponent(
       <p class="ftr__legal">
         © {year} {site.legalName}. {t('footer.rights')}
         <span class="ftr__sep" aria-hidden="true">|</span>
+        <a href={route('privacy', lang)}>{es ? 'Privacidad' : 'Privacy'}</a>
+        <span class="ftr__sep" aria-hidden="true">|</span>
+        <a href={route('terms', lang)}>{es ? 'Términos' : 'Terms'}</a>
+        <span class="ftr__sep" aria-hidden="true">|</span>
         <a href="/sitemap-index.xml">{t('footer.sitemap')}</a>
         <span class="ftr__sep" aria-hidden="true">|</span>
         <a href="/llms.txt">llms.txt</a>
