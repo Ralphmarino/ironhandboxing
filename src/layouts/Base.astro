@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
 import BackToTop from '../components/BackToTop.astro';
 import GoatEgg from '../components/GoatEgg.astro';
-import { site } from '../data/site';
+import { site, ANALYTICS } from '../data/site';
 import { schedule } from '../data/schedule';
 import { langFromPath, counterpart, type Lang } from '../i18n/config';
 import { useTranslations } from '../i18n/ui';
@@ -166,6 +166,44 @@ const schema = {
 
     {/* Pages inject their own structured data (FAQPage, BlogPosting) here. */}
     <slot name="head" />
+
+    {/*
+      Google Analytics 4.
+
+      `is:inline` on both tags is required: without it Astro bundles the second
+      script as a module, and `gtag` would no longer be the global function the
+      first script's queue and any future event calls expect.
+
+      `set:html` rather than `define:vars` for the same reason: define:vars
+      wraps the body in an IIFE, which would scope `gtag` inside it. Page views
+      would still land, because those go through the global dataLayer, but any
+      later gtag('event', ...) call would throw. The interpolated value is a
+      build-time constant from src/data/site.ts, not anything a visitor controls.
+
+      Production builds only, so `npm run dev` does not report local page views
+      as real traffic. Note this DOES include Netlify deploy previews, which are
+      production builds, so a branch preview will show up in the property.
+    */}
+    {
+      import.meta.env.PROD && ANALYTICS.ga4 && (
+        <Fragment>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.ga4}`}
+          />
+          <script
+            is:inline
+            set:html={`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${ANALYTICS.ga4}');
+`}
+          />
+        </Fragment>
+      )
+    }
 
     <!-- Set synchronously so reveal styles only apply when JS can undo them.
          Without this, a JS failure would leave the page permanently blank. -->
