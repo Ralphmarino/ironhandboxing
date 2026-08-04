@@ -72,6 +72,16 @@ export const seo = {
   },
 } as const;
 
+/**
+ * Google Analytics 4.
+ *
+ * Empty string disables the tag entirely, which is the honest way to turn it
+ * off: no script, no cookies, rather than a tag firing into a dead property.
+ */
+export const ANALYTICS = {
+  ga4: 'G-HEMSNSRL0P',
+} as const;
+
 /** Scrolling announcement strip above the header on the homepage. */
 export const announcement =
   "Welcome to Ironhand Boxing - Staten Island's Premier Boxing Training & Gym";
