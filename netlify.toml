@@ -2,6 +2,14 @@
   command = "npm run build"
   publish = "dist"
 
+# The site is still statically generated. This one function backs the heavy bag
+# leaderboard, which is the only thing on the site that needs to remember
+# anything between visitors. It declares its own route (/api/leaderboard) in
+# netlify/functions/leaderboard.mjs.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 [build.environment]
   NODE_VERSION = "22"
 
