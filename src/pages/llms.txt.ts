@@ -85,6 +85,8 @@ ${coaches.map((c) => `- ${c.name}, ${c.role}${c.credentials ? `. ${c.credentials
 - [Blog](${url('/blog/')}): training and technique notes from the coaches
 - [FAQ](${url('/frequently-asked-questions/')}): the questions we are asked most
 - [Contact Us](${url('/contact-us/')}): enquiry form, phone and directions
+- [Privacy Policy](${url('/privacy-policy/')}): what the site collects and which cookies it sets
+- [Terms & Conditions](${url('/terms-and-conditions/')})
 
 ## Blog posts
 
