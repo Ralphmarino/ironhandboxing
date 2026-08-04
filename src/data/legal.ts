@@ -62,7 +62,7 @@ export const privacy = (lang: Lang): LegalDoc =>
           {
             h: 'Lo que nos das tú',
             p: [
-              'La única forma en que este sitio te pide información es el formulario de contacto. Cuando lo envías, recibimos exactamente lo que escribiste:',
+              'La forma principal en que este sitio te pide información es el formulario de contacto. Cuando lo envías, recibimos exactamente lo que escribiste:',
             ],
             list: [
               'Nombre y apellido',
@@ -71,6 +71,16 @@ export const privacy = (lang: Lang): LegalDoc =>
               'El tipo de consulta y cómo prefieres que te contactemos',
               'Tu mensaje',
               'Cómo nos conociste, si lo eliges',
+            ],
+          },
+          {
+            h: 'La tabla del saco pesado',
+            p: [
+              'Si juegas con el saco pesado y decides publicar tu marca, guardamos el nombre de seis caracteres que escribas, tu puntuación y la hora en que la enviaste. Ese es todo el registro. Se muestra públicamente en la página de inicio.',
+              'Publicar tu marca es completamente opcional. El juego funciona sin eso, y tu récord personal se guarda en tu propio navegador lo publiques o no.',
+              'No uses tu nombre completo real. Seis caracteres son para iniciales o un apodo, y lo que escribas queda a la vista de todos.',
+              'La tabla se reinicia al empezar cada mes. También guardamos por poco tiempo una nota de tu dirección IP para que una misma persona no llene la tabla en cuestión de segundos; no queda ligada a tu entrada ni se usa para nada más.',
+              '¿Quieres que borremos tu entrada? Dinos qué nombre usaste y la quitamos.',
             ],
           },
           {
@@ -161,7 +171,7 @@ export const privacy = (lang: Lang): LegalDoc =>
           {
             h: 'What you give us',
             p: [
-              'The only place this site asks you for anything is the contact form. When you send it, we receive exactly what you typed:',
+              'The main place this site asks you for anything is the contact form. When you send it, we receive exactly what you typed:',
             ],
             list: [
               'First and last name',
@@ -170,6 +180,16 @@ export const privacy = (lang: Lang): LegalDoc =>
               'The type of inquiry and how you would prefer to be contacted',
               'Your message',
               'How you heard about us, if you pick an option',
+            ],
+          },
+          {
+            h: 'The heavy bag leaderboard',
+            p: [
+              'If you play the heavy bag game and choose to post a score, we store the six-character name you type, your score, and the time you submitted it. That is the whole record. It is shown publicly on the homepage.',
+              'Posting a score is entirely optional. The game works without it, and your personal best is kept in your own browser whether you post or not.',
+              'Please do not use your real full name. Six characters is meant for initials or a nickname, and anything you enter is visible to everyone.',
+              'The board resets at the start of each calendar month. We also keep a short-lived note of your IP address to stop the same person flooding the board within a few seconds of themselves; it is not linked to your entry and is not used for anything else.',
+              'Want your entry removed? Tell us the name you used and we will delete it.',
             ],
           },
           {
@@ -277,6 +297,13 @@ export const terms = (lang: Lang): LegalDoc =>
             ],
           },
           {
+            h: 'La tabla de puntuaciones',
+            p: [
+              'El juego del saco pesado tiene una tabla pública. Mantén limpio el nombre que pongas. Quitamos cualquier cosa ofensiva, cualquier suplantación de identidad y cualquier marca que creamos falsa, sin aviso y a nuestro criterio.',
+              'Es un juego en la web de un gimnasio. Nada de lo que aparece ahí es un premio, un concurso con inscripción, ni una promesa de nada.',
+            ],
+          },
+          {
             h: 'Contenido',
             p: [
               'El texto, las fotos, el logotipo y el diseño de este sitio son de Ironhand Boxing o se usan con permiso. No los reutilices sin preguntarnos primero.',
@@ -339,6 +366,13 @@ export const terms = (lang: Lang): LegalDoc =>
               'Boxing is a contact sport and training for it carries a risk of injury. The information on this site is general and is not medical advice.',
               'If you have a health condition, or you are unsure whether you should be training, speak to your doctor before you start.',
               'Training at Ironhand requires signing our waiver at the gym. That document, not this page, governs your participation in classes.',
+            ],
+          },
+          {
+            h: 'The leaderboard',
+            p: [
+              'The heavy bag game has a public leaderboard. Keep the name you enter clean. We remove anything offensive, anything impersonating someone, and any score we believe was faked, without notice and at our discretion.',
+              'It is a bit of fun on a gym website. Nothing on it is a prize, a competition with an entry, or a promise of anything.',
             ],
           },
           {

@@ -59,6 +59,38 @@ const es = lang === 'es';
 
       <p class="bag__msg" data-bag-msg aria-live="polite">{es ? 'Tira un golpe.' : 'Take a swing.'}</p>
 
+      {/*
+        Score submission. Hidden until there is a score worth submitting, so the
+        game still reads as a toy rather than a form. `hidden` rather than
+        opacity, so it is out of the tab order until it is real.
+      */}
+      <form class="bag__submit" data-bag-submit hidden>
+        <label class="bag__submitlbl" for="bag-name">
+          {es ? 'Ponte en la tabla' : 'Get on the board'}
+        </label>
+        <div class="bag__submitrow">
+          <input
+            class="bag__name"
+            id="bag-name"
+            name="name"
+            type="text"
+            maxlength="6"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            inputmode="latin"
+            placeholder={es ? 'NOMBRE' : 'NAME'}
+            aria-describedby="bag-submit-note"
+          />
+          <button class="btn bag__submitbtn" type="submit">
+            {es ? 'Enviar' : 'Submit'}
+          </button>
+        </div>
+        <p class="bag__submitnote" id="bag-submit-note" data-bag-submitmsg>
+          {es ? '6 caracteres. Se reinicia cada mes.' : 'Six characters. Resets every month.'}
+        </p>
+      </form>
+
       <a class="btn bag__cta" href={route('contact', lang)}>
         {es ? 'Prueba el de verdad' : 'Try the real thing'}
       </a>
@@ -131,6 +163,20 @@ const es = lang === 'es';
 
       <div class="bag__shadow" aria-hidden="true"></div>
     </div>
+
+    {/*
+      The board. Rendered empty and filled from /api/leaderboard on load, so a
+      cached page never shows a stale month and the section simply stays hidden
+      if the function is unreachable.
+    */}
+    <div class="board" data-bag-board hidden>
+      <div class="board__head">
+        <p class="eyebrow">{es ? 'Tabla del Mes' : 'This Month'}</p>
+        <p class="board__month" data-bag-month></p>
+      </div>
+      <ol class="board__list" data-bag-rows></ol>
+      <p class="board__last" data-bag-last hidden></p>
+    </div>
   </div>
 </section>
 
@@ -147,6 +193,9 @@ const es = lang === 'es';
     const hintEl = root.querySelector<HTMLElement>('[data-bag-hint]')!;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /** When the current run began, for the server's plausibility check. */
+    let runStartedAt = 0;
 
     let angle = 0;
     let vel = 0;
@@ -316,6 +365,10 @@ const es = lang === 'es';
 
       power = Math.min(100, power + 9 + combo * 1.5);
 
+      // First punch of a run starts the clock the server checks the score
+      // against. Reset with the score, so a fresh run gets a fresh duration.
+      if (runStartedAt === 0) runStartedAt = Date.now();
+
       countEl.textContent = String(count);
       comboEl.textContent = String(bestCombo);
       powerEl.style.width = power + '%';
@@ -370,10 +423,335 @@ const es = lang === 'es';
 
     // Stop the page scrolling when the bag is tapped and held on mobile
     hit.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+
+    /* ---------- Monthly leaderboard ---------- */
+
+    const board = root.querySelector<HTMLElement>('[data-bag-board]')!;
+    const rowsEl = root.querySelector<HTMLElement>('[data-bag-rows]')!;
+    const monthEl = root.querySelector<HTMLElement>('[data-bag-month]')!;
+    const lastEl = root.querySelector<HTMLElement>('[data-bag-last]')!;
+    const form = root.querySelector<HTMLFormElement>('[data-bag-submit]')!;
+    const nameEl = form.querySelector<HTMLInputElement>('.bag__name')!;
+    const submitBtn = form.querySelector<HTMLButtonElement>('.bag__submitbtn')!;
+    const noteEl = root.querySelector<HTMLElement>('[data-bag-submitmsg]')!;
+
+    const NAME_KEY = 'ironhand:bag-name';
+    /** Below this a submission is noise rather than a score. */
+    const MIN_SUBMIT = 20;
+
+    const copy = isEs
+      ? {
+          note: '6 caracteres. Se reinicia cada mes.',
+          sending: 'Enviando...',
+          onBoard: (r: number) => `¡Estás en el puesto ${r}!`,
+          notTop: 'Guardado, pero aún no entras al top 10.',
+          badName: 'Usa de 1 a 6 letras o números.',
+          failed: 'No se pudo enviar. Inténtalo de nuevo.',
+          empty: 'Nadie ha marcado este mes. Sé el primero.',
+          lastMonth: (n: string, sc: number) => `Campeón del mes pasado: ${n}, ${sc} golpes.`,
+          you: 'tú',
+        }
+      : {
+          note: 'Six characters. Resets every month.',
+          sending: 'Sending...',
+          onBoard: (r: number) => `You're number ${r}!`,
+          notTop: 'Saved, but not in the top 10 yet.',
+          badName: 'Use 1 to 6 letters or numbers.',
+          failed: 'Could not submit. Try again.',
+          empty: 'Nobody has posted a score this month. Be first.',
+          lastMonth: (n: string, sc: number) => `Last month's champion: ${n} on ${sc} punches.`,
+          you: 'you',
+        };
+
+    const monthName = (key: string) => {
+      const [y, m] = key.split('-').map(Number);
+      return new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString(isEs ? 'es-US' : 'en-US', {
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC',
+      });
+    };
+
+    let myName = '';
+
+    const render = (data: any) => {
+      if (!data || !Array.isArray(data.board)) return;
+
+      monthEl.textContent = monthName(data.month);
+      rowsEl.textContent = '';
+
+      if (!data.board.length) {
+        const li = document.createElement('li');
+        li.className = 'board__empty';
+        li.textContent = copy.empty;
+        rowsEl.appendChild(li);
+      } else {
+        for (const row of data.board) {
+          const li = document.createElement('li');
+          li.className = 'board__row' + (row.name === myName ? ' is-you' : '');
+          // textContent throughout: the name is visitor-supplied, so it is
+          // never interpolated into markup.
+          const rank = document.createElement('span');
+          rank.className = 'board__rank';
+          rank.textContent = String(row.rank).padStart(2, '0');
+          const nm = document.createElement('span');
+          nm.className = 'board__name';
+          nm.textContent = row.name;
+          const sc = document.createElement('span');
+          sc.className = 'board__score';
+          sc.textContent = String(row.score);
+          li.append(rank, nm, sc);
+          rowsEl.appendChild(li);
+        }
+      }
+
+      if (data.lastMonth) {
+        lastEl.textContent = copy.lastMonth(data.lastMonth.name, data.lastMonth.score);
+        lastEl.hidden = false;
+      }
+
+      board.hidden = false;
+    };
+
+    // Load the board. A failure is silent by design: the game is the point and
+    // the board is a bonus, so an unreachable function leaves no broken shell.
+    fetch('/api/leaderboard')
+      .then((r) => (r.ok ? r.json() : null))
+      .then(render)
+      .catch(() => {});
+
+    try {
+      nameEl.value = localStorage.getItem(NAME_KEY) ?? '';
+    } catch {}
+
+    // Force the arcade format as they type, rather than rejecting it later.
+    nameEl.addEventListener('input', () => {
+      nameEl.value = nameEl.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    });
+
+    const maybeOfferSubmit = () => {
+      if (count >= MIN_SUBMIT && form.hidden) form.hidden = false;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = nameEl.value.trim();
+      if (!name) {
+        noteEl.textContent = copy.badName;
+        nameEl.focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      noteEl.textContent = copy.sending;
+
+      try {
+        const res = await fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            score: count,
+            elapsedMs: runStartedAt ? Date.now() - runStartedAt : 0,
+          }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          noteEl.textContent = data?.message || copy.failed;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        myName = data.name;
+        try {
+          localStorage.setItem(NAME_KEY, myName);
+        } catch {}
+        noteEl.textContent = data.rank ? copy.onBoard(data.rank) : copy.notTop;
+        render(data);
+        board.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+      } catch {
+        noteEl.textContent = copy.failed;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Reveal the form once the run is worth posting. Cheap enough to check on
+    // every punch, and it means the form appears mid-run rather than after.
+    hit.addEventListener('pointerdown', maybeOfferSubmit);
+    hit.addEventListener('click', maybeOfferSubmit);
   }
 </script>
 
 <style>
+  /* ---------- Score submission ---------- */
+  .bag__submit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    padding: 0.9rem 1rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .bag__submitlbl {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ember-2);
+  }
+
+  .bag__submitrow {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Monospaced and wide-tracked so six characters read as an arcade entry
+     rather than a text field. */
+  .bag__name {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    background: var(--ink-900);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--chrome);
+  }
+
+  .bag__name::placeholder {
+    color: var(--chrome-3);
+    letter-spacing: 0.2em;
+  }
+
+  .bag__name:focus {
+    outline: none;
+    border-color: var(--ember);
+  }
+
+  .bag__submitbtn {
+    padding: 0.6rem 1.15rem;
+    font-size: 0.8125rem;
+  }
+
+  .bag__submitbtn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .bag__submitnote {
+    font-size: 0.75rem;
+    color: var(--chrome-3);
+    min-height: 1.2em;
+  }
+
+  /* ---------- Leaderboard ---------- */
+  .board {
+    grid-column: 1 / -1;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, var(--ink-700), var(--ink-800));
+  }
+
+  .board__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .board__month {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+  }
+
+  /*
+   * These rows are created with document.createElement, so Astro's scoping
+   * never stamps them with the component's data-astro-cid attribute and a
+   * scoped selector would not match. :global() is required here, not a
+   * shortcut: without it the board renders as unstyled text.
+   */
+  .board__list {
+    list-style: none;
+    padding: 0;
+    margin: 0.4rem 0 0;
+  }
+
+  .board__list :global(.board__row) {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.5rem;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+  }
+
+  .board__list :global(.board__row:nth-child(odd)) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* The visitor's own row, so they can find themselves at a glance */
+  .board__list :global(.board__row.is-you) {
+    background: linear-gradient(90deg, rgba(230, 58, 31, 0.16), transparent);
+    box-shadow: inset 2px 0 0 var(--ember);
+  }
+
+  .board__list :global(.board__rank) {
+    font-size: 0.75rem;
+    color: var(--chrome-3);
+  }
+
+  .board__list :global(.board__row:nth-child(-n + 3) .board__rank) {
+    color: var(--gold);
+  }
+
+  .board__list :global(.board__name) {
+    font-size: 0.9375rem;
+    letter-spacing: 0.18em;
+    color: var(--chrome);
+    /* Six characters is enforced server side, but never let an unexpected
+       value stretch the row. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .board__list :global(.board__score) {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--chrome);
+  }
+
+  .board__list :global(.board__empty) {
+    padding: 0.9rem 0.5rem 0;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+  }
+
+  .board__last {
+    padding: 0.9rem 0.5rem 0;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+    border-top: 1px solid var(--line);
+    margin-top: 0.75rem;
+  }
+
   .bag {
     position: relative;
     z-index: 2;
