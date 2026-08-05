@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PunchBag from '../components/PunchBag.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+/**
+ * The heavy bag game on its own URL.
+ *
+ * ironhandboxing.com/game is short enough for an Instagram bio, a story sticker
+ * or a QR code on the gym wall, and it lands people on the game rather than
+ * halfway down the homepage. The homepage keeps its copy of the game; this page
+ * exists so the link is shareable.
+ */
+const title = 'The Heavy Bag Game – Ironhand Boxing Staten Island';
+const description =
+  'Punch the bag, beat the month. A silly little game from Ironhand Boxing in Staten Island, with a leaderboard that resets on the 1st.';
+---
+
+<Base title={title} description={description}>
+  <PunchBag lang="en" asPage />
+  <CtaBand
+    lang="en"
+    title="Now try one that hits back."
+    body="You have done the easy version. The real one is on Castleton Avenue, seven days a week, and your first class is the hard one."
+    cta="Book your first class"
+  />
+</Base>

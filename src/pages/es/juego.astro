@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import PunchBag from '../../components/PunchBag.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+const title = 'El Juego del Saco Pesado – Ironhand Boxing Staten Island';
+const description =
+  'Pégale al saco y quédate con el mes. Un juego tonto de Ironhand Boxing en Staten Island, con una tabla que se reinicia el día 1.';
+---
+
+<Base title={title} description={description}>
+  <PunchBag lang="es" asPage />
+  <CtaBand
+    lang="es"
+    title="Ahora prueba uno que responde."
+    body="Ya hiciste la versión fácil. La de verdad está en Castleton Avenue, los siete días de la semana, y la primera clase es la difícil."
+    cta="Reserva tu primera clase"
+  />
+</Base>
