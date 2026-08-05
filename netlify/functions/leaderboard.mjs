@@ -4,6 +4,7 @@ import {
   addEntry,
   checkScore,
   cleanName,
+  isAuthorised,
   monthKey,
   publicBoard,
 } from './lib/board.mjs';
@@ -12,20 +13,33 @@ import {
  * Monthly leaderboard for the heavy bag game.
  *
  *   GET  /api/leaderboard          this month's top ten, plus last month's winner
- *   POST /api/leaderboard          { name, score, elapsedMs }
- *   DELETE /api/leaderboard?name=  remove one entry (moderation, token required)
+ *   POST /api/leaderboard          { name, score, elapsedMs }   public, validated
+ *   PUT  /api/leaderboard          { name, score }              owner, unvalidated
+ *   DELETE /api/leaderboard?name=  remove one entry
  *
  * Storage is Netlify Blobs, keyed by month. A new month therefore starts empty
  * with no cron and no cleanup job: the key simply does not exist yet. Old
  * months stay readable, which is what "last month's champion" is read from.
  *
- * MODERATION. To remove an entry, with LEADERBOARD_ADMIN_TOKEN set in the
- * Netlify UI under Site configuration → Environment variables:
+ * OWNER TOOLS. Both need LEADERBOARD_ADMIN_TOKEN set in the Netlify UI under
+ * Site configuration → Environment variables. Without it, both are refused
+ * outright rather than left open.
  *
+ *   # Remove an entry
  *   curl -X DELETE "https://ironhandboxing.com/api/leaderboard?name=XXXXXX" \
  *        -H "Authorization: Bearer $LEADERBOARD_ADMIN_TOKEN"
  *
- * Without that variable set, DELETE is refused outright rather than left open.
+ *   # Place an entry, skipping the score checks. For seeding a board at launch,
+ *   # fixing a mistyped name, or planting a joke score.
+ *   curl -X PUT "https://ironhandboxing.com/api/leaderboard" \
+ *        -H "Authorization: Bearer $LEADERBOARD_ADMIN_TOKEN" \
+ *        -H "content-type: application/json" \
+ *        -d '{"name":"RAMA","score":1000000}'
+ *
+ * PUT deliberately skips the ceiling and the rate check, because the point of
+ * it is to write something the public path would refuse. It still cleans the
+ * name, so a seeded row looks like every other row. It is the ONLY way past
+ * those checks: there is no bypass on the public POST.
  */
 
 const store = () => getStore({ name: 'bag-leaderboard', consistency: 'strong' });
@@ -108,12 +122,37 @@ export default async (req, context) => {
       });
     }
 
-    if (req.method === 'DELETE') {
-      const token = process.env.LEADERBOARD_ADMIN_TOKEN;
-      if (!token) return json({ error: 'moderation is not configured' }, 503);
-      if (req.headers.get('authorization') !== `Bearer ${token}`) {
-        return json({ error: 'unauthorized' }, 401);
+    if (req.method === 'PUT') {
+      const auth = isAuthorised(
+        req.headers.get('authorization'),
+        process.env.LEADERBOARD_ADMIN_TOKEN,
+      );
+      if (auth !== null) return json({ error: auth }, auth === 'unauthorized' ? 401 : 503);
+
+      let body;
+      try {
+        body = await req.json();
+      } catch {
+        return json({ error: 'bad request' }, 400);
       }
+
+      const name = cleanName(body?.name);
+      if (!name) return json({ error: 'name', message: 'Use 1 to 6 letters or numbers.' }, 400);
+      if (!Number.isInteger(body?.score) || body.score < 1) {
+        return json({ error: 'score', message: 'score must be a positive whole number' }, 400);
+      }
+
+      const entries = addEntry(await read(key), { name, score: body.score, at: now.getTime() });
+      await store().setJSON(key, entries);
+      return json({ month: key, board: publicBoard(entries), seeded: { name, score: body.score } });
+    }
+
+    if (req.method === 'DELETE') {
+      const auth = isAuthorised(
+        req.headers.get('authorization'),
+        process.env.LEADERBOARD_ADMIN_TOKEN,
+      );
+      if (auth !== null) return json({ error: auth }, auth === 'unauthorized' ? 401 : 503);
 
       const target = new URL(req.url).searchParams.get('name');
       if (!target) return json({ error: 'name query parameter required' }, 400);
