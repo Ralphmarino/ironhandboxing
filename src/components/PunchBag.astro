@@ -3,9 +3,16 @@ import { path as route, type Lang } from '../i18n/config';
 
 interface Props {
   lang?: Lang;
+  /**
+   * Set on /game/, where the bag IS the page rather than a section of it. The
+   * heading becomes the page's h1 and the section drops its own top padding, so
+   * there is exactly one h1 per document either way.
+   */
+  asPage?: boolean;
 }
-const { lang = 'en' } = Astro.props;
+const { lang = 'en', asPage = false } = Astro.props;
 const es = lang === 'es';
+const Heading = asPage ? 'h1' : 'h2';
 
 /**
  * Interactive heavy bag. Click, tap, or hit Space/Enter to punch it.
@@ -21,13 +28,13 @@ const es = lang === 'es';
  */
 ---
 
-<section class="section bag" id="bag-game">
+<section class={`section bag ${asPage ? 'bag--page' : ''}`} id="bag-game">
   <div class="wrap bag__inner">
     <div class="bag__copy" data-reveal>
       <p class="eyebrow">{es ? 'Calentamiento' : 'Warm Up'}</p>
-      <h2 class="h2 steel">
+      <Heading class="h2 steel">
         {es ? <Fragment>Anda.<br />Pégale.</Fragment> : <Fragment>Go on.<br />Hit it.</Fragment>}
-      </h2>
+      </Heading>
       <p class="lede">
         {
           es
@@ -92,9 +99,23 @@ const es = lang === 'es';
         </p>
       </form>
 
-      <a class="btn bag__cta" href={route('contact', lang)}>
-        {es ? 'Prueba el de verdad' : 'Try the real thing'}
-      </a>
+      <div class="bag__actions">
+        <a class="btn bag__cta" href={route('contact', lang)}>
+          {es ? 'Prueba el de verdad' : 'Try the real thing'}
+        </a>
+
+        {/* Only on the homepage: on /game/ this would link to itself. */}
+        {
+          !asPage && (
+            <a class="bag__permalink" href={route('game', lang)}>
+              {es ? 'Página del juego' : 'Game page'}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M7 17 17 7M9 7h8v8" />
+              </svg>
+            </a>
+          )
+        }
+      </div>
     </div>
 
     <div class="bag__stage" data-reveal data-reveal-index="1">
@@ -596,6 +617,37 @@ const es = lang === 'es';
    * column past the viewport on a phone. flex:1 and min-width:0 on the input
    * do not help: the problem is the form's own width, not the input's.
    */
+  /* On /game/ the section sits directly under the header, so it does not need
+     the full inter-section rhythm above it. */
+  .bag--page {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .bag__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem 1.25rem;
+  }
+
+  /* Quiet on purpose. The booking CTA is the job; this is for the handful of
+     people who want to send the game to someone. */
+  .bag__permalink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .bag__permalink:hover {
+    color: var(--ember-2);
+  }
+
   .bag__submit {
     width: 100%;
     display: flex;

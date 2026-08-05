@@ -34,6 +34,7 @@ export const routes = [
   { key: 'faq', en: '/frequently-asked-questions/', es: '/es/preguntas-frecuentes/' },
   { key: 'contact', en: '/contact-us/', es: '/es/contacto/' },
   { key: 'thanks', en: '/thank-you/', es: '/es/gracias/' },
+  { key: 'game', en: '/game/', es: '/es/juego/' },
   { key: 'privacy', en: '/privacy-policy/', es: '/es/politica-de-privacidad/' },
   { key: 'terms', en: '/terms-and-conditions/', es: '/es/terminos-y-condiciones/' },
 ] as const;
