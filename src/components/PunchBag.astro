@@ -75,6 +75,7 @@ const es = lang === 'es';
             name="name"
             type="text"
             maxlength="6"
+            size="6"
             autocomplete="off"
             autocapitalize="characters"
             spellcheck="false"
@@ -586,7 +587,17 @@ const es = lang === 'es';
 
 <style>
   /* ---------- Score submission ---------- */
+  /*
+   * width:100% is load-bearing. .bag__copy is a flex column with
+   * align-items:flex-start, so its children size to their own content rather
+   * than stretching, and .bag__copy is itself a grid item with the default
+   * min-width:auto. A text input's intrinsic width comes from its `size`
+   * attribute, so this form's max-content was ~373px and dragged the entire
+   * column past the viewport on a phone. flex:1 and min-width:0 on the input
+   * do not help: the problem is the form's own width, not the input's.
+   */
   .bag__submit {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -614,6 +625,7 @@ const es = lang === 'es';
      rather than a text field. */
   .bag__name {
     flex: 1;
+    width: 100%;
     min-width: 0;
     padding: 0.6rem 0.75rem;
     background: var(--ink-900);
@@ -655,6 +667,7 @@ const es = lang === 'es';
   /* ---------- Leaderboard ---------- */
   .board {
     grid-column: 1 / -1;
+    min-width: 0;
     margin-top: clamp(2rem, 4vw, 3rem);
     padding: clamp(1.25rem, 3vw, 1.75rem);
     border: 1px solid var(--line);
@@ -770,6 +783,14 @@ const es = lang === 'es';
     flex-direction: column;
     align-items: flex-start;
     gap: 1.2rem;
+    /* The column is a grid item with min-width:auto, so one wide child widens
+       the whole thing and pushes the section off screen. Nothing added here
+       later gets to do that again. */
+    min-width: 0;
+  }
+
+  .bag__copy > * {
+    max-width: 100%;
   }
 
   /* ---- Stats ---- */
@@ -891,6 +912,8 @@ const es = lang === 'es';
     display: grid;
     place-items: center;
     justify-self: center;
+    min-width: 0;
+    max-width: 100%;
     width: 100%;
   }
 
