@@ -124,6 +124,19 @@ export const addEntry = (entries, entry) => {
     .slice(0, KEEP_PER_MONTH);
 };
 
+/**
+ * Guard for the owner-only endpoints.
+ *
+ * Returns null when the caller may proceed, otherwise the reason. An unset
+ * token refuses rather than allows: a deployment that forgot to configure the
+ * variable must not end up with an open write endpoint.
+ */
+export const isAuthorised = (header, token) => {
+  if (!token) return 'moderation is not configured';
+  if (header !== `Bearer ${token}`) return 'unauthorized';
+  return null;
+};
+
 /** What the browser receives. `at` is kept, `ip` never is. */
 export const publicBoard = (entries) =>
   entries.slice(0, BOARD_SIZE).map((e, i) => ({

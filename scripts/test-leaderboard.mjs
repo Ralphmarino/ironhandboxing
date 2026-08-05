@@ -14,6 +14,7 @@ import {
   addEntry,
   checkScore,
   cleanName,
+  isAuthorised,
   monthKey,
   publicBoard,
 } from '../netlify/functions/lib/board.mjs';
@@ -150,6 +151,37 @@ test('the public board is ranked and hides nothing private', () => {
 test('the public board is capped at ten rows', () => {
   const many = Array.from({ length: 40 }, (_, i) => entry(`N${i}`, 100 - i, i));
   assert.equal(publicBoard(many).length, 10);
+});
+
+/* ---------- owner endpoints ---------- */
+
+test('an unset token refuses rather than allows', () => {
+  // The dangerous failure would be an unconfigured deploy leaving the write
+  // endpoint open to anyone.
+  assert.equal(isAuthorised('Bearer anything', undefined), 'moderation is not configured');
+  assert.equal(isAuthorised(null, ''), 'moderation is not configured');
+});
+
+test('rejects a wrong or missing bearer token', () => {
+  assert.equal(isAuthorised('Bearer nope', 'secret'), 'unauthorized');
+  assert.equal(isAuthorised(null, 'secret'), 'unauthorized');
+  assert.equal(isAuthorised('secret', 'secret'), 'unauthorized');
+  assert.equal(isAuthorised('bearer secret', 'secret'), 'unauthorized');
+});
+
+test('accepts the correct token', () => {
+  assert.equal(isAuthorised('Bearer secret', 'secret'), null);
+});
+
+test('a seeded score above the public ceiling still sorts correctly', () => {
+  // The public path would refuse this; the owner path is the only way in.
+  const out = addEntry([entry('IAN', 412, 1)], entry('RAMA', 1_000_000, 2));
+  assert.deepEqual(out.map((e) => e.name), ['RAMA', 'IAN']);
+  assert.equal(publicBoard(out)[0].score, 1_000_000);
+});
+
+test('the public path still refuses that score', () => {
+  assert.ok(checkScore(1_000_000, 60_000));
 });
 
 /* ---------- month rollover ---------- */
