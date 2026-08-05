@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "photos": "node scripts/optimize-photos.mjs",
-    "test": "node scripts/test-leaderboard.mjs"
+    "test": "node scripts/test-leaderboard.mjs",
+    "check:overflow": "node scripts/check-overflow.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
