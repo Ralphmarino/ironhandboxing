@@ -93,6 +93,21 @@ test('rejects a score above the ceiling', () => {
   assert.ok(checkScore(MAX_SCORE + 1, 10_000_000));
 });
 
+test('the ceiling is 10,000, so the seeded 9,999 stays beatable', () => {
+  // Pinned deliberately. Lowering this below 10,000 would make the score at the
+  // top of the board unbeatable through honest play, which is the one thing the
+  // monthly reset exists to avoid.
+  assert.equal(MAX_SCORE, 10_000);
+  assert.equal(checkScore(9_999, 12 * 60_000), null);
+  assert.equal(checkScore(10_000, 13 * 60_000), null);
+  assert.ok(checkScore(10_001, 13 * 60_000));
+});
+
+test('a perfect 10,000 still has to be earned at a human rate', () => {
+  // Twelve minutes of sustained clicking passes; ten seconds does not.
+  assert.ok(checkScore(10_000, 10_000));
+});
+
 test('rejects impossible rates', () => {
   // 500 punches in two seconds
   assert.ok(checkScore(500, 2_000));
