@@ -21,10 +21,18 @@ export const KEEP_PER_MONTH = 50;
  * determined one.
  *
  * 14/second is well above what a human sustains (a fast tapper manages maybe
- * 8) but low enough that a scripted burst trips it.
+ * 8) but low enough that a scripted burst trips it. That rate check is the real
+ * guard, because it scales with how long the run actually took; the ceiling is
+ * only a backstop against an absurd number.
+ *
+ * The ceiling is 10,000 rather than 5,000 so that the seeded 9,999 at the top
+ * of the board is beatable. Beating it means a perfect 10,000, which is the
+ * highest score the public path will ever accept. At a sustained 14/second that
+ * is about twelve minutes of clicking, so it is a real grind rather than an
+ * impossibility, which is the point.
  */
 export const MAX_PUNCHES_PER_SECOND = 14;
-export const MAX_SCORE = 5000;
+export const MAX_SCORE = 10_000;
 
 /** One submission per visitor per this window, enforced per IP. */
 export const SUBMIT_COOLDOWN_MS = 20_000;
