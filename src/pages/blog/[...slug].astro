@@ -22,31 +22,107 @@ const more = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 2);
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.data.title,
-  description: post.data.description,
-  image: new URL(post.data.image, Astro.site).href,
-  datePublished: post.data.pubDate.toISOString(),
-  ...(post.data.updatedDate ? { dateModified: post.data.updatedDate.toISOString() } : {}),
-  author: { '@type': 'Person', name: post.data.author },
-  publisher: {
-    '@type': 'Organization',
-    name: site.legalName,
-    url: site.url,
+const pageUrl = new URL(`/blog/${post.id}/`, Astro.site).href;
+
+/**
+ * Structured data, emitted as one @graph so the entities can reference each
+ * other by @id instead of repeating themselves.
+ *
+ * ⚠️ The organization @id is `${site.url}/#gym`, matching the one the homepage
+ * already emits in src/layouts/Base.astro. Two @ids for the same business is
+ * how a knowledge graph ends up with two businesses.
+ *
+ * ⚠️ NO VideoObject, deliberately. The embed below is ExpertBoxing's video, not
+ * Ironhand's. VideoObject markup tells Google the page is the video's home, and
+ * claiming someone else's work is not something to do for a rich result. The
+ * embed stays, credited on the page. If Ian films 60 seconds of himself
+ * wrapping a fighter's hands, that clip is genuinely ours, and then this should
+ * carry VideoObject and be the better for it.
+ */
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${pageUrl}#article`,
+    mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+    headline: post.data.title,
+    description: post.data.description,
+    image: new URL(post.data.ogImage ?? post.data.image, Astro.site).href,
+    datePublished: post.data.pubDate.toISOString(),
+    dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+    author: { '@id': `${site.url}/#ian-sampaga` },
+    publisher: { '@id': `${site.url}/#gym` },
+    keywords: post.data.tags.join(', '),
+    inLanguage: 'en-US',
   },
-  mainEntityOfPage: new URL(`/blog/${post.id}/`, Astro.site).href,
-};
+  {
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: post.data.seoTitle ?? post.data.title,
+    isPartOf: { '@id': `${site.url}/#gym` },
+    breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${pageUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: post.data.title },
+    ],
+  },
+  {
+    '@type': 'Person',
+    '@id': `${site.url}/#ian-sampaga`,
+    name: 'Ian Sampaga',
+    jobTitle: 'Founder and Head Coach',
+    description:
+      'Founder and head coach of Ironhand Boxing in Staten Island, New York. Coaches amateur and professional boxers and personally wraps fighters’ hands on fight night.',
+    worksFor: { '@id': `${site.url}/#gym` },
+    knowsAbout: ['Boxing', 'Boxing hand wrapping', 'Amateur boxing', 'Boxing coaching'],
+    url: `${site.url}/about-us/`,
+  },
+];
+
+if (post.data.howTo) {
+  graph.push({
+    '@type': 'HowTo',
+    '@id': `${pageUrl}#howto`,
+    name: post.data.howTo.name,
+    description: post.data.howTo.description,
+    ...(post.data.howTo.totalTime ? { totalTime: post.data.howTo.totalTime } : {}),
+    supply: post.data.howTo.supply.map((name) => ({ '@type': 'HowToSupply', name })),
+    step: post.data.howTo.steps.map((st, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: st.name,
+      text: st.text,
+    })),
+  });
+}
+
+if (post.data.faqs?.length) {
+  graph.push({
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    mainEntity: post.data.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+
+const articleSchema = { '@context': 'https://schema.org', '@graph': graph };
 
 /** Per-post hreflang: the Spanish translation, when one exists. */
 const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` : null;
 ---
 
 <Base
-  title={`${post.data.title} – Ironhand Boxing`}
+  title={`${post.data.seoTitle ?? post.data.title} – Ironhand Boxing`}
   description={post.data.description}
-  image={post.data.image}
+  image={post.data.ogImage ?? post.data.image}
   altUrl={altUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
@@ -82,7 +158,59 @@ const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` 
 
       <div class="prose">
         <Content />
+
+        {/*
+          Rendered from frontmatter rather than written into the post body, so
+          the visible steps and the HowTo schema are the same text. See the
+          note in src/content.config.ts.
+        */}
+        {
+          post.data.howTo && (
+            <ol class="howto">
+              {post.data.howTo.steps.map((step) => (
+                <li>
+                  <strong>{step.name}.</strong> {step.text}
+                </li>
+              ))}
+            </ol>
+          )
+        }
+
+        {
+          post.data.video && (
+            <figure class="vid">
+              <div class="vid__frame">
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${post.data.video.id}`}
+                  title={post.data.video.title}
+                  loading="lazy"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                />
+              </div>
+              <figcaption>{post.data.video.caption}</figcaption>
+            </figure>
+          )
+        }
       </div>
+
+      {
+        post.data.faqs?.length && (
+          <section class="artfaq">
+            <h2 class="h3 artfaq__ttl">Questions we get asked</h2>
+            {post.data.faqs.map((f) => (
+              <details class="artfaq__item">
+                <summary>
+                  <span>{f.q}</span>
+                  <span class="artfaq__icon" aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </section>
+        )
+      }
 
       {
         post.data.tags.length > 0 && (
@@ -119,6 +247,136 @@ const altUrl = post.data.translationEs ? `/es/blog/${post.data.translationEs}/` 
 </Base>
 
 <style>
+  /* ---- HowTo steps, rendered from frontmatter ---- */
+  .howto {
+    counter-reset: howto;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .howto li {
+    counter-increment: howto;
+    position: relative;
+    padding: 0.9rem 1rem 0.9rem 3.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+    line-height: 1.7;
+    color: var(--chrome-2);
+  }
+
+  .howto li::before {
+    content: counter(howto, decimal-leading-zero);
+    position: absolute;
+    left: 1rem;
+    top: 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ember-2);
+  }
+
+  .howto strong {
+    color: var(--chrome);
+  }
+
+  /* ---- Video ---- */
+  .vid {
+    margin: 2.5rem 0;
+  }
+
+  /* Fixed aspect box so the iframe cannot shift the layout as it loads */
+  .vid__frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--ink-700);
+  }
+
+  .vid__frame :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .vid figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--chrome-3);
+  }
+
+  /* ---- FAQ ---- */
+  .artfaq {
+    max-width: 68ch;
+    margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+  }
+
+  .artfaq__ttl {
+    margin-bottom: 1.25rem;
+  }
+
+  .artfaq__item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .artfaq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    color: var(--chrome);
+  }
+
+  .artfaq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .artfaq__icon {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  .artfaq__icon::before,
+  .artfaq__icon::after {
+    content: '';
+    position: absolute;
+    background: var(--ember-2);
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .artfaq__icon::before {
+    inset: 5px 0 5px 0;
+    height: 2px;
+  }
+
+  .artfaq__icon::after {
+    inset: 0 5px 0 5px;
+    width: 2px;
+  }
+
+  .artfaq__item[open] .artfaq__icon::after {
+    transform: scaleY(0);
+  }
+
+  .artfaq__item p {
+    padding-bottom: 1.1rem;
+    color: var(--chrome-2);
+    line-height: 1.75;
+  }
+
   .art {
     position: relative;
     z-index: 2;
