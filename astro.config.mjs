@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import rehypeTableWrap from './src/plugins/rehype-table-wrap.mjs';
 
 // The live WordPress site serves every page with a trailing slash
 // (/about-us/, /blog/, ...). Google has those URLs indexed and the site ranks
@@ -20,6 +21,11 @@ export default defineConfig({
       filter: (page) => !page.includes('/thank-you') && !page.includes('/es/gracias'),
     }),
   ],
+  markdown: {
+    // Tables get a scrollable wrapper so they can hold their column widths on a
+    // phone instead of collapsing into unreadable slivers. See the plugin.
+    rehypePlugins: [rehypeTableWrap],
+  },
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',

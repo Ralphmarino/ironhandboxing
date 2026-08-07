@@ -286,6 +286,94 @@ const altUrl = post.data.translationOf ? `/blog/${post.data.translationOf}/` : n
     height: auto;
   }
 
+  /* ---- Tables ----
+     Wrapped by rehype-table-wrap so the wrapper can scroll. The border and the
+     radius live on the wrapper: border-radius on a border-collapse table does
+     not clip its cells, so the corners come out square. */
+  .prose :global(.tablewrap) {
+    margin-block: 2rem;
+    /* A backstop, not the plan. Tables are sized to wrap rather than scroll
+       (see min-width below); this catches a future table that genuinely cannot. */
+    overflow-x: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--ink-800);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .prose :global(.tablewrap:focus-visible) {
+    outline: 2px solid var(--ember);
+    outline-offset: 2px;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    /* Deliberately no min-width. Forcing one makes the table scroll sideways on
+       a phone, and a sideways-scrolling table on a dark palette has no good way
+       to signal that it scrolls: a drop shadow at the edge is invisible against
+       a near-black background. With row rules and real cell padding the wrapped
+       version reads fine, and every column stays on screen. */
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .prose :global(thead) {
+    background: var(--ink-700);
+  }
+
+  .prose :global(th) {
+    /* Browsers centre th by default, which on a wide column leaves the label
+       floating in the middle of nothing. */
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome-3);
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+
+  .prose :global(td) {
+    padding: 0.85rem 1.1rem;
+    vertical-align: top;
+    color: var(--chrome-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .prose :global(tbody tr:first-child td) {
+    border-top: 0;
+  }
+
+  .prose :global(tbody tr:nth-child(even)) {
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  /* The first column is the row's label, so it reads as one. */
+  .prose :global(td:first-child) {
+    color: var(--chrome);
+  }
+
+  .prose :global(td strong) {
+    color: var(--chrome);
+  }
+
+  /* At phone widths the padding is what pushes the table past the screen, not
+     the words. Tightened rather than letting it scroll. */
+  @media (max-width: 480px) {
+    .prose :global(th),
+    .prose :global(td) {
+      padding: 0.7rem 0.65rem;
+    }
+
+    .prose :global(table) {
+      font-size: 0.875rem;
+    }
+  }
+
   /* ---- Tags ---- */
   .art__tags {
     display: flex;
