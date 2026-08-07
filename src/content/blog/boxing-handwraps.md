@@ -6,7 +6,7 @@ pubDate: 2026-08-05
 updatedDate: 2026-08-05
 author: 'Ian Sampaga'
 image: '/photos/boxing-handwraps-ironhand-boxing-staten-island.jpg'
-imageAlt: 'An Ironhand fighter in a red competition singlet with his hands wrapped in gauze and tape, guard up'
+imageAlt: 'Close up of an Ironhand fighter in a red competition singlet, fists up in guard, both hands wrapped in gauze and tape'
 ogImage: '/og-boxing-handwraps.jpg'
 tags: ['Beginners', 'Equipment']
 video:

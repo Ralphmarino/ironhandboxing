@@ -271,9 +271,19 @@ const altUrl = post.data.translationOf ? `/blog/${post.data.translationOf}/` : n
     border-top: 1px solid var(--line);
   }
 
+  /* Body photos are capped by height, not width. Most of ours are portraits off
+     a phone, and at the prose column's full width a 3:4 shot runs 850px tall and
+     swallows the screen. Capped and centred keeps the whole photo visible, which
+     matters when the photo is showing you where the tape goes. */
   .prose :global(img) {
+    display: block;
     border-radius: var(--radius);
     margin-block: 2rem;
+    margin-inline: auto;
+    max-width: 100%;
+    max-height: 520px;
+    width: auto;
+    height: auto;
   }
 
   /* ---- Tags ---- */

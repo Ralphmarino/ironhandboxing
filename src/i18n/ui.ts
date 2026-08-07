@@ -119,6 +119,13 @@ const en = {
   'cosign.hof': 'UFC Hall of Famer',
   'cosign.coach': 'Ironhand Coach',
 
+  'latest.eyebrow': 'From the Blog',
+  'latest.title': 'Read the corner.',
+  'latest.lede':
+    'Straight answers on technique, gear and getting started, written by the coaches who teach it.',
+  'latest.all': 'All posts',
+  'latest.more': 'Read the post',
+
   'cta.title': 'Your first class is the hard one.',
   'cta.body':
     'After that it is just showing up. Tell us what you are after and we will put you in the right class: beginner, competitor, or somewhere in between.',
@@ -324,6 +331,13 @@ const es: Record<UiKey, string> = {
   'cosign.comedian': 'Comediante',
   'cosign.hof': 'Salón de la Fama de UFC',
   'cosign.coach': 'Entrenador de Ironhand',
+
+  'latest.eyebrow': 'Del Blog',
+  'latest.title': 'Lee la esquina.',
+  'latest.lede':
+    'Respuestas directas sobre técnica, equipo y cómo empezar, escritas por los entrenadores que las enseñan.',
+  'latest.all': 'Todas las notas',
+  'latest.more': 'Leer la nota',
 
   'cta.title': 'La primera clase es la difícil.',
   'cta.body':

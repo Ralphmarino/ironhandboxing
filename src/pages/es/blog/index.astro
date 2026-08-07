@@ -145,6 +145,7 @@ const fmt = (d: Date) =>
   }
 
   .feat__media {
+    position: relative;
     overflow: hidden;
     background: var(--ink-600);
     aspect-ratio: 16 / 10;
@@ -276,9 +277,19 @@ const fmt = (d: Date) =>
       grid-template-columns: 1.1fr 1fr;
     }
 
+    /* The media column matches the text column's height instead of the image's.
+       height:100% alone does not do that: the img is still in flow, so a tall
+       portrait sets the row height and the card grows to 1100px+. Taking the
+       img out of flow makes the text the only thing that can size the row. */
     .feat__media {
       aspect-ratio: auto;
       height: 100%;
+      min-height: 260px;
+    }
+
+    .feat__media img {
+      position: absolute;
+      inset: 0;
     }
   }
 </style>
