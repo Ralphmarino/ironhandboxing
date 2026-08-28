@@ -33,8 +33,8 @@ export const groupLabelEs: Record<FaqGroup, string> = {
  * direct, factual answers AI search engines quote.
  *
  * ⚠️ PRICING RECONCILED: the live FAQ still quoted the old rates ($120/week
- * tier, $250 including two personal sessions, sessions with "Coach Ian & Gary").
- * Those answers have been updated to the current pricing in src/data/pricing.ts.
+ * tier, sessions with "Coach Ian & Gary"). Those answers have been updated to
+ * the current pricing in src/data/pricing.ts.
  * If any of the current numbers are wrong, fix pricing.ts and these answers
  * together, never let the two disagree on a live page.
  */
@@ -70,9 +70,9 @@ export const faqs: Faq[] = [
   {
     group: 'Membership',
     q: 'What Membership Options Does Ironhand Boxing Provide?',
-    a: 'Our membership packages are designed to accommodate varying training needs and schedules. From 1 day per week at $125 to 5 days per week at $250, which includes three personal sessions per month, we offer flexible pricing to fit your lifestyle. There is also a family rate of $150 per student for two or more kids. Each package provides access to our full range of classes.',
+    a: 'Our membership packages are designed to accommodate varying training needs and schedules. From 1 day per week at $125 to 5 days per week at $250, which includes two personal sessions per month, we offer flexible pricing to fit your lifestyle. There is also a family rate of $150 per student for two or more kids. Each package provides access to our full range of classes.',
     qEs: '¿Qué opciones de membresía ofrece Ironhand Boxing?',
-    aEs: 'Nuestros paquetes de membresía están armados para distintas necesidades y horarios. Van desde 1 día por semana a $125 hasta 5 días por semana a $250, que incluye tres sesiones personales al mes. También hay una tarifa familiar de $150 por estudiante para dos o más niños. Cada paquete da acceso a toda nuestra oferta de clases.',
+    aEs: 'Nuestros paquetes de membresía están armados para distintas necesidades y horarios. Van desde 1 día por semana a $125 hasta 5 días por semana a $250, que incluye dos sesiones personales al mes. También hay una tarifa familiar de $150 por estudiante para dos o más niños. Cada paquete da acceso a toda nuestra oferta de clases.',
   },
   {
     group: 'Getting Started',
@@ -156,9 +156,9 @@ export const faqs: Faq[] = [
   {
     group: 'Membership',
     q: 'How much are boxing classes in Staten Island?',
-    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes three personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $180 for two sessions, booked in pairs rather than as single sessions.',
+    a: 'At Ironhand, memberships run from $125 per month for one day a week to $250 per month for five days, which includes two personal sessions. Two days a week is $150, three days is $180, and four days is $220 with one personal session included. Personal training with Coach Ian is $180 for two sessions, booked in pairs rather than as single sessions.',
     qEs: '¿Cuánto cuestan las clases de boxeo en Staten Island?',
-    aEs: 'En Ironhand, las membresías van de $125 al mes por un día por semana hasta $250 al mes por cinco días, que incluye tres sesiones personales. Dos días por semana son $150, tres días $180, y cuatro días $220 con una sesión personal incluida. El entrenamiento personal con el Coach Ian es $180 por dos sesiones, que se reservan en pares y no como sesiones sueltas.',
+    aEs: 'En Ironhand, las membresías van de $125 al mes por un día por semana hasta $250 al mes por cinco días, que incluye dos sesiones personales. Dos días por semana son $150, tres días $180, y cuatro días $220 con una sesión personal incluida. El entrenamiento personal con el Coach Ian es $180 por dos sesiones, que se reservan en pares y no como sesiones sueltas.',
   },
   {
     group: 'Membership',

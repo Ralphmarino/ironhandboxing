@@ -41,8 +41,8 @@ export const monthlyPlans: Plan[] = [
     price: '250',
     unit: 'per month',
     unitEs: 'al mes',
-    note: 'Includes 3 personal sessions / month',
-    noteEs: 'Incluye 3 sesiones personales al mes',
+    note: 'Includes 2 personal sessions / month',
+    noteEs: 'Incluye 2 sesiones personales al mes',
   },
   {
     name: 'Family Package',
