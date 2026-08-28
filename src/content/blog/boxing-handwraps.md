@@ -112,7 +112,9 @@ You need handwraps if you are:
 
 The only time you can reasonably skip them is shadowboxing and jump rope.
 Everything else, wrap up. Our [group classes](/#schedule) all include bag work
-and mitt work, so bring wraps to any of them.
+and mitt work, so bring wraps to any of them. Wraps are also non-negotiable the
+day you start sparring, which for most beginners is
+[three to six months in](/blog/how-long-before-you-can-spar/).
 
 A common objection I hear from new boxers is that wraps feel restrictive. That
 is the point. If your hand can move freely inside the wrap, the wrap is not
