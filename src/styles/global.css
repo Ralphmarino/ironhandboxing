@@ -85,15 +85,30 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /*
-   * `hidden` makes the body a scroll container, and on iOS Safari that is a
-   * known source of phantom scrollable space below the content. `clip` does the
-   * same clipping without creating a scroll container at all. `hidden` stays as
-   * the fallback for anything that does not support clip.
+   * NO overflow-x here, deliberately. It used to carry the same
+   * `hidden` then `clip` pair as html below, and that is what put phantom
+   * scrollable space under the footer on mobile.
+   *
+   * `clip` is fine, but it is only honoured from Safari 16 and Chrome 90. Older
+   * browsers fall back to `hidden`, and `hidden` on the BODY makes the body a
+   * scroll container, which is a long-standing iOS Safari bug: the body scroller
+   * reports more height than its content and you can drag well past the end of
+   * the page. Whether the fallback bites is the visitor's browser version, so it
+   * looked fine on desktop and broke on a phone.
+   *
+   * Nothing is lost by dropping it. html already clips the horizontal axis for
+   * the whole document, and `npm run check:overflow` confirms no page overflows
+   * sideways at 320 or 390 even with every clip removed, so this rule was
+   * insurance against a problem the site does not have.
    */
-  overflow-x: hidden;
-  overflow-x: clip;
 }
 
+/*
+ * Horizontal clipping belongs on the root, not the body. The root's overflow
+ * propagates to the viewport, which is already the scroll container, so this
+ * clips without turning an element into a second scroller. The `hidden`
+ * fallback is safe in that position.
+ */
 html {
   overflow-x: hidden;
   overflow-x: clip;
