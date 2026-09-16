@@ -7,11 +7,16 @@
  * Run it against every page after any layout change. It exits non-zero on a
  * failure, so it can gate a deploy.
  *
- * documentElement.scrollWidth is NOT usable on this site: html/body carry
+ * documentElement.scrollWidth is NOT usable on this site: html carries
  * overflow-x: clip, which clips the overflow out of the scroll box entirely, so
  * scrollWidth reports a clean page while content is being cut off the right
  * edge. This measures element rectangles against the viewport instead, which is
  * what a person actually sees.
+ *
+ * It also checks the VERTICAL axis, by a different method: that the document
+ * stops where the footer stops. Empty scrollable space under the footer has
+ * shipped twice now, both times invisible on desktop, so it gets its own
+ * assertion rather than an eyeball.
  */
 import pkg from '/opt/node22/lib/node_modules/playwright/index.js';
 const { chromium } = pkg;
@@ -79,9 +84,33 @@ for (const url of urls) {
     return out.slice(0, 4);
   });
 
-  if (over.length || errs.length) {
+  // Vertical: the page must end where the footer ends. Anything more is dead
+  // space a visitor can scroll into. Measured after scrolling to the bottom, so
+  // every reveal animation has settled and nothing is mid-transition.
+  const tall = await p.evaluate(async () => {
+    for (let y = 0; y < document.documentElement.scrollHeight; y += 900) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    await new Promise((r) => setTimeout(r, 500));
+
+    const ftr = document.querySelector('footer');
+    if (!ftr) return null;
+    const footerBottom = ftr.getBoundingClientRect().bottom + window.scrollY;
+    // A couple of pixels of subpixel rounding is not a bug.
+    const slack = Math.round(document.documentElement.scrollHeight - footerBottom);
+    return slack > 4 ? slack : null;
+  });
+
+  if (over.length || errs.length || tall) {
     bad++;
-    console.log(`❌ ${width} ${url}`, JSON.stringify(over), errs.length ? errs : '');
+    const why = [
+      over.length ? JSON.stringify(over) : '',
+      tall ? `${tall}px of empty scroll below the footer` : '',
+      errs.length ? String(errs) : '',
+    ].filter(Boolean).join(' | ');
+    console.log(`❌ ${width} ${url} ${why}`);
   } else {
     console.log(`   ${width} ${url}`);
   }
