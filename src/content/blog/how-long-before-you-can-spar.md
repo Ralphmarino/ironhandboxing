@@ -78,7 +78,7 @@ This is the part nobody publishes, so here it is. Before I put someone in the ri
 6. **Ego in check.** Sparring is not winning. If you treat every round as something to win, you will hurt your training partners and nobody will want to work with you.
 7. **Comfort getting hit.** You have to know how your body reacts to contact before contact comes with intent.
 
-You do not need to be good at boxing to spar. You need to be safe, controlled, and coachable.
+You do not need to be good at boxing to spar. You need to be safe, controlled, and coachable. Everything on that list comes out of the [boxing fundamentals](/blog/boxing-fundamentals/) you drill in every class.
 
 ## How long does it take to learn boxing?
 
