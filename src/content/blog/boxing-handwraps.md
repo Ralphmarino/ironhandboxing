@@ -120,6 +120,10 @@ A common objection I hear from new boxers is that wraps feel restrictive. That
 is the point. If your hand can move freely inside the wrap, the wrap is not
 doing its job.
 
+Wrapping properly is the first of the [boxing fundamentals](/blog/boxing-fundamentals/)
+we teach, and it is the one that keeps you training instead of sitting out with
+a bad wrist.
+
 ## What handwraps should you buy?
 
 For anyone training two to five days a week:
